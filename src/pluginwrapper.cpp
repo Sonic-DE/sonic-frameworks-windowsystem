@@ -44,6 +44,23 @@ static QStringList pluginCandidates()
     return ret;
 }
 
+template <typename PluginLoader>
+KWindowSystemPluginInterface *loadPlugin_helper(PluginLoader *loader, const QString &platformName)
+{
+    QJsonObject metaData = loader->metaData();
+    const QJsonArray platforms = metaData.value(QStringLiteral("MetaData")).toObject().value(QStringLiteral("platforms")).toArray();
+    for (auto it = platforms.begin(); it != platforms.end(); ++it) {
+        if (QString::compare(platformName, (*it).toString(), Qt::CaseInsensitive) == 0) {
+            KWindowSystemPluginInterface *interface = qobject_cast<KWindowSystemPluginInterface *>(loader->instance());
+            if (interface) {
+                return interface;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
 static KWindowSystemPluginInterface *loadPlugin()
 {
     if (!qobject_cast<QGuiApplication *>(QCoreApplication::instance())) {
@@ -65,18 +82,28 @@ static KWindowSystemPluginInterface *loadPlugin()
             continue;
         }
         QPluginLoader loader(candidate);
-        QJsonObject metaData = loader.metaData();
-        const QJsonArray platforms = metaData.value(QStringLiteral("MetaData")).toObject().value(QStringLiteral("platforms")).toArray();
-        for (auto it = platforms.begin(); it != platforms.end(); ++it) {
-            if (QString::compare(platformName, (*it).toString(), Qt::CaseInsensitive) == 0) {
-                KWindowSystemPluginInterface *interface = qobject_cast< KWindowSystemPluginInterface* >(loader.instance());
-                if (interface) {
-                    qCDebug(LOG_KWINDOWSYSTEM) << "Loaded plugin" << candidate << "for platform" << platformName;
-                    return interface;
-                }
-            }
+
+        KWindowSystemPluginInterface *interface = loadPlugin_helper(&loader, platformName);
+        if (interface) {
+            qCDebug(LOG_KWINDOWSYSTEM) << "Loaded plugin" << candidate << "for platform" << platformName;
+            return interface;
         }
     }
+
+    const QVector<QStaticPlugin> staticPlugins = QPluginLoader::staticPlugins();
+    for (const QStaticPlugin &staticPlugin : staticPlugins) {
+        const QJsonObject object = staticPlugin.metaData();
+        if (object.value(QLatin1String("IID")) != QLatin1String(KWindowSystemPluginInterface_iid)) {
+            continue;
+        }
+
+        KWindowSystemPluginInterface *interface = loadPlugin_helper(&staticPlugin, platformName);
+        if (interface) {
+            qCDebug(LOG_KWINDOWSYSTEM) << "Loaded a static plugin for platform" << platformName;
+            return interface;
+        }
+    }
+
     qCWarning(LOG_KWINDOWSYSTEM) << "Could not find any platform plugin";
     return nullptr;
 }
