@@ -265,7 +265,12 @@ void KWindowSystemX11Test::testWindowTitleChanged()
     // wait till the window is mapped, etc.
     QTest::qWait(200);
 
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 80)
     QSignalSpy propertiesChangedSpy(KWindowSystem::self(), SIGNAL(windowChanged(WId,NET::Properties,NET::Properties2)));
+#else
+    QSignalSpy propertiesChangedSpy(KWindowSystem::self(), &KWindowSystem::windowChangedProperties);
+#endif
+
     QVERIFY(propertiesChangedSpy.isValid());
 #if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 0)
     QSignalSpy propertyChangedSpy(KWindowSystem::self(), SIGNAL(windowChanged(WId,uint)));

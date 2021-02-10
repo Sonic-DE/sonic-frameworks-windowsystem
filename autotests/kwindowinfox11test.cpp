@@ -212,7 +212,12 @@ void KWindowInfoX11Test::testState()
         QVERIFY(!info.hasState(NET::States(1 << i)));
     }
 
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 80)
     QSignalSpy spy(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId,NET::Properties,NET::Properties2)>(&KWindowSystem::windowChanged));
+#else
+    QSignalSpy spy(KWindowSystem::self(), &KWindowSystem::windowChangedProperties);
+#endif
+
     QVERIFY(spy.isValid());
     // now we have a clean window and can do fun stuff
     KWindowSystem::setState(window->winId(), state);
@@ -262,7 +267,12 @@ void KWindowInfoX11Test::testDemandsAttention()
     QVERIFY(info.valid());
     QVERIFY(!info.hasState(NET::DemandsAttention));
 
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 80)
     QSignalSpy spy(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId,NET::Properties,NET::Properties2)>(&KWindowSystem::windowChanged));
+#else
+    QSignalSpy spy(KWindowSystem::self(), &KWindowSystem::windowChangedProperties);
+#endif
+
     QVERIFY(spy.isValid());
     // now we have a clean window and can do fun stuff
     KWindowSystem::demandAttention(window->winId());
@@ -461,7 +471,11 @@ void KWindowInfoX11Test::testDesktop()
     }
 
     // set on all desktop
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 80)
     QSignalSpy spy(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId,NET::Properties,NET::Properties2)>(&KWindowSystem::windowChanged));
+#else
+    QSignalSpy spy(KWindowSystem::self(), &KWindowSystem::windowChangedProperties);
+#endif
     QVERIFY(spy.isValid());
     KWindowSystem::setOnAllDesktops(window->winId(), true);
     QVERIFY(waitForWindow(spy, window->winId(), NET::WMDesktop));
@@ -496,7 +510,12 @@ void KWindowInfoX11Test::testDesktop()
 void KWindowInfoX11Test::testActivities()
 {
     NETRootInfo rootInfo(QX11Info::connection(), NET::Supported | NET::SupportingWMCheck);
+
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 80)
     QSignalSpy spyReal(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId,NET::Properties,NET::Properties2)>(&KWindowSystem::windowChanged));
+#else
+    QSignalSpy spyReal(KWindowSystem::self(), &KWindowSystem::windowChangedProperties);
+#endif
     QVERIFY(spyReal.isValid());
 
     KWindowInfo info(window->winId(), NET::Properties(), NET::WM2Activities);
@@ -739,7 +758,11 @@ void KWindowInfoX11Test::testGeometry()
     QCOMPARE(info.geometry().size(), window->geometry().size());
     QCOMPARE(info.frameGeometry().size(), window->frameGeometry().size());
 
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 80)
     QSignalSpy spy(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId,NET::Properties,NET::Properties2)>(&KWindowSystem::windowChanged));
+#else
+    QSignalSpy spy(KWindowSystem::self(), &KWindowSystem::windowChangedProperties);
+#endif
     QVERIFY(spy.isValid());
 
     // this is tricky, KWin is smart and doesn't allow all geometries we pass in
@@ -761,7 +784,11 @@ void KWindowInfoX11Test::testDesktopFileName()
     QVERIFY(info.valid());
     QCOMPARE(info.desktopFileName(), QByteArray());
 
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 80)
     QSignalSpy spy(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId,NET::Properties,NET::Properties2)>(&KWindowSystem::windowChanged));
+#else
+    QSignalSpy spy(KWindowSystem::self(), &KWindowSystem::windowChangedProperties);
+#endif
     QVERIFY(spy.isValid());
 
     // create a NETWinInfo to set the desktop file name

@@ -696,6 +696,7 @@ Q_SIGNALS:
      */
     void stackingOrderChanged();
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 80)
     /**
      * The window changed.
      *
@@ -706,8 +707,12 @@ Q_SIGNALS:
      * @param properties2 the properties2 that were modified
      *
      * @since 5.0
+     *
+     * @deprecated since 5.80, use windowChangedProperties(WId, NET::Properties, NET::Properties2);
      **/
-    void windowChanged(WId id, NET::Properties properties, NET::Properties2 properties2);
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 80, "Use KWindowSystem::windowChangedProperties(WId, NET::Properties, NET::Properties2)")
+    void windowChanged(WId id, NET::Properties properties, NET::Properties2 properties2); // clazy:exclude=overloaded-signal
+#endif
 
 #if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 0)
     /**
@@ -723,7 +728,7 @@ Q_SIGNALS:
      * @deprecated since 5.0 use windowChanged(WId, NET::Properties, NET::Properties2)
      */
     KWINDOWSYSTEM_DEPRECATED_VERSION(5, 0, "Use KWindowSystem::windowChanged(WId, NET::Properties, NET::Properties2)")
-    QT_MOC_COMPAT void windowChanged(WId id, const unsigned long *properties);
+    QT_MOC_COMPAT void windowChanged(WId id, const unsigned long *properties); // clazy:exclude=overloaded-signal
 #endif
 
 #if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 0)
@@ -737,14 +742,27 @@ Q_SIGNALS:
      * @deprecated Since 5.0
      */
     KWINDOWSYSTEM_DEPRECATED_VERSION(5, 0, "Use KWindowSystem::windowChanged(WId, NET::Properties, NET::Properties2)")
-    QT_MOC_COMPAT void windowChanged(WId id, unsigned int properties);
+    QT_MOC_COMPAT void windowChanged(WId id, unsigned int properties); // clazy:exclude=overloaded-signal
 #endif
+
+    /**
+     * The window changed.
+     *
+     * Emits the NET::Properties and NET::Properties2 that were changed.
+     *
+     * @param id the WId of the window
+     * @param properties the NET::Properties that were modified
+     * @param properties2 the NET::Properties2 that were modified
+     *
+     * @since 5.80
+     **/
+    void windowChangedProperties(WId id, NET::Properties properties, NET::Properties2 properties2);
 
     /**
      * The window changed somehow.
      * @param id the id of the window
      */
-    void windowChanged(WId id);
+    void windowChanged(WId id); // clazy:exclude=overloaded-signal
 
     /**
      * The state of showing the desktop has changed.
