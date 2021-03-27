@@ -74,7 +74,10 @@ KWINDOWSYSTEM_EXPORT void slideWindow(QWidget *widget, SlideFromLocation locatio
  *
  * @param ids all the windows we want the size
  */
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 81)
+KWINDOWSYSTEM_DEPRECATED_VERSION(5, 81, "This method has no equivalent.")
 KWINDOWSYSTEM_EXPORT QList<QSize> windowSizes(const QList<WId> &ids);
+#endif
 
 /**
 * Activate the Present Windows effect for the given groups of windows.
