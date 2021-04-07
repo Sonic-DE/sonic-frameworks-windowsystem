@@ -711,7 +711,8 @@ QPixmap KWindowSystemPrivateX11::iconFromNetWinInfo(int width, int height, bool 
 
         if (p != XCB_PIXMAP_NONE) {
             QPixmap pm = KXUtils::createPixmapFromHandle(info->xcbConnection(), p, p_mask);
-            if (scale && width > 0 && height > 0 && !pm.isNull() && (pm.width() != width || pm.height() != height)) {
+            if (scale && width > 0 && height > 0 && !pm.isNull() //
+                && (pm.width() != width || pm.height() != height)) {
                 result = QPixmap::fromImage(pm.toImage().scaled(width, height, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
             } else {
                 result = pm;
