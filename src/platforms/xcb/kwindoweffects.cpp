@@ -140,6 +140,7 @@ QList<QSize> KWindowEffectsPrivateX11::windowSizes(const QList<WId> &ids)
 }
 #endif
 
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 82)
 void KWindowEffectsPrivateX11::presentWindows(WId controller, const QList<WId> &ids)
 {
     xcb_connection_t *c = QX11Info::connection();
@@ -226,6 +227,7 @@ void KWindowEffectsPrivateX11::highlightWindows(WId controller, const QList<WId>
     }
     xcb_change_property(c, XCB_PROP_MODE_REPLACE, controller, atom->atom, atom->atom, 32, data.size(), data.constData());
 }
+#endif
 
 void KWindowEffectsPrivateX11::enableBlurBehind(WId window, bool enable, const QRegion &region)
 {

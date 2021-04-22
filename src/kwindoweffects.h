@@ -80,6 +80,7 @@ KWINDOWSYSTEM_DEPRECATED_VERSION(5, 81, "Fetch sizes through KWindowSystem inste
 KWINDOWSYSTEM_EXPORT QList<QSize> windowSizes(const QList<WId> &ids);
 #endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 82)
 /**
  * Activate the Present Windows effect for the given groups of windows.
  *
@@ -87,6 +88,7 @@ KWINDOWSYSTEM_EXPORT QList<QSize> windowSizes(const QList<WId> &ids);
  *                   will be set on this window. It will be removed by the effect
  * @param ids all the windows which should be presented.
  */
+KWINDOWSYSTEM_DEPRECATED_VERSION(5, 82, "Support for presentWindows was removed")
 KWINDOWSYSTEM_EXPORT void presentWindows(WId controller, const QList<WId> &ids);
 
 /**
@@ -96,6 +98,7 @@ KWINDOWSYSTEM_EXPORT void presentWindows(WId controller, const QList<WId> &ids);
  *                   will be set on this window. It will be removed by the effect
  * @param desktop The desktop whose windows should be presented. -1 for all desktops
  */
+KWINDOWSYSTEM_DEPRECATED_VERSION(5, 82, "Support for presentWindows was removed")
 KWINDOWSYSTEM_EXPORT void presentWindows(WId controller, int desktop = NET::OnAllDesktops);
 
 /**
@@ -105,7 +108,9 @@ KWINDOWSYSTEM_EXPORT void presentWindows(WId controller, int desktop = NET::OnAl
  *                   will be set on this window. It will be removed by the effect
  * @param ids all the windows which should be highlighted.
  */
+KWINDOWSYSTEM_DEPRECATED_VERSION(5, 82, "Support for highlightWindows was removed")
 KWINDOWSYSTEM_EXPORT void highlightWindows(WId controller, const QList<WId> &ids);
+#endif
 
 /**
  * Instructs the window manager to blur the background
