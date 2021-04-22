@@ -23,12 +23,14 @@ bool KWindowEffectsPrivateDummy::isEffectAvailable(KWindowEffects::Effect effect
     return false;
 }
 
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 82)
 void KWindowEffectsPrivateDummy::slideWindow(WId id, KWindowEffects::SlideFromLocation location, int offset)
 {
     Q_UNUSED(id)
     Q_UNUSED(location)
     Q_UNUSED(offset)
 }
+#endif
 
 #if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 81)
 QList<QSize> KWindowEffectsPrivateDummy::windowSizes(const QList<WId> &ids)
@@ -60,7 +62,6 @@ void KWindowEffectsPrivateDummy::highlightWindows(WId controller, const QList<WI
     Q_UNUSED(controller)
     Q_UNUSED(ids)
 }
-#endif
 
 void KWindowEffectsPrivateDummy::enableBlurBehind(WId window, bool enable, const QRegion &region)
 {
@@ -78,6 +79,7 @@ void KWindowEffectsPrivateDummy::enableBackgroundContrast(WId window, bool enabl
     Q_UNUSED(saturation)
     Q_UNUSED(region)
 }
+#endif
 
 #if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 67)
 void KWindowEffectsPrivateDummy::markAsDashboard(WId window)
@@ -85,3 +87,32 @@ void KWindowEffectsPrivateDummy::markAsDashboard(WId window)
     Q_UNUSED(window)
 }
 #endif
+
+void KWindowEffectsPrivateDummy::slideWindow(QWindow *window, KWindowEffects::SlideFromLocation location, int offset)
+{
+    Q_UNUSED(window)
+    Q_UNUSED(location)
+    Q_UNUSED(offset)
+}
+
+void KWindowEffectsPrivateDummy::enableBlurBehind(QWindow *window, bool enable, const QRegion &region)
+{
+    Q_UNUSED(window)
+    Q_UNUSED(enable)
+    Q_UNUSED(region)
+}
+
+void KWindowEffectsPrivateDummy::enableBackgroundContrast(QWindow *window,
+                                                          bool enable,
+                                                          qreal contrast,
+                                                          qreal intensity,
+                                                          qreal saturation,
+                                                          const QRegion &region)
+{
+    Q_UNUSED(window)
+    Q_UNUSED(enable)
+    Q_UNUSED(contrast)
+    Q_UNUSED(intensity)
+    Q_UNUSED(saturation)
+    Q_UNUSED(region)
+}
