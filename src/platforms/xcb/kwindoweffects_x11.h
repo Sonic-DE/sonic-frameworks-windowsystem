@@ -14,7 +14,9 @@ public:
     KWindowEffectsPrivateX11();
     ~KWindowEffectsPrivateX11() override;
     bool isEffectAvailable(KWindowEffects::Effect effect) override;
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 82)
     void slideWindow(WId id, KWindowEffects::SlideFromLocation location, int offset) override;
+#endif
 #if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 81)
     QList<QSize> windowSizes(const QList<WId> &ids) override;
 #endif
@@ -27,16 +29,28 @@ public:
 #if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 82)
     void highlightWindows(WId controller, const QList<WId> &ids) override;
 #endif
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 82)
     void enableBlurBehind(WId window, bool enable = true, const QRegion &region = QRegion()) override;
+#endif
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 82)
     void enableBackgroundContrast(WId window,
                                   bool enable = true,
                                   qreal contrast = 1,
                                   qreal intensity = 1,
                                   qreal saturation = 1,
                                   const QRegion &region = QRegion()) override;
+#endif
 #if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 67)
     void markAsDashboard(WId window) override;
 #endif
+    void slideWindow(QWindow *window, KWindowEffects::SlideFromLocation location, int offset) override;
+    void enableBlurBehind(QWindow *window, bool enable = true, const QRegion &region = QRegion()) override;
+    void enableBackgroundContrast(QWindow *window,
+                                  bool enable = true,
+                                  qreal contrast = 1,
+                                  qreal intensity = 1,
+                                  qreal saturation = 1,
+                                  const QRegion &region = QRegion()) override;
 };
 
 #endif
