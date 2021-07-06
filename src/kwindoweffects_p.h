@@ -29,6 +29,9 @@ public:
                                           qreal intensity = 1,
                                           qreal saturation = 1,
                                           const QRegion &region = QRegion()) = 0;
+    virtual void setBackgroundFrost(QWindow* window,
+                                    std::optional<QColor> color,
+                                    const QRegion& region = QRegion()) = 0;
 #if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 67)
     virtual void markAsDashboard(WId window) = 0;
 #endif
