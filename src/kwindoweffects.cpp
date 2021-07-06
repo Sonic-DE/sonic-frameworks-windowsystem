@@ -50,6 +50,11 @@ void enableBackgroundContrast(QWindow *window, bool enable, qreal contrast, qrea
     KWindowSystemPluginWrapper::self().effects()->enableBackgroundContrast(window->winId(), enable, contrast, intensity, saturation, region);
 }
 
+void setBackgroundFrost(QWindow *window, std::optional<QColor> frostColor, const QRegion& region)
+{
+    KWindowSystemPluginWrapper::self().effects()->setBackgroundFrost(window, frostColor, region);
+}
+
 void slideWindow(QWindow *window, SlideFromLocation location, int offset)
 {
     KWindowSystemPluginWrapper::self().effects()->slideWindow(window->winId(), location, offset);
