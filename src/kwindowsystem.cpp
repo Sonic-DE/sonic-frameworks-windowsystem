@@ -798,7 +798,8 @@ quint32 KWindowSystem::lastInputSerial(QWindow *window)
     Q_D(KWindowSystem);
     auto dv2 = dynamic_cast<KWindowSystemPrivateV2 *>(d);
     if (!dv2) {
-        return 0;
+        static int s_fakeSerial = 0;
+        return s_fakeSerial++;
     }
     return dv2->lastInputSerial(window);
 }
