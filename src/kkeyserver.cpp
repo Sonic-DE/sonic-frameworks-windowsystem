@@ -9,6 +9,8 @@
 
 #include "kkeyserver.h"
 
+#include <fixx11h.h>
+
 #include <QCoreApplication>
 
 namespace KKeyServer
