@@ -9,7 +9,9 @@
 
 #include "kkeyserver.h"
 
+#ifndef Q_OS_ANDROID
 #include <fixx11h.h>
+#endif
 
 #include <QCoreApplication>
 
