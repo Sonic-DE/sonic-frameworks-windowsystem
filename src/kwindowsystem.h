@@ -640,6 +640,22 @@ public:
     static QPoint constrainViewportRelativePosition(const QPoint &pos);
 
     /**
+     * Updates the platform-specific startup id, if any.
+     *
+     * This method is to be called when a running application instance
+     * is reused for handling the request to start this application.
+     * A typical use would be in the handler of the KDBusService activation signal.
+     *
+     * For X11, this updates the id for the Startup Notification protocol.
+     * For Wayland, this updates the token for the XDG Activation protocol.
+     *
+     * @param window the main window (needed by X11 platform)
+     *
+     * @since 5.90
+     */
+    void updateStartupId(QWindow *window);
+
+    /**
      * Enum describing the windowing system platform used by the QGuiApplication.
      * @see platform
      * @since 5.25
