@@ -42,6 +42,7 @@ if (KWINDOWSYSTEM_HAVE_X11)
     platforms/xcb/kselectionwatcher.cpp
     platforms/xcb/kxerrorhandler.cpp
     platforms/xcb/kxutils.cpp
+    kx11extras.cpp
   )
 endif()
 
@@ -122,7 +123,7 @@ ecm_generate_export_header(KF5WindowSystem
     GROUP_BASE_NAME KF
     VERSION ${KF_VERSION}
     DEPRECATED_BASE_VERSION 0
-    DEPRECATION_VERSIONS 5.0 5.18 5.38 5.62 5.67 5.69 5.80 5.81 5.82
+    DEPRECATION_VERSIONS 5.0 5.18 5.38 5.62 5.67 5.69 5.80 5.81 5.82 5.101
     EXCLUDE_DEPRECATED_BEFORE_AND_AT ${EXCLUDE_DEPRECATED_BEFORE_AND_AT}
 )
 
@@ -149,6 +150,7 @@ ecm_generate_headers(KWindowSystem_HEADERS
   KWindowInfo
   KWindowShadow,KWindowShadowTile
   KWindowSystem
+  KX11Extras
 
   REQUIRED_HEADERS KWindowSystem_HEADERS
 )
