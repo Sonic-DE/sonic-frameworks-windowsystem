@@ -40,6 +40,8 @@
 #include <X11/extensions/Xfixes.h>
 #endif
 
+#include "kx11extras.h"
+
 static Atom net_wm_cm;
 static void create_atoms();
 
@@ -206,7 +208,10 @@ bool NETEventFilter::nativeEventFilter(xcb_generic_event_t *ev)
             bool haveOwner = event->owner != XCB_WINDOW_NONE;
             if (compositingEnabled != haveOwner) {
                 compositingEnabled = haveOwner;
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
                 Q_EMIT s_q->compositingChanged(compositingEnabled);
+#endif
+                Q_EMIT KX11Extras::self()->compositingChanged(compositingEnabled);
             }
             return true;
         }
@@ -218,7 +223,10 @@ bool NETEventFilter::nativeEventFilter(xcb_generic_event_t *ev)
                 bool haveOwner = event->owner != XCB_WINDOW_NONE;
                 if (compositingEnabled != haveOwner) {
                     compositingEnabled = haveOwner;
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
                     Q_EMIT s_q->compositingChanged(compositingEnabled);
+#endif
+                    Q_EMIT KX11Extras::self()->compositingChanged(compositingEnabled);
                 }
                 // NOTICE this is not our event, we just randomly captured it from Qt -> pass on
                 return false;
@@ -250,29 +258,53 @@ bool NETEventFilter::nativeEventFilter(xcb_generic_event_t *ev)
         NETRootInfo::event(ev, &props, &props2);
 
         if ((props & CurrentDesktop) && currentDesktop() != old_current_desktop) {
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
             Q_EMIT s_q->currentDesktopChanged(currentDesktop());
+#endif
+            Q_EMIT KX11Extras::self()->currentDesktopChanged(currentDesktop());
         }
         if ((props & DesktopViewport) && mapViewport() && currentDesktop() != old_current_desktop) {
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
             Q_EMIT s_q->currentDesktopChanged(currentDesktop());
+#endif
+            Q_EMIT KX11Extras::self()->currentDesktopChanged(currentDesktop());
         }
         if ((props & ActiveWindow) && activeWindow() != old_active_window) {
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
             Q_EMIT s_q->activeWindowChanged(activeWindow());
+#endif
+            Q_EMIT KX11Extras::self()->activeWindowChanged(activeWindow());
         }
         if (props & DesktopNames) {
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
             Q_EMIT s_q->desktopNamesChanged();
+#endif
+            Q_EMIT KX11Extras::self()->desktopNamesChanged();
         }
         if ((props & NumberOfDesktops) && numberOfDesktops() != old_number_of_desktops) {
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
             Q_EMIT s_q->numberOfDesktopsChanged(numberOfDesktops());
+#endif
+            Q_EMIT KX11Extras::self()->numberOfDesktopsChanged(numberOfDesktops());
         }
         if ((props & DesktopGeometry) && mapViewport() && numberOfDesktops() != old_number_of_desktops) {
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
             Q_EMIT s_q->numberOfDesktopsChanged(numberOfDesktops());
+#endif
+            Q_EMIT KX11Extras::self()->numberOfDesktopsChanged(numberOfDesktops());
         }
         if (props & WorkArea) {
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
             Q_EMIT s_q->workAreaChanged();
+#endif
+            Q_EMIT KX11Extras::self()->workAreaChanged();
         }
         if (props & ClientListStacking) {
             updateStackingOrder();
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
             Q_EMIT s_q->stackingOrderChanged();
+#endif
+            Q_EMIT KX11Extras::self()->stackingOrderChanged();
         }
         if ((props2 & WM2ShowingDesktop) && showingDesktop() != old_showing_desktop) {
             Q_EMIT s_q->showingDesktopChanged(showingDesktop());
@@ -309,6 +341,7 @@ bool NETEventFilter::nativeEventFilter(xcb_generic_event_t *ev)
             Q_EMIT s_q->windowChanged(eventWindow);
 #endif
             Q_EMIT s_q->windowChanged(eventWindow, dirtyProperties, dirtyProperties2);
+            Q_EMIT KWindowSystem::self()->windowChanged(eventWindow, dirtyProperties, dirtyProperties2);
 
 #if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 0)
             unsigned long dirty[2] = {dirtyProperties, dirtyProperties2};
@@ -316,7 +349,10 @@ bool NETEventFilter::nativeEventFilter(xcb_generic_event_t *ev)
             Q_EMIT s_q->windowChanged(eventWindow, dirtyProperties);
 #endif
             if ((dirtyProperties & NET::WMStrut) != 0) {
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
                 Q_EMIT s_q->strutChanged();
+#endif
+                Q_EMIT KX11Extras::self()->strutChanged();
             }
         }
     }
@@ -372,9 +408,15 @@ void NETEventFilter::addClient(xcb_window_t w)
     }
 
     windows.append(w);
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
     Q_EMIT s_q->windowAdded(w);
+#endif
+    Q_EMIT KX11Extras::self()->windowAdded(w);
     if (emit_strutChanged) {
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
         Q_EMIT s_q->strutChanged();
+#endif
+        Q_EMIT KX11Extras::self()->strutChanged();
     }
 }
 
@@ -393,9 +435,15 @@ void NETEventFilter::removeClient(xcb_window_t w)
 
     possibleStrutWindows.removeAll(w);
     windows.removeAll(w);
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
     Q_EMIT s_q->windowRemoved(w);
+#endif
+    Q_EMIT KX11Extras::self()->windowRemoved(w);
     if (emit_strutChanged) {
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
         Q_EMIT s_q->strutChanged();
+#endif
+        Q_EMIT KX11Extras::self()->strutChanged();
     }
 }
 
@@ -512,7 +560,10 @@ void KWindowSystemPrivateX11::init(FilterInfo what)
         d.reset(filter);
         d->activate();
         if (wasCompositing != s_d_func()->compositingEnabled) {
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
             Q_EMIT KWindowSystem::self()->compositingChanged(s_d_func()->compositingEnabled);
+#endif
+            Q_EMIT KX11Extras::self()->compositingChanged(s_d_func()->compositingEnabled);
         }
     }
 }
