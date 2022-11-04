@@ -53,6 +53,7 @@ public:
      */
     static KWindowSystem *self();
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Returns the list of all toplevel windows currently managed by the
      * window manager in the order of creation. Please do not rely on
@@ -70,14 +71,19 @@ public:
      * \endcode
      * @return the list of all toplevel windows
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::windows() instead")
     static QList<WId> windows();
+#endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Test to see if @p id still managed at present.
      * @param id the window id to test
      * @return true if the window id is still managed
      **/
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::hasWId() instead")
     static bool hasWId(WId id);
+#endif
 
 #if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 0)
     /**
@@ -95,21 +101,28 @@ public:
     static KWindowInfo windowInfo(WId win, NET::Properties properties, NET::Properties2 properties2 = NET::Properties2());
 #endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Returns the list of all toplevel windows currently managed by the
      * window manager in the current stacking order (from lower to
      * higher). May be useful for pagers.
      * @return the list of all toplevel windows in stacking order
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::stackingOrder() instead")
     static QList<WId> stackingOrder();
+#endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Returns the currently active window, or 0 if no window is active.
      * @return the window id of the active window, or 0 if no window is
      *  active
      **/
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::activeWindow() instead")
     static WId activeWindow();
+#endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Requests that window @p win is activated.
      *
@@ -136,7 +149,9 @@ public:
      * @param time X server timestamp of the user activity that
      *    caused this request
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::activateWindow() or KWindowSystem::activateWindow(QWindow *) instead")
     static void activateWindow(WId win, long time = 0);
+#endif
 
     /**
      * Requests that window @p win is activated.
@@ -168,6 +183,7 @@ public:
      */
     Q_INVOKABLE static void activateWindow(QWindow *window, long time = 0);
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Sets window @p win to be the active window. Note that this
      * should be called only in special cases, applications
@@ -180,7 +196,9 @@ public:
      * @param time X server timestamp of the user activity that
      *    caused this request
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::forceActivateWindow() instead")
     static void forceActiveWindow(WId win, long time = 0);
+#endif
 
     /**
      * When application finishes some operation and wants to notify
@@ -193,31 +211,44 @@ public:
      */
     static void demandAttention(WId win, bool set = true);
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Returns true if a compositing manager is running (i.e. ARGB windows
      * are supported, effects will be provided, etc.).
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::compositingActive() instead")
     static bool compositingActive();
+#endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Returns the current virtual desktop.
      * @return the current virtual desktop
      **/
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::currentDesktop() instead")
     static int currentDesktop();
+#endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Returns the number of virtual desktops.
      * @return the number of virtual desktops
      **/
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::numberOfDesktops() instead")
     static int numberOfDesktops();
+#endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Convenience function to set the current desktop to @p desktop.
      * See NETRootInfo.
      * @param desktop the number of the new desktop
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::setCurrentDesktop() instead")
     static void setCurrentDesktop(int desktop);
+#endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Sets window @p win to be present on all virtual desktops if @p
      * is true. Otherwise the window lives only on one single desktop.
@@ -226,16 +257,22 @@ public:
      * @param b true to show the window on all desktops, false
      *          otherwise
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::setOnAllDesktops() instead")
     static void setOnAllDesktops(WId win, bool b);
+#endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Moves window @p win to desktop @p desktop.
      *
      * @param win the id of the window
      * @param desktop the number of the new desktop
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::setOnDesktop() instead")
     static void setOnDesktop(WId win, int desktop);
+#endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Moves window @p win to activities @p activities.
      *
@@ -245,7 +282,9 @@ public:
      * @since 5.1
      * @see KWindowInfo::activities
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::setOnActivities() instead")
     static void setOnActivities(WId win, const QStringList &activities);
+#endif
 
     /**
      * Sets the parent window of @p subwindow to be @p mainwindow.
@@ -298,6 +337,8 @@ public:
     KWINDOWSYSTEM_DEPRECATED_VERSION(5, 0, "Use KWindowInfo::groupLeader()")
     static WId groupLeader(WId window);
 #endif
+
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Returns an icon for window @p win.
      *
@@ -314,8 +355,11 @@ public:
      *        icon will not be modified.
      * @return the icon of the window
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::icon() instead")
     static QPixmap icon(WId win, int width = -1, int height = -1, bool scale = false);
+#endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Masks specifying from which sources to read an icon. They are tried from the best
      * until an icon is found.
@@ -330,6 +374,9 @@ public:
         ClassHint = 4, //!< load icon after getting name from the classhint
         XApp = 8, //!< load the standard X icon (last fallback)
     };
+#endif
+
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * @overload
      *
@@ -344,8 +391,11 @@ public:
      *        icon will not be modified.
      * @param flags OR-ed flags from the IconSource enum
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::icon() instead")
     static QPixmap icon(WId win, int width, int height, bool scale, int flags);
+#endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * @overload
      *
@@ -369,7 +419,9 @@ public:
      * @param into the NETWinInfo to use for reading properties.
      * @since 5.7
      **/
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::icon() instead")
     static QPixmap icon(WId win, int width, int height, bool scale, int flags, NETWinInfo *info);
+#endif
 
     /**
      * Sets an @p icon and a  @p miniIcon on window @p win
@@ -413,6 +465,7 @@ public:
      */
     static void clearState(WId win, NET::States state);
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Minimizes the window with id @p win.
      * On X11 this follows the protocol described in ICCCM section 4.1.4.
@@ -420,7 +473,11 @@ public:
      * @param win The window to minimize
      * @see unminimizeWindow()
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::minimizeWindow() or QWindow::setState() instead")
     static void minimizeWindow(WId win);
+#endif
+
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Unminimizes the window with id @p win.
      * On X11 this follows the protocol described in ICCCM section 4.1.4.
@@ -428,7 +485,9 @@ public:
      * @param win The window to unminimize
      * @see minimizeWindow()
      **/
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::unminimizeWindow() or QWindow::setState() instead")
     static void unminimizeWindow(WId win);
+#endif
 
 #if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 0)
     /**
@@ -479,6 +538,7 @@ public:
     static bool icccmCompliantMappingState();
 #endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Returns the workarea for the specified desktop, or the current
      * work area if no desktop has been specified.
@@ -486,8 +546,11 @@ public:
      *        current desktop
      * @return the size and position of the desktop
      **/
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::workArea() instead")
     static QRect workArea(int desktop = -1);
+#endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Returns the workarea for the specified desktop, or the current
      * work area if no desktop has been specified. Excludes struts of
@@ -498,21 +561,29 @@ public:
      *        current desktop
      * @return the size and position of the desktop
      **/
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::workArea() instead")
     static QRect workArea(const QList<WId> &excludes, int desktop = -1);
+#endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Returns the name of the specified desktop.
      * @param desktop the number of the desktop
      * @return the name of the desktop
      **/
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::desktopName() instead")
     static QString desktopName(int desktop);
+#endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Sets the name of the specified desktop.
      * @param desktop the number of the desktop
      * @param name the new name for the desktop
      **/
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::setDesktopName() instead")
     static void setDesktopName(int desktop, const QString &name);
+#endif
 
     /**
      * Returns the state of showing the desktop.
@@ -545,6 +616,7 @@ public:
     static void setUserTime(WId win, long time);
 #endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Sets the strut of window @p win to @p left_width
      * ranging from @p left_start to @p left_end on the left edge,
@@ -566,6 +638,7 @@ public:
      * @param bottom_start starting x coordinate of the strut at the bottom edge
      * @param bottom_end ending x coordinate of the strut at the bottom edge
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::setExtendedStrut() instead")
     static void setExtendedStrut(WId win,
                                  int left_width,
                                  int left_start,
@@ -579,7 +652,9 @@ public:
                                  int bottom_width,
                                  int bottom_start,
                                  int bottom_end);
+#endif
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Convenience function for setExtendedStrut() that automatically makes struts
      * as wide/high as the screen width/height.
@@ -591,16 +666,23 @@ public:
      * @param top the top strut
      * @param bottom the bottom strut
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::setStrut() instead")
     static void setStrut(WId win, int left, int right, int top, int bottom);
+#endif
+
     /**
      * Returns true if the WM announces which actions it allows for windows.
      */
     static bool allowedActionsSupported();
+
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 101)
     /**
      * Function that reads and returns the contents of the given text
      * property (WM_NAME, WM_ICON_NAME,...).
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 101, "Use KX11Extras::readNameProperty() instead")
     static QString readNameProperty(WId window, unsigned long atom);
+#endif
 
     /**
      * Allows a window from another process to raise and activate itself.
@@ -899,6 +981,7 @@ protected:
 
 private:
     friend class KWindowSystemStaticContainer;
+    friend class KX11Extras;
 
     KWindowSystem()
     {

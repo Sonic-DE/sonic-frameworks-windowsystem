@@ -42,6 +42,7 @@ if (KWINDOWSYSTEM_HAVE_X11)
     platforms/xcb/kselectionwatcher.cpp
     platforms/xcb/kxerrorhandler.cpp
     platforms/xcb/kxutils.cpp
+    kx11extras.cpp
   )
 endif()
 
@@ -149,6 +150,7 @@ ecm_generate_headers(KWindowSystem_HEADERS
   KWindowInfo
   KWindowShadow,KWindowShadowTile
   KWindowSystem
+  KX11Extras
 
   REQUIRED_HEADERS KWindowSystem_HEADERS
 )
