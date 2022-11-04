@@ -460,11 +460,13 @@ void KWindowSystem::forceActiveWindow(WId win, long time)
     d->forceActiveWindow(win, time);
 }
 
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
 void KWindowSystem::demandAttention(WId win, bool set)
 {
     Q_D(KWindowSystem);
     d->demandAttention(win, set);
 }
+#endif
 
 #if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 0)
 WId KWindowSystem::transientFor(WId win)
