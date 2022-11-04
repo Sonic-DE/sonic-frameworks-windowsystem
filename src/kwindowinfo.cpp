@@ -7,6 +7,7 @@
 #include "kwindowinfo.h"
 #include "kwindowinfo_p.h"
 #include "kwindowsystem.h"
+#include "kx11extras.h"
 #include "pluginwrapper_p.h"
 
 #include <config-kwindowsystem.h>
@@ -349,7 +350,7 @@ QString KWindowInfo::iconName() const
 
 bool KWindowInfo::isOnCurrentDesktop() const
 {
-    return isOnDesktop(KWindowSystem::currentDesktop());
+    return isOnDesktop(KX11Extras::currentDesktop());
 }
 
 bool KWindowInfo::isOnDesktop(int desktop) const
