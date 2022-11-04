@@ -40,6 +40,8 @@
 #include <X11/extensions/Xfixes.h>
 #endif
 
+#include "kx11extras.h"
+
 static Atom net_wm_cm;
 static void create_atoms();
 
@@ -207,6 +209,7 @@ bool NETEventFilter::nativeEventFilter(xcb_generic_event_t *ev)
             if (compositingEnabled != haveOwner) {
                 compositingEnabled = haveOwner;
                 Q_EMIT s_q->compositingChanged(compositingEnabled);
+                Q_EMIT KX11Extras::self()->compositingChanged(compositingEnabled);
             }
             return true;
         }
@@ -219,6 +222,7 @@ bool NETEventFilter::nativeEventFilter(xcb_generic_event_t *ev)
                 if (compositingEnabled != haveOwner) {
                     compositingEnabled = haveOwner;
                     Q_EMIT s_q->compositingChanged(compositingEnabled);
+                    Q_EMIT KX11Extras::self()->compositingChanged(compositingEnabled);
                 }
                 // NOTICE this is not our event, we just randomly captured it from Qt -> pass on
                 return false;
@@ -251,28 +255,36 @@ bool NETEventFilter::nativeEventFilter(xcb_generic_event_t *ev)
 
         if ((props & CurrentDesktop) && currentDesktop() != old_current_desktop) {
             Q_EMIT s_q->currentDesktopChanged(currentDesktop());
+            Q_EMIT KX11Extras::self()->currentDesktopChanged(currentDesktop());
         }
         if ((props & DesktopViewport) && mapViewport() && currentDesktop() != old_current_desktop) {
             Q_EMIT s_q->currentDesktopChanged(currentDesktop());
+            Q_EMIT KX11Extras::self()->currentDesktopChanged(currentDesktop());
         }
         if ((props & ActiveWindow) && activeWindow() != old_active_window) {
             Q_EMIT s_q->activeWindowChanged(activeWindow());
+            Q_EMIT KX11Extras::self()->activeWindowChanged(activeWindow());
         }
         if (props & DesktopNames) {
             Q_EMIT s_q->desktopNamesChanged();
+            Q_EMIT KX11Extras::self()->desktopNamesChanged();
         }
         if ((props & NumberOfDesktops) && numberOfDesktops() != old_number_of_desktops) {
             Q_EMIT s_q->numberOfDesktopsChanged(numberOfDesktops());
+            Q_EMIT KX11Extras::self()->numberOfDesktopsChanged(numberOfDesktops());
         }
         if ((props & DesktopGeometry) && mapViewport() && numberOfDesktops() != old_number_of_desktops) {
             Q_EMIT s_q->numberOfDesktopsChanged(numberOfDesktops());
+            Q_EMIT KX11Extras::self()->numberOfDesktopsChanged(numberOfDesktops());
         }
         if (props & WorkArea) {
             Q_EMIT s_q->workAreaChanged();
+            Q_EMIT KX11Extras::self()->workAreaChanged();
         }
         if (props & ClientListStacking) {
             updateStackingOrder();
             Q_EMIT s_q->stackingOrderChanged();
+            Q_EMIT KX11Extras::self()->stackingOrderChanged();
         }
         if ((props2 & WM2ShowingDesktop) && showingDesktop() != old_showing_desktop) {
             Q_EMIT s_q->showingDesktopChanged(showingDesktop());
@@ -309,6 +321,7 @@ bool NETEventFilter::nativeEventFilter(xcb_generic_event_t *ev)
             Q_EMIT s_q->windowChanged(eventWindow);
 #endif
             Q_EMIT s_q->windowChanged(eventWindow, dirtyProperties, dirtyProperties2);
+            Q_EMIT KWindowSystem::self()->windowChanged(eventWindow, dirtyProperties, dirtyProperties2);
 
 #if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 0)
             unsigned long dirty[2] = {dirtyProperties, dirtyProperties2};
@@ -317,6 +330,7 @@ bool NETEventFilter::nativeEventFilter(xcb_generic_event_t *ev)
 #endif
             if ((dirtyProperties & NET::WMStrut) != 0) {
                 Q_EMIT s_q->strutChanged();
+                Q_EMIT KX11Extras::self()->strutChanged();
             }
         }
     }
@@ -373,8 +387,10 @@ void NETEventFilter::addClient(xcb_window_t w)
 
     windows.append(w);
     Q_EMIT s_q->windowAdded(w);
+    Q_EMIT KX11Extras::self()->windowAdded(w);
     if (emit_strutChanged) {
         Q_EMIT s_q->strutChanged();
+        Q_EMIT KX11Extras::self()->strutChanged();
     }
 }
 
@@ -394,8 +410,10 @@ void NETEventFilter::removeClient(xcb_window_t w)
     possibleStrutWindows.removeAll(w);
     windows.removeAll(w);
     Q_EMIT s_q->windowRemoved(w);
+    Q_EMIT KX11Extras::self()->windowRemoved(w);
     if (emit_strutChanged) {
         Q_EMIT s_q->strutChanged();
+        Q_EMIT KX11Extras::self()->strutChanged();
     }
 }
 
@@ -513,6 +531,7 @@ void KWindowSystemPrivateX11::init(FilterInfo what)
         d->activate();
         if (wasCompositing != s_d_func()->compositingEnabled) {
             Q_EMIT KWindowSystem::self()->compositingChanged(s_d_func()->compositingEnabled);
+            Q_EMIT KX11Extras::self()->compositingChanged(s_d_func()->compositingEnabled);
         }
     }
 }
