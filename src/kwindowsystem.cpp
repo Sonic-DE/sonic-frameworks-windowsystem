@@ -537,11 +537,13 @@ QPixmap KWindowSystem::icon(WId win, int width, int height, bool scale, int flag
     return d->icon(win, width, height, scale, flags);
 }
 
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(5, 101)
 void KWindowSystem::setIcons(WId win, const QPixmap &icon, const QPixmap &miniIcon)
 {
     Q_D(KWindowSystem);
     d->setIcons(win, icon, miniIcon);
 }
+#endif
 
 void KWindowSystem::setType(WId win, NET::WindowType windowType)
 {
