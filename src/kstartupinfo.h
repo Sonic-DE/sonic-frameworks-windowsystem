@@ -390,12 +390,19 @@ public:
      * @param secs the new timeout in seconds
      */
     void setTimeout(unsigned int secs);
+
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(5, 102)
     /**
      * Sets the startup notification window property on the given window.
      * @param window the id of the window
      * @param id the startup notification id
+     *
+     * @deprecated since 5.102
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(5, 102, "Use setNewStartupId()")
     static void setWindowStartupId(WId window, const QByteArray &id);
+#endif
+
     /**
      * Returns startup notification identification of the given window.
      * @param w the id of the window
