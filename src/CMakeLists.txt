@@ -7,8 +7,6 @@ ecm_create_qm_loader(KF6WindowSystem kwindowsystem5_qt)
 
 target_sources(KF6WindowSystem PRIVATE
     kkeyserver.cpp
-    kstartupinfo.cpp
-    kusertimestamp.cpp
     kwindoweffects.cpp
     kwindoweffects_dummy.cpp
     kwindowinfo.cpp
@@ -65,6 +63,8 @@ if (KWINDOWSYSTEM_HAVE_X11)
         platforms/xcb/kxutils.cpp
         platforms/xcb/netwm.cpp
         kx11extras.cpp
+        kstartupinfo.cpp
+        kusertimestamp.cpp
    )
 
    # we install kkeyserver_x11.h which needs the X11 headers available
