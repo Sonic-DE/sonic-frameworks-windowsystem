@@ -78,7 +78,6 @@ if (APPLE)
         PRIVATE
             ${CMAKE_CURRENT_SOURCE_DIR}/platforms/osx)
    target_sources(KF6WindowSystem PRIVATE
-        platforms/osx/kkeyserver.cpp
 #                                                 kwindowsystem_mac.cpp
 # FIXME: adjust kwindowinfo_mac to inherit from KWindowInfoPrivate
 #                                                 kwindowinfo_mac.cpp
@@ -95,7 +94,6 @@ if (WIN32)
             ${CMAKE_CURRENT_SOURCE_DIR}/platforms/windows
    )
    target_sources(KF6WindowSystem PRIVATE
-        platforms/windows/kkeyserver.cpp
 #                                                 kwindowsystem_win.cpp
 # FIXME: adjust kwindowinfo_win to inherit from KWindowInfoPrivate
 #                                                 kwindowinfo_win.cpp
