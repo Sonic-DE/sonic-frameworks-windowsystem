@@ -49,6 +49,10 @@ if(X11_FOUND)
     set(KWINDOWSYSTEM_HAVE_XFIXES ${X11_Xfixes_FOUND})
 endif()
 
+find_package(Wayland REQUIRED COMPONENTS Client)
+find_package(Qt6WaylandClient REQUIRED COMPONENTS Private)
+find_package(WaylandProtocols REQUIRED)
+
 # Subdirectories
 ecm_install_po_files_as_qm(poqm)
 
