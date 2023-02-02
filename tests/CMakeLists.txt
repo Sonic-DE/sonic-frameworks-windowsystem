@@ -16,6 +16,7 @@ endmacro()
 kwindowsystem_executable_tests(
   blurbehindtest
   backgroundcontrasttest
+  kwaylandextrastest
 )
 
 if(KWINDOWSYSTEM_X11)

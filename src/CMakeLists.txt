@@ -68,6 +68,8 @@ if (KWINDOWSYSTEM_X11)
         kx11extras.cpp
         kstartupinfo.cpp
         kusertimestamp.cpp
+        kwaylandextras.cpp
+        kwaylandextras_interface.cpp
    )
 
    # we install kkeyserver_x11.h which needs the X11 headers available
@@ -98,6 +100,7 @@ ecm_generate_headers(KWindowSystem_HEADERS
   KWindowInfo
   KWindowShadow,KWindowShadowTile
   KWindowSystem
+  KWaylandExtras
 
   REQUIRED_HEADERS KWindowSystem_HEADERS
 )
@@ -122,6 +125,7 @@ install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/kwindowsystem_export.h
   ${KWindowSystem_HEADERS}
   netwm_def.h
+  kwaylandextras_interface_p.h
   DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/KWindowSystem COMPONENT Devel
 )
 
@@ -169,6 +173,7 @@ if(BUILD_QCH)
 endif()
 
 add_subdirectory(platforms)
+add_subdirectory(wayland)
 
 if(KWINDOWSYSTEM_QML)
     add_subdirectory(qml)
