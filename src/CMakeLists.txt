@@ -13,6 +13,8 @@ target_sources(KF6WindowSystem PRIVATE
     kwindowsystem.cpp
     pluginwrapper.cpp
     kwindowsystemplugininterface.cpp
+    kwaylandextras.cpp
+    waylandxdgactivationv1.cpp
     )
 ecm_qt_declare_logging_category(KF6WindowSystem
     HEADER kwindowsystem_debug.h
@@ -22,6 +24,10 @@ ecm_qt_declare_logging_category(KF6WindowSystem
     DEFAULT_SEVERITY Warning
     DESCRIPTION "KWindowSystem"
     EXPORT KWINDOWSYSTEM
+)
+
+qt6_generate_wayland_protocol_client_sources(KF6WindowSystem
+    FILES ${WaylandProtocols_DATADIR}/staging/xdg-activation/xdg-activation-v1.xml
 )
 
 if (KWINDOWSYSTEM_HAVE_X11)
@@ -81,8 +87,11 @@ ecm_generate_export_header(KF6WindowSystem
 
 target_include_directories(KF6WindowSystem INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/KWindowSystem>")
 
+remove_definitions(-DQT_NO_KEYWORDS)
+
 target_link_libraries(KF6WindowSystem
     PUBLIC Qt6::Gui
+    PRIVATE Wayland::Client Qt::WaylandClientPrivate Qt::GuiPrivate
 )
 
 set_target_properties(KF6WindowSystem PROPERTIES VERSION   ${KWINDOWSYSTEM_VERSION}
@@ -96,6 +105,7 @@ ecm_generate_headers(KWindowSystem_HEADERS
   KWindowInfo
   KWindowShadow,KWindowShadowTile
   KWindowSystem
+  KWaylandExtras
 
   REQUIRED_HEADERS KWindowSystem_HEADERS
 )
