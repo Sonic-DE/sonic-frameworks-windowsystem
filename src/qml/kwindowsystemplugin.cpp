@@ -26,7 +26,7 @@ void KWindowSystemPlugin::registerTypes(const char *uri)
     });
 #endif
 
-    qmlRegisterSingletonType<KX11Extras>("org.kde.kwindowsystem", 1, 0, "KWindowSystem", [](QQmlEngine *, QJSEngine *) -> QObject * {
+    qmlRegisterSingletonType<KWindowSystem>("org.kde.kwindowsystem", 1, 0, "KWindowSystem", [](QQmlEngine *, QJSEngine *) -> QObject * {
         return KWindowSystem::self();
     });
 }

@@ -124,10 +124,10 @@ public:
      * should be called only in special cases, applications
      * shouldn't force themselves or other windows to be the active
      * window. Generally, this call should used only by pagers
-     * and similar tools. See the explanation in description
+     * and similar tools. See the explanation in the description
      * of activateWindow().
      *
-     * @param win the  window to make active
+     * @param win the window to make active
      * @param time X server timestamp of the user activity that
      *    caused this request
      * @since 6.0
