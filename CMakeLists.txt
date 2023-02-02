@@ -63,6 +63,10 @@ endif()
 
 set(KWINDOWSYSTEM_HAVE_X11 ${KWINDOWSYSTEM_X11})
 
+find_package(Wayland REQUIRED COMPONENTS Client)
+find_package(Qt6WaylandClient REQUIRED COMPONENTS Private)
+find_package(WaylandProtocols REQUIRED)
+
 # Subdirectories
 ecm_install_po_files_as_qm(poqm)
 
