@@ -49,19 +49,28 @@ if (KWINDOWSYSTEM_QML)
 endif()
 
 option(KWINDOWSYSTEM_X11 "Build X11 support" ON)
+option(KWINDOWSYSTEM_WAYLAND "Build Wayland support" ON)
 
 if (WIN32 OR APPLE OR ANDROID)
     set(KWINDOWSYSTEM_X11 OFF)
+    set(KWINDOWSYSTEM_WAYLAND OFF)
 endif()
 
 if (KWINDOWSYSTEM_X11)
-
     find_package(X11 REQUIRED)
     find_package(XCB COMPONENTS REQUIRED XCB KEYSYMS RES ICCCM)
     set(KWINDOWSYSTEM_HAVE_XFIXES ${X11_Xfixes_FOUND})
 endif()
 
 set(KWINDOWSYSTEM_HAVE_X11 ${KWINDOWSYSTEM_X11})
+
+if (KWINDOWSYSTEM_WAYLAND)
+    find_package(Wayland REQUIRED COMPONENTS Client)
+    find_package(Qt6WaylandClient REQUIRED COMPONENTS Private)
+    find_package(WaylandProtocols REQUIRED)
+endif()
+
+set (KWINDOWSYSTEM_HAVE_WAYLAND ${KWINDOWSYSTEM_WAYLAND})
 
 # Subdirectories
 ecm_install_po_files_as_qm(poqm)
