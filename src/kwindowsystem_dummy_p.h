@@ -32,14 +32,12 @@ public:
     void unminimizeWindow(WId win) override;
     void raiseWindow(WId win) override;
     void lowerWindow(WId win) override;
-    bool icccmCompliantMappingState() override;
     QRect workArea(int desktop) override;
     QRect workArea(const QList<WId> &excludes, int desktop) override;
     QString desktopName(int desktop) override;
     void setDesktopName(int desktop, const QString &name) override;
     bool showingDesktop() override;
     void setShowingDesktop(bool showing) override;
-    void setUserTime(WId win, long time) override;
     void setExtendedStrut(WId win,
                           int left_width,
                           int left_start,
@@ -57,7 +55,6 @@ public:
     bool allowedActionsSupported() override;
     QString readNameProperty(WId window, unsigned long atom) override;
     void allowExternalProcessWindowActivation(int pid) override;
-    void setBlockingCompositing(WId window, bool active) override;
     bool mapViewport() override;
     int viewportToDesktop(const QPoint &pos) override;
     int viewportWindowToDesktop(const QRect &r) override;
