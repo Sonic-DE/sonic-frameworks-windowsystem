@@ -328,6 +328,9 @@ public:
      * and simiarly for the other edges. For not reserving a strut, pass 0 as the width.
      * E.g. to reserve 10x10 square in the topleft corner, use e.g.
      * setExtendedStrut( w, 10, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 ).
+     * @note All arguments must belong to the device coordinates. It means clients
+     * need to manually convert the logical coordinates of a point/size to the
+     * physical coordinates.
      *
      * @param win the id of the window
      * @param left_width width of the strut at the left edge
@@ -360,6 +363,9 @@ public:
      * Convenience function for setExtendedStrut() that automatically makes struts
      * as wide/high as the screen width/height.
      * Sets the strut of window @p win to @p left, @p right, @p top, @p bottom.
+     * @note All arguments must belong to the device coordinates. It means clients
+     * need to manually convert the logical coordinates of a point/size to the
+     * physical coordinates.
      *
      * @param win the id of the window
      * @param left the left strut
