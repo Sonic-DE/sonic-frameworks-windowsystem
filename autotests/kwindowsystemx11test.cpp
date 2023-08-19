@@ -247,7 +247,7 @@ void KWindowSystemX11Test::testWorkAreaChanged()
     widget.setGeometry(0, 0, 100, 10);
     widget.show();
 
-    KX11Extras::setExtendedStrut(widget.winId(), 10, 0, 10, 0, 0, 0, 100, 0, 100, 0, 0, 0);
+    KX11Extras::setExtendedStrutV2(widget.winId(), 10, 0, 10, 0, 0, 0, 100, 0, 100, 0, 0, 0);
     QVERIFY(spy.wait());
     QVERIFY(!spy.isEmpty());
     QVERIFY(!strutSpy.isEmpty());

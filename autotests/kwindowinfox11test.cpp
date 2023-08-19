@@ -618,7 +618,7 @@ void KWindowInfoX11Test::testExtendedStrut()
     QCOMPARE(strut.top_start, 0);
     QCOMPARE(strut.top_width, 0);
 
-    KX11Extras::setExtendedStrut(window->winId(), 10, 20, 30, 40, 5, 15, 25, 35, 2, 12, 22, 32);
+    KX11Extras::setExtendedStrutV2(window->winId(), 10, 20, 30, 40, 5, 15, 25, 35, 2, 12, 22, 32);
 
     // it's just an xprop, so one roundtrip is good enough
     QX11Info::getTimestamp();
