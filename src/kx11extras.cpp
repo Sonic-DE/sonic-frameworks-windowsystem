@@ -263,26 +263,24 @@ void KX11Extras::setExtendedStrut(WId win,
                                   int bottom_start,
                                   int bottom_end)
 {
-    const qreal dpr = qApp->devicePixelRatio();
     KWindowSystem::d_func()->setExtendedStrut(win,
-                                              left_width * dpr,
-                                              left_start * dpr,
-                                              left_end * dpr,
-                                              right_width * dpr,
-                                              right_start * dpr,
-                                              right_end * dpr,
-                                              top_width * dpr,
-                                              top_start * dpr,
-                                              top_end * dpr,
-                                              bottom_width * dpr,
-                                              bottom_start * dpr,
-                                              bottom_end * dpr);
+                                              left_width,
+                                              left_start,
+                                              left_end,
+                                              right_width,
+                                              right_start,
+                                              right_end,
+                                              top_width,
+                                              top_start,
+                                              top_end,
+                                              bottom_width,
+                                              bottom_start,
+                                              bottom_end);
 }
 
 void KX11Extras::setStrut(WId win, int left, int right, int top, int bottom)
 {
-    const qreal dpr = qApp->devicePixelRatio();
-    KWindowSystem::d_func()->setStrut(win, left * dpr, right * dpr, top * dpr, bottom * dpr);
+    KWindowSystem::d_func()->setStrut(win, left, right, top, bottom);
 }
 
 void KX11Extras::connectNotify(const QMetaMethod &signal)
