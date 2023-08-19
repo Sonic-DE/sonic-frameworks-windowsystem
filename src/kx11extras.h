@@ -327,7 +327,9 @@ public:
      * ranging from @p left_start to @p left_end on the left edge,
      * and simiarly for the other edges. For not reserving a strut, pass 0 as the width.
      * E.g. to reserve 10x10 square in the topleft corner, use e.g.
-     * setExtendedStrut( w, 10, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 ).
+     * setExtendedStrutV2( w, 10, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 ).
+     * @note all arguments must belong to the non-scaled coordinate system. It means clients
+     * need to handle devicePixelRatio manually.
      *
      * @param win the id of the window
      * @param left_width width of the strut at the left edge
@@ -343,23 +345,25 @@ public:
      * @param bottom_start starting x coordinate of the strut at the bottom edge
      * @param bottom_end ending x coordinate of the strut at the bottom edge
      */
-    static void setExtendedStrut(WId win,
-                                 int left_width,
-                                 int left_start,
-                                 int left_end,
-                                 int right_width,
-                                 int right_start,
-                                 int right_end,
-                                 int top_width,
-                                 int top_start,
-                                 int top_end,
-                                 int bottom_width,
-                                 int bottom_start,
-                                 int bottom_end);
+    static void setExtendedStrutV2(WId win,
+                                   int left_width,
+                                   int left_start,
+                                   int left_end,
+                                   int right_width,
+                                   int right_start,
+                                   int right_end,
+                                   int top_width,
+                                   int top_start,
+                                   int top_end,
+                                   int bottom_width,
+                                   int bottom_start,
+                                   int bottom_end);
     /**
-     * Convenience function for setExtendedStrut() that automatically makes struts
+     * Convenience function for setExtendedStrutV2() that automatically makes struts
      * as wide/high as the screen width/height.
      * Sets the strut of window @p win to @p left, @p right, @p top, @p bottom.
+     * @note all arguments must belong to the non-scaled coordinate system. It means clients
+     * need to handle devicePixelRatio manually.
      *
      * @param win the id of the window
      * @param left the left strut
@@ -367,7 +371,7 @@ public:
      * @param top the top strut
      * @param bottom the bottom strut
      */
-    static void setStrut(WId win, int left, int right, int top, int bottom);
+    static void setStrutV2(WId win, int left, int right, int top, int bottom);
 
     /**
      * Sets the type of window @p win to @p windowType.
