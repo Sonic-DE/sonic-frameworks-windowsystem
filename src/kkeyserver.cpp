@@ -117,7 +117,8 @@ bool isShiftAsModifierAllowed(int keyQt)
     }
 
     // Returns false if not a unicode code point
-    if (QChar::isLetter(keyQt)) {
+    if (keyQt <= 0xffff // filter character key
+        && QChar::isLetter(keyQt)) {
         return true;
     }
 
