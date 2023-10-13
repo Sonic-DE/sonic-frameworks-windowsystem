@@ -177,11 +177,6 @@ void KWindowSystemPrivateDummy::unminimizeWindow(WId win)
     Q_UNUSED(win)
 }
 
-void KWindowSystemPrivateDummy::raiseWindow(WId win)
-{
-    Q_UNUSED(win)
-}
-
 void KWindowSystemPrivateDummy::lowerWindow(WId win)
 {
     Q_UNUSED(win)
@@ -339,12 +334,6 @@ void KWindowSystem::clearState(WId win, NET::States state)
 {
     Q_D(KWindowSystem);
     d->clearState(win, state);
-}
-
-void KWindowSystem::raiseWindow(WId win)
-{
-    Q_D(KWindowSystem);
-    d->raiseWindow(win);
 }
 
 bool KWindowSystem::showingDesktop()
