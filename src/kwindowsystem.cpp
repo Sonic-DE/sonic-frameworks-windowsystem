@@ -329,18 +329,6 @@ void KWindowSystem::setType(WId win, NET::WindowType windowType)
     d->setType(win, windowType);
 }
 
-void KWindowSystem::setState(WId win, NET::States state)
-{
-    Q_D(KWindowSystem);
-    d->setState(win, state);
-}
-
-void KWindowSystem::clearState(WId win, NET::States state)
-{
-    Q_D(KWindowSystem);
-    d->clearState(win, state);
-}
-
 void KWindowSystem::raiseWindow(WId win)
 {
     Q_D(KWindowSystem);
