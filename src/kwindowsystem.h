@@ -95,33 +95,6 @@ public:
      * @param windowType the type of the window (see NET::WindowType)
      */
     static void setType(WId win, NET::WindowType windowType);
-    /**
-     * Sets the state of window @p win to @p state.
-     *
-     * Possible values are or'ed combinations of NET::Modal,
-     * NET::Sticky, NET::MaxVert, NET::MaxHoriz, NET::Shaded,
-     * NET::SkipTaskbar, NET::SkipPager, NET::Hidden,
-     * NET::FullScreen, NET::KeepAbove, NET::KeepBelow,
-     * NET::SkipSwitcher
-     *
-     * @param win the id of the window
-     * @param state the new flags that will be set
-     */
-    static void setState(WId win, NET::States state);
-
-    /**
-     * Clears the state of window @p win from @p state.
-     *
-     * Possible values are or'ed combinations of NET::Modal,
-     * NET::Sticky, NET::MaxVert, NET::MaxHoriz, NET::Shaded,
-     * NET::SkipTaskbar, NET::SkipPager, NET::Hidden,
-     * NET::FullScreen, NET::KeepAbove, NET::KeepBelow,
-     * NET::SkipSwitcher
-     *
-     * @param win the id of the window
-     * @param state the flags that will be cleared
-     */
-    static void clearState(WId win, NET::States state);
 
     /**
      * Returns the state of showing the desktop.
