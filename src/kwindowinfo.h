@@ -620,6 +620,9 @@ public:
     KWindowInfo &operator=(const KWindowInfo &);
 
 private:
+    bool KWINDOWSYSTEM_NO_EXPORT icccmCompliantMappingState() const;
+    bool KWINDOWSYSTEM_NO_EXPORT allowedActionsSupported() const;
+
     QExplicitlySharedDataPointer<KWindowInfoPrivate> d;
 };
 
