@@ -71,6 +71,7 @@ private:
 void KWindowInfoX11Test::initTestCase()
 {
     QCoreApplication::setAttribute(Qt::AA_ForceRasterWidgets);
+    QGuiApplication::setDesktopFileName("org.test.david");
     qRegisterMetaType<NET::Properties>();
     qRegisterMetaType<NET::Properties2>();
 }
@@ -665,11 +666,10 @@ void KWindowInfoX11Test::testDesktopFileName()
 {
     KWindowInfo info(window->winId(), NET::Properties(), NET::WM2DesktopFileName);
     QVERIFY(info.valid());
-    QCOMPARE(info.desktopFileName(), QByteArray());
-
+    QCOMPARE(info.desktopFileName(), QGuiApplication::desktopFileName());
+    qDebug() << info.win() << info.desktopFileName();
     QSignalSpy spy(KX11Extras::self(), &KX11Extras::windowChanged);
     QVERIFY(spy.isValid());
-
     // create a NETWinInfo to set the desktop file name
     NETWinInfo netInfo(QX11Info::connection(), window->winId(), QX11Info::appRootWindow(), NET::Properties(), NET::Properties2());
     netInfo.setDesktopFileName("org.kde.foo");
@@ -680,8 +680,10 @@ void KWindowInfoX11Test::testDesktopFileName()
     QTRY_COMPARE(spy.count(), 1);
     QCOMPARE(spy.first().at(0).value<WId>(), window->winId());
     QCOMPARE(spy.first().at(2).value<NET::Properties2>(), NET::Properties2(NET::WM2DesktopFileName));
+    qDebug() << info.desktopFileName();
 
     KWindowInfo info2(window->winId(), NET::Properties(), NET::WM2DesktopFileName);
+    qDebug() << info2.win() << info2.desktopFileName();
     QVERIFY(info2.valid());
     QCOMPARE(info2.desktopFileName(), QByteArrayLiteral("org.kde.foo"));
 }
