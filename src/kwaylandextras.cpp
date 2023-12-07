@@ -48,3 +48,24 @@ quint32 KWaylandExtras::lastInputSerial(QWindow *window)
     }
     return dv2->lastInputSerial(window);
 }
+
+void KWaylandExtras::exportWindow(QWindow *window)
+{
+    if (auto dv3 = dynamic_cast<KWindowSystemPrivateV3 *>(KWindowSystem::d_func())) {
+        dv3->exportWindow(window);
+    }
+}
+
+void KWaylandExtras::unexportWindow(QWindow *window)
+{
+    if (auto dv3 = dynamic_cast<KWindowSystemPrivateV3 *>(KWindowSystem::d_func())) {
+        dv3->unexportWindow(window);
+    }
+}
+
+void KWaylandExtras::setForeignParent(QWindow *window, const QString &parentHandle)
+{
+    if (auto dv3 = dynamic_cast<KWindowSystemPrivateV3 *>(KWindowSystem::d_func())) {
+        dv3->setForeignParent(window, parentHandle);
+    }
+}
