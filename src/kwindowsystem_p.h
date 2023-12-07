@@ -30,4 +30,12 @@ public:
     virtual quint32 lastInputSerial(QWindow *window) = 0;
 };
 
+class KWINDOWSYSTEM_EXPORT KWindowSystemPrivateV3 : public KWindowSystemPrivateV2
+{
+public:
+    virtual void exportWindow(QWindow *window) = 0;
+    virtual void unexportWindow(QWindow *window) = 0;
+    virtual void setForeignParent(QWindow *window, const QString &parentHandle) = 0;
+};
+
 #endif

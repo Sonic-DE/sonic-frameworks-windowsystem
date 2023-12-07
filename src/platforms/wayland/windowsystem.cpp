@@ -1,5 +1,6 @@
 /*
     SPDX-FileCopyrightText: 2015 Martin Gräßlin <mgraesslin@kde.org>
+    SPDX-FileCopyrightText: 2023 Kai Uwe Broulik <kde@broulik.de>
 
     SPDX-License-Identifier: LGPL-2.1-only OR LGPL-3.0-only OR LicenseRef-KDE-Accepted-LGPL
 */
@@ -7,6 +8,7 @@
 #include "logging.h"
 #include "surfacehelper.h"
 #include "waylandxdgactivationv1_p.h"
+#include "waylandxdgforeignv2_p.h"
 
 #include <KWaylandExtras>
 #include <KWindowSystem>
@@ -23,6 +25,9 @@
 #include <private/qwaylandwindow_p.h>
 #include <qpa/qplatformnativeinterface.h>
 #include <qwaylandclientextension.h>
+
+constexpr QLatin1String c_kdeXdgForeignExportedProperty("_kde_xdg_foreign_exported_v2");
+constexpr QLatin1String c_kdeXdgForeignImportedProperty("_kde_xdg_foreign_imported_v2");
 
 class WindowManagement : public QWaylandClientExtensionTemplate<WindowManagement>, public QtWayland::org_kde_plasma_window_management
 {
@@ -43,7 +48,7 @@ public:
 
 WindowSystem::WindowSystem()
     : QObject()
-    , KWindowSystemPrivateV2()
+    , KWindowSystemPrivateV3()
     , m_lastToken(qEnvironmentVariable("XDG_ACTIVATION_TOKEN"))
 {
     m_windowManagement = new WindowManagement;
@@ -119,4 +124,97 @@ bool WindowSystem::showingDesktop()
         return false;
     }
     return m_windowManagement->showingDesktop;
+}
+
+void WindowSystem::exportWindow(QWindow *window)
+{
+    auto emitHandle = [window](const QString &handle) {
+        // Ensure that windowExported is always emitted asynchronously.
+        QMetaObject::invokeMethod(
+            window,
+            [window, handle] {
+                Q_EMIT KWaylandExtras::self()->windowExported(window, handle);
+            },
+            Qt::QueuedConnection);
+    };
+
+    auto waylandWindow = window ? dynamic_cast<QtWaylandClient::QWaylandWindow *>(window->handle()) : nullptr;
+    if (!waylandWindow) {
+        emitHandle({});
+        return;
+    }
+
+    auto &exporter = WaylandXdgForeignExporterV2::self();
+    if (!exporter.isActive()) {
+        emitHandle({});
+        return;
+    }
+
+    WaylandXdgForeignExportedV2 *exported = waylandWindow->property(c_kdeXdgForeignExportedProperty).value<WaylandXdgForeignExportedV2 *>();
+    if (!exported) {
+        exported = exporter.exportToplevel(surfaceForWindow(window));
+        exported->setParent(waylandWindow);
+
+        waylandWindow->setProperty(c_kdeXdgForeignExportedProperty, QVariant::fromValue(exported));
+        connect(exported, &QObject::destroyed, waylandWindow, [waylandWindow] {
+            waylandWindow->setProperty(c_kdeXdgForeignExportedProperty, QVariant());
+        });
+
+        connect(exported, &WaylandXdgForeignExportedV2::handleReceived, window, [window](const QString &handle) {
+            Q_EMIT KWaylandExtras::self()->windowExported(window, handle);
+        });
+    }
+
+    if (!exported->handle().isEmpty()) {
+        emitHandle(exported->handle());
+    }
+}
+
+void WindowSystem::unexportWindow(QWindow *window)
+{
+    auto waylandWindow = window ? dynamic_cast<QtWaylandClient::QWaylandWindow *>(window->handle()) : nullptr;
+    if (!waylandWindow) {
+        return;
+    }
+
+    WaylandXdgForeignExportedV2 *exported = waylandWindow->property(c_kdeXdgForeignExportedProperty).value<WaylandXdgForeignExportedV2 *>();
+    delete exported;
+    Q_ASSERT(!waylandWindow->property(c_kdeXdgForeignExportedProperty).isValid());
+}
+
+void WindowSystem::setForeignParent(QWindow *window, const QString &parentHandle)
+{
+    auto waylandWindow = window ? dynamic_cast<QtWaylandClient::QWaylandWindow *>(window->handle()) : nullptr;
+    if (!waylandWindow) {
+        return;
+    }
+
+    auto &importer = WaylandXdgForeignImporterV2::self();
+    if (!importer.isActive()) {
+        return;
+    }
+
+    auto *imported = waylandWindow->property(c_kdeXdgForeignImportedProperty).value<WaylandXdgForeignImportedV2 *>();
+    // Window already parented with a different handle? Delete imported so we import the new one below.
+    if (imported && imported->handle() != parentHandle) {
+        delete imported;
+        imported = nullptr;
+        Q_ASSERT(!waylandWindow->property(c_kdeXdgForeignImportedProperty).isValid());
+    }
+
+    if (parentHandle.isEmpty()) {
+        return;
+    }
+
+    if (!imported) {
+        imported = importer.importToplevel(parentHandle);
+    }
+
+    imported->set_parent_of(surfaceForWindow(window)); // foreign parent.
+    imported->setParent(waylandWindow); // memory owner.
+
+    waylandWindow->setProperty(c_kdeXdgForeignImportedProperty, QVariant::fromValue(imported));
+    connect(imported, &QObject::destroyed, waylandWindow, [waylandWindow] {
+        waylandWindow->setProperty(c_kdeXdgForeignImportedProperty, QVariant());
+    });
 }

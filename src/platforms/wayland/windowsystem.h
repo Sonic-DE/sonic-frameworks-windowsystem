@@ -12,7 +12,7 @@
 
 class WindowManagement;
 
-class WindowSystem : public QObject, public KWindowSystemPrivateV2
+class WindowSystem : public QObject, public KWindowSystemPrivateV3
 {
     Q_OBJECT
 public:
@@ -24,6 +24,9 @@ public:
     void setCurrentToken(const QString &token) override;
     bool showingDesktop() override;
     void setShowingDesktop(bool showing) override;
+    void exportWindow(QWindow *window) override;
+    void unexportWindow(QWindow *window) override;
+    void setForeignParent(QWindow *window, const QString &parentHandle) override;
 
 private:
     QString m_lastToken;
