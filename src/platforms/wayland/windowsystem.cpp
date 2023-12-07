@@ -70,19 +70,6 @@ void WindowSystem::activateWindow(QWindow *win, long int time)
 
 void WindowSystem::requestToken(QWindow *window, uint32_t serial, const QString &app_id)
 {
-    wl_surface *wlSurface = [](QWindow *window) -> wl_surface * {
-        if (!window) {
-            return nullptr;
-        }
-
-        QPlatformNativeInterface *native = qGuiApp->platformNativeInterface();
-        if (!native) {
-            return nullptr;
-        }
-        window->create();
-        return reinterpret_cast<wl_surface *>(native->nativeResourceForWindow(QByteArrayLiteral("surface"), window));
-    }(window);
-
     WaylandXdgActivationV1 *activation = WaylandXdgActivationV1::self();
     if (!activation->isActive()) {
         // Ensure that xdgActivationTokenArrived is always emitted asynchronously
@@ -94,7 +81,7 @@ void WindowSystem::requestToken(QWindow *window, uint32_t serial, const QString 
 
     auto waylandWindow = window ? dynamic_cast<QtWaylandClient::QWaylandWindow *>(window->handle()) : nullptr;
     auto seat = waylandWindow ? waylandWindow->display()->defaultInputDevice()->wl_seat() : nullptr;
-    auto tokenReq = activation->requestXdgActivationToken(seat, wlSurface, serial, app_id);
+    auto tokenReq = activation->requestXdgActivationToken(seat, surfaceForWindow(window), serial, app_id);
     connect(tokenReq, &WaylandXdgActivationTokenV1::failed, KWindowSystem::self(), [serial, app_id]() {
         Q_EMIT KWaylandExtras::self()->xdgActivationTokenArrived(serial, {});
     });
