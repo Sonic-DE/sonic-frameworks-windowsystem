@@ -94,6 +94,22 @@ void KWindowSystem::setMainWindow(QWindow *subWindow, WId mainWindowId)
     }
 }
 
+void KWindowSystem::setMainWindow(QWindow *subWindow, const QString &mainWindowId)
+{
+    Q_D(KWindowSystem);
+    if (isPlatformWayland()) {
+        if (auto dv2 = dynamic_cast<KWindowSystemPrivateV2 *>(d)) {
+            dv2->setMainWindow(subWindow, mainWindowId);
+        }
+    } else {
+        bool ok = false;
+        WId wid = mainWindowId.toLongLong(&ok);
+        if (ok) {
+            setMainWindow(subWindow, wid);
+        }
+    }
+}
+
 bool KWindowSystem::showingDesktop()
 {
     Q_D(KWindowSystem);
