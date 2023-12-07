@@ -96,8 +96,17 @@ public:
      *
      * This function should be used before a dialog is shown for a window
      * that belongs to another application.
+     *
+     * On Wayland, this has to be a QString containing the token of a surface
+     * exported using the XDG Foreign token. On all other platforms, this has
+     * to be a WId.
+     *
+     * @param window the sub window
+     * @param mainwindow The main window ID or string token
+     *
+     * @since 6.0
      */
-    static void setMainWindow(QWindow *subwindow, WId mainwindow);
+    static void setMainWindow(QWindow *subwindow, const QVariant &mainwindow);
 
     /**
      * Updates the platform-specific startup id, if any.

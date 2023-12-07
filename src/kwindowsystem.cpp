@@ -18,6 +18,7 @@
 #include <QPixmap>
 #include <QPluginLoader>
 #include <QTimer>
+#include <QVariant>
 #include <QWindow>
 #if KWINDOWSYSTEM_HAVE_X11
 #include <private/qtx11extras_p.h>
@@ -49,6 +50,25 @@ Q_GLOBAL_STATIC(KWindowSystemStaticContainer, g_kwmInstanceContainer)
 
 KWindowSystemPrivate::~KWindowSystemPrivate()
 {
+}
+
+void KWindowSystemPrivate::setMainWindow(QWindow *subWindow, const QVariant &handle)
+{
+    bool ok = false;
+    const WId wid = handle.toLongLong(&ok);
+    if (!ok) {
+        return;
+    }
+
+    QWindow *mainWindow = QWindow::fromWinId(wid);
+    if (!mainWindow) { // foreign windows not supported on all platforms
+        return;
+    }
+
+    subWindow->setTransientParent(mainWindow);
+
+    // mainWindow is not the child of any object, so make sure it gets deleted at some point
+    QObject::connect(subWindow, &QObject::destroyed, mainWindow, &QObject::deleteLater);
 }
 
 void KWindowSystemPrivateDummy::activateWindow(QWindow *win, long time)
@@ -83,15 +103,10 @@ void KWindowSystem::activateWindow(QWindow *win, long time)
     d->activateWindow(win, time);
 }
 
-void KWindowSystem::setMainWindow(QWindow *subWindow, WId mainWindowId)
+void KWindowSystem::setMainWindow(QWindow *subWindow, const QVariant &mainWindowId)
 {
-    QWindow *mainWindow = QWindow::fromWinId(mainWindowId);
-    if (mainWindow) { // foreign windows not supported on all platforms
-        subWindow->setTransientParent(mainWindow);
-
-        // mainWindow is not the child of any object, so make sure it gets deleted at some point
-        connect(subWindow, &QObject::destroyed, mainWindow, &QObject::deleteLater);
-    }
+    Q_D(KWindowSystem);
+    d->setMainWindow(subWindow, mainWindowId);
 }
 
 bool KWindowSystem::showingDesktop()
