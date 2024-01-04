@@ -188,7 +188,10 @@ void WindowShadow::internalDestroy()
         return;
     }
 
-    if (ShadowManager::instance()->isActive()) {
+    // Only call surfaceForWindow and unset the surface if the native window is alive.
+    // CCBUG: 478990
+    QNativeInterface::Private::QWaylandWindow *nativeWindow = window->nativeInterface<QNativeInterface::Private::QWaylandWindow>();
+    if (nativeWindow && ShadowManager::instance()->isActive()) {
         if (auto surface = surfaceForWindow(window)) {
             ShadowManager::instance()->unset(surface);
         }
