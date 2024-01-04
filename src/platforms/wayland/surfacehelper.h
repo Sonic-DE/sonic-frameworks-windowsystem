@@ -13,7 +13,7 @@
 
 struct wl_surface;
 
-inline wl_surface *surfaceForWindow(QWindow *window)
+inline wl_surface *surfaceForWindow(QWindow *window, bool createWindow = true)
 {
     if (!window) {
         return nullptr;
@@ -23,6 +23,8 @@ inline wl_surface *surfaceForWindow(QWindow *window)
     if (!native) {
         return nullptr;
     }
-    window->create();
+    if (createWindow) {
+        window->create();
+    }
     return reinterpret_cast<wl_surface *>(native->nativeResourceForWindow(QByteArrayLiteral("surface"), window));
 }

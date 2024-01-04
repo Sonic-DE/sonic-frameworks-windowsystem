@@ -189,7 +189,9 @@ void WindowShadow::internalDestroy()
     }
 
     if (ShadowManager::instance()->isActive()) {
-        if (auto surface = surfaceForWindow(window)) {
+        // In general we don't need to create the window when destroying the shadow
+        // CCBUG: 478990
+        if (auto surface = surfaceForWindow(window, false)) {
             ShadowManager::instance()->unset(surface);
         }
     }
