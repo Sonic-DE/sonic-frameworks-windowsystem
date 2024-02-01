@@ -17,6 +17,8 @@
 #include <qglobal.h>
 #include <xcb/xcb.h>
 
+#include <vector>
+
 class QString;
 
 /**
@@ -138,6 +140,8 @@ KWINDOWSYSTEM_EXPORT uint modXModeSwitch();
 KWINDOWSYSTEM_EXPORT uint accelModMaskX();
 
 /**
+ * @deprecated use keyQtToSymXs instead
+ *
  * Extracts the symbol from the given Qt key and
  * converts it to an X11 symbol + modifiers.
  * @param keyQt the qt key code
@@ -147,12 +151,29 @@ KWINDOWSYSTEM_EXPORT uint accelModMaskX();
 KWINDOWSYSTEM_EXPORT bool keyQtToSymX(int keyQt, int *sym);
 
 /**
+ * Extracts the symbols from the given Qt key and
+ * converts it to an X11 symbol + modifiers.
+ * @param keyQt the qt key code
+ * @return the symbols; emtpy if unsuccessful
+ */
+KWINDOWSYSTEM_EXPORT QList<int> keyQtToSymXs(int keyQt);
+
+/**
+ * @deprecated use keyQtToCodeXs instead
+ *
  * Extracts the code from the given Qt key.
  * @param keyQt the qt key code
  * @param keyCode if successful, the symbol will be written here
  * @return true if successful, false otherwise
  */
 KWINDOWSYSTEM_EXPORT bool keyQtToCodeX(int keyQt, int *keyCode);
+
+/**
+ * Extracts the codes from the given Qt key.
+ * @param keyQt the qt key code
+ * @param return the codes; empty if unsuccessful
+ */
+KWINDOWSYSTEM_EXPORT QList<int> keyQtToCodeXs(int keyQt);
 
 /**
  * Extracts the modifiers from the given Qt key and
