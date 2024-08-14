@@ -15,6 +15,9 @@ set(wayland_plugin_SRCS
 )
 
 
+if (Qt6_VERSION VERSION_GREATER_EQUAL "6.8.0")
+    set(private_code_option  "PRIVATE_CODE")
+endif()
 qt6_generate_wayland_protocol_client_sources(KF6WindowSystemKWaylandPlugin FILES
         ${WaylandProtocols_DATADIR}/staging/xdg-activation/xdg-activation-v1.xml
         ${WaylandProtocols_DATADIR}/unstable/xdg-foreign/xdg-foreign-unstable-v2.xml
@@ -24,6 +27,7 @@ qt6_generate_wayland_protocol_client_sources(KF6WindowSystemKWaylandPlugin FILES
         ${PLASMA_WAYLAND_PROTOCOLS_DIR}/plasma-window-management.xml
         ${PLASMA_WAYLAND_PROTOCOLS_DIR}/shadow.xml
         ${Wayland_DATADIR}/wayland.xml
+        ${private_code_option}
 )
 
 
