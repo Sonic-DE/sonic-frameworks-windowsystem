@@ -334,7 +334,7 @@ static void readIcon(xcb_connection_t *c, const xcb_get_property_cookie_t cookie
             break;
         }
 
-        constexpr int maxIconSize = 1 << 13;
+        constexpr int maxIconSize = 8192;
         if (width > maxIconSize || height > maxIconSize) {
             fprintf(stderr, "Icon size larger than maximum (%d x %d)\n", width, height);
             break;
