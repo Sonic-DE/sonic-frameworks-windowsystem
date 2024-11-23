@@ -28,11 +28,9 @@ public:
     static KWaylandExtras *self();
 
     /*!
-     * Requests an xdg_activation_v1 token for a specific window.
+     * Requests an xdg_activation_v1 token for a specific window \a win with the given \a app_id.
      *
-     * \a win window in behalf this request is made
-     * \a serial of the event that triggered the request
-     * \a app_id identifier of the application that we are launching
+     * \a serial Serial of the event that triggered the request.
      *
      * \sa lastInputSerial
      */
@@ -44,9 +42,7 @@ public:
     Q_INVOKABLE static quint32 lastInputSerial(QWindow *window);
 
     /*!
-     * Requests to export the given window using xdg_foreign_v2.
-     *
-     * \a window The window to export.
+     * Requests to export the given \a window using xdg_foreign_v2.
      *
      * \sa windowExported
      * \since 6.0
@@ -54,11 +50,10 @@ public:
     Q_INVOKABLE static void exportWindow(QWindow *window);
 
     /*!
-     * Unexport the window previously exported using xdg_foreign_v2.
+     * Unexports the \a window previously exported using xdg_foreign_v2.
      *
      * Asks the compositor to revoke the handle.
      *
-     * \a window The window to unexport.
      * \since 6.0
      */
     Q_INVOKABLE static void unexportWindow(QWindow *window);
@@ -74,11 +69,7 @@ Q_SIGNALS:
     void xdgActivationTokenArrived(int serial, const QString &token);
 
     /*!
-     * Window \a handle to pass to the client.
-     *
-     * \a window The window that requested the handle.
-     * \a handle The handle.
-     *
+     * The \a handle of the given \a window to pass to the client.
      * \sa exportWindow
      * \since 6.0
      */
