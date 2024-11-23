@@ -336,13 +336,13 @@ class KWINDOWSYSTEM_EXPORT NET
 {
 public:
     /*!
-     * \enum NET::Role
-     * Application role.  This is used internally to determine how several action
-     * should be performed (if at all).
-     * \value Client
-     * Indicates that the application is a client application.
-     * \value WindowManager
-     * Indicates that the application is a window manager application.
+       \enum NET::Role
+       Application role.  This is used internally to determine how several action
+       should be performed (if at all).
+       \value Client
+       Indicates that the application is a client application.
+       \value WindowManager
+       Indicates that the application is a window manager application.
     */
     enum Role {
         Client,
@@ -350,52 +350,52 @@ public:
     };
 
     /*!
-     * \enum NET::WindowType
-     * Window type.
-     * \value Unknown
-     * Indicates that the window did not define a window type.
-     * \value Normal
-     * Indicates that this is a normal, top-level window
-     * \value Desktop
-     * Indicates a desktop feature. This can include a single window
-     * containing desktop icons with the sam*e dimensions as the screen, allowing
-     * the desktop environment to have full control of the desktop, without the
-     * need for proxying root window clicks.
-     * \value Dock
-     * Indicates a dock or panel feature
-     * \value Toolbar
-     * Indicates a toolbar window
-     * \value Menu
-     * Indicates a pinnable (torn-off) menu window
-     * \value Dialog
-     * Indicates that this is a dialog window
-     * \value Override
-     * Deprecated: has unclear meaning and is KDE-only
-     * \value TopMenu
-     * Indicates a toplevel menu (AKA macmenu). This is a KDE extension to the
-     * _NET_WM_WINDOW_TYPE mechanism.
-     * \value Utility
-     * Indicates a utility window
-     * \value Splash
-     * Indicates that this window is a splash screen window.
-     * \value DropdownMenu
-     * Indicates a dropdown menu (from a menubar typically)
-     * \value PopupMenu
-     * Indicates a popup menu (a context menu typically)
-     * \value Tooltip
-     * Indicates a tooltip window
-     * \value Notification
-     * Indicates a notification window
-     * \value ComboBox
-     * Indicates that the window is a list for a combobox
-     * \value DNDIcon
-     * Indicates a window that represents the dragged object during DND operation
-     * \value [since 5.6] OnScreenDisplay
-     * Indicates an On Screen Display window (such as volume feedback)
-     * \value [since 5.58] CriticalNotification
-     * Indicates a critical notification (such as battery is running out)
-     * \value AppletPopup
-     * Indicates that this window is an applet.
+       \enum NET::WindowType
+       Window type.
+       \value Unknown
+       Indicates that the window did not define a window type.
+       \value Normal
+       Indicates that this is a normal, top-level window
+       \value Desktop
+       Indicates a desktop feature. This can include a single window
+       containing desktop icons with the sam*e dimensions as the screen, allowing
+       the desktop environment to have full control of the desktop, without the
+       need for proxying root window clicks.
+       \value Dock
+       Indicates a dock or panel feature
+       \value Toolbar
+       Indicates a toolbar window
+       \value Menu
+       Indicates a pinnable (torn-off) menu window
+       \value Dialog
+       Indicates that this is a dialog window
+       \value Override
+       Deprecated: has unclear meaning and is KDE-only
+       \value TopMenu
+       Indicates a toplevel menu (AKA macmenu). This is a KDE extension to the
+       _NET_WM_WINDOW_TYPE mechanism.
+       \value Utility
+       Indicates a utility window
+       \value Splash
+       Indicates that this window is a splash screen window.
+       \value DropdownMenu
+       Indicates a dropdown menu (from a menubar typically)
+       \value PopupMenu
+       Indicates a popup menu (a context menu typically)
+       \value Tooltip
+       Indicates a tooltip window
+       \value Notification
+       Indicates a notification window
+       \value ComboBox
+       Indicates that the window is a list for a combobox
+       \value DNDIcon
+       Indicates a window that represents the dragged object during DND operation
+       \value [since 5.6] OnScreenDisplay
+       Indicates an On Screen Display window (such as volume feedback)
+       \value [since 5.58] CriticalNotification
+       Indicates a critical notification (such as battery is running out)
+       \value AppletPopup
+       Indicates that this window is an applet.
     */
     enum WindowType {
         Unknown = -1,
@@ -553,7 +553,7 @@ public:
     Q_DECLARE_FLAGS(States, State)
 
     /*!
-     * \enum NET::Direction
+       \enum NET::Direction
        Direction for WMMoveResize.
 
        When a client wants the Window Manager to start a WMMoveResize, it should
@@ -588,7 +588,7 @@ public:
     };
 
     /*!
-     * \enum NET::MappingState
+       \enum NET::MappingState
        Client window mapping state.  The class automatically watches the mapping
        state of the client windows, and uses the mapping state to determine how
        to set/change different properties. Note that this is very lowlevel
