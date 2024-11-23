@@ -34,14 +34,25 @@ class KWINDOWSYSTEM_EXPORT KWindowSystem : public QObject
     /*!
      * \qmlproperty bool KWindowSystem::isPlatformWayland
      */
+    /*!
+     * \property KWindowSystem::isPlatformWayland
+     */
     Q_PROPERTY(bool isPlatformWayland READ isPlatformWayland CONSTANT)
     /*!
      * \qmlproperty bool KWindowSystem::isPlatformX11
+     */
+    /*!
+     * \property KWindowSystem::isPlatformX11
      */
     Q_PROPERTY(bool isPlatformX11 READ isPlatformX11 CONSTANT)
 
     /*!
      * \qmlproperty bool KWindowSystem::showingDesktop
+     *
+     * \brief Whether "show desktop" is currently active.
+     */
+    /*!
+     * \property KWindowSystem::showingDesktop
      *
      * \brief Whether "show desktop" is currently active.
      */
@@ -54,7 +65,6 @@ public:
     static KWindowSystem *self();
 
     /*!
-     * \qmlmethod void KWindowSystem::activateWindow(QWindow *window, long time = 0)
      * Requests that window \a window is activated.
      *
      * Applications shouldn't make attempts to explicitly activate
