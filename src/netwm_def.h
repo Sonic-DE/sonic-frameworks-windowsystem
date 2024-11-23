@@ -182,11 +182,11 @@ struct NETIcon {
    bottom border values, and ranges for them.  The existence of this class is to
    keep the implementation from being dependent on a separate framework/library.
    See the _NET_WM_STRUT_PARTIAL property in the NETWM spec.
-**/
+*/
 struct NETExtendedStrut {
     /*!
        Constructor to initialize this struct to 0,0,0,0
-    **/
+    */
     NETExtendedStrut()
         : left_width(0)
         , left_start(0)
@@ -203,24 +203,16 @@ struct NETExtendedStrut {
     {
     }
 
-    /*!
-       Left border of the strut, width and range.
-           **/
+    /*! Left border of the strut, width and range. */
     int left_width, left_start, left_end;
 
-    /*!
-       Right border of the strut, width and range.
-    **/
+    /*! Right border of the strut, width and range. */
     int right_width, right_start, right_end;
 
-    /*!
-       Top border of the strut, width and range.
-           **/
+    /*! Top border of the strut, width and range. */
     int top_width, top_start, top_end;
 
-    /*!
-       Bottom border of the strut, width and range.
-           **/
+    /*! Bottom border of the strut, width and range. */
     int bottom_width, bottom_start, bottom_end;
 };
 
