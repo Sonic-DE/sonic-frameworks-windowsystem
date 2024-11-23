@@ -148,11 +148,11 @@ struct NETRect {
 
    NETIcon is only used by the NET API. Usually QIcon is the
    appropriate class for representing an icon.
-**/
+*/
 struct NETIcon {
     /*!
        Constructor to initialize this icon to 0x0 with data=0
-    **/
+    */
     NETIcon()
         : data(nullptr)
     {
@@ -162,14 +162,14 @@ struct NETIcon {
        Size of the icon.
 
        \sa NETSize
-    **/
+    */
     NETSize size;
 
     /*!
        Image data for the icon.  This is an array of 32bit packed CARDINAL ARGB
        with high byte being A, low byte being B. First two bytes are width, height.
        Data is in rows, left to right and top to bottom.
-    **/
+    */
     unsigned char *data;
 };
 
