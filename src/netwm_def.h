@@ -66,11 +66,11 @@ struct NETPoint {
   appropriate class for representing a size.
 
   @author Bradley T. Hughes <bhughes@trolltech.com>
-**/
+*/
 struct NETSize {
     /*!
        Constructor to initialize this size to 0x0
-    **/
+    */
     NETSize()
         : width(0)
         , height(0)
@@ -227,11 +227,11 @@ struct NETExtendedStrut {
    bottom border values.  The existence of this class is to keep the implementation
    from being dependent on a separate framework/library. See the _NET_WM_STRUT
    property in the NETWM spec.
-**/
+*/
 struct NETStrut {
     /*!
        Constructor to initialize this struct to 0,0,0,0
-    **/
+    */
     NETStrut()
         : left(0)
         , right(0)
@@ -242,22 +242,22 @@ struct NETStrut {
 
     /*!
        Left border of the strut.
-           **/
+           */
     int left;
 
     /*!
        Right border of the strut.
-    **/
+    */
     int right;
 
     /*!
        Top border of the strut.
-           **/
+           */
     int top;
 
     /*!
        Bottom border of the strut.
-           **/
+           */
     int bottom;
 };
 
@@ -331,7 +331,7 @@ struct NETFullscreenMonitors {
   the namespace relatively clean, all enums are defined here.
 
   \sa https://specifications.freedesktop.org/wm-spec/wm-spec-latest.html
- **/
+ */
 class KWINDOWSYSTEM_EXPORT NET
 {
 public:
@@ -343,7 +343,7 @@ public:
      * Indicates that the application is a client application.
      * \value WindowManager
      * Indicates that the application is a window manager application.
-    **/
+    */
     enum Role {
         Client,
         WindowManager,
@@ -396,7 +396,7 @@ public:
      * Indicates a critical notification (such as battery is running out)
      * \value AppletPopup
      * Indicates that this window is an applet.
-    **/
+    */
     enum WindowType {
         Unknown = -1,
         Normal = 0,
@@ -446,7 +446,7 @@ public:
        \value CriticalNotificationMask
        \value AppletPopupMask
        \value AllTypesMask
-    **/
+    */
     enum WindowTypeMask {
         NormalMask = 1u << 0, ///< \sa Normal
         DesktopMask = 1u << 1, ///< \sa Desktop
@@ -532,7 +532,7 @@ public:
        \value [since 5.58] Focused
        Indicates that a client should render as though it has focus
        Only the window manager is allowed to change it.
-    **/
+    */
     enum State {
         Modal = 1u << 0,
         Sticky = 1u << 1,
@@ -571,7 +571,7 @@ public:
        \value KeyboardSize (resizing via keyboard)
        \value KeyboardMove (movement via keyboard)
        \value MoveResizeCancel (to ask the WM to stop moving a window)
-    **/
+    */
     enum Direction {
         TopLeft = 0,
         Top = 1,
@@ -601,7 +601,7 @@ public:
        Indicates that the client window is not visible, but its icon is.
        This can be when the window is minimized or when it's on a
        different virtual desktop. See also NET::Hidden.
-    **/
+    */
     enum MappingState {
         Visible = 1, // NormalState,
         Withdrawn = 0, // WithdrawnState,
@@ -622,7 +622,7 @@ public:
       \value ActionFullScreen
       \value ActionChangeDesktop
       \value ActionClose
-    **/
+    */
     enum Action {
         ActionMove = 1u << 0,
         ActionResize = 1u << 1,
@@ -682,7 +682,7 @@ public:
        ICCCM properties (provided for convenience):
 
        \value XAWMState
-    **/
+    */
     enum Property {
         // root
         Supported = 1u << 0,
@@ -766,7 +766,7 @@ public:
         \value WM2GTKApplicationId _GTK_APPLICATION_ID
         \value WM2GTKShowWindowMenu _GTK_SHOW_WINDOW_MENU
         \value WM2AllProperties
-    **/
+    */
     enum Property2 {
         WM2UserTime = 1u << 0,
         WM2StartupId = 1u << 1,
@@ -808,7 +808,7 @@ public:
     /*
        Sentinel value to indicate that the client wishes to be visible on
        all desktops.
-     **/
+     */
     enum {
         OnAllDesktops = -1,
     };
@@ -823,7 +823,7 @@ public:
        Indicates that the request comes from a normal application
        \value FromTool
        Indicated that the request comes from pager or similar tool
-    **/
+    */
     enum RequestSource {
         FromUnknown = 0, // internal
         FromApplication = 1,
@@ -835,7 +835,7 @@ public:
       Orientation.
       \value OrientationHorizontal
       \value OrientationVertical
-    **/
+    */
     enum Orientation {
         OrientationHorizontal = 0,
         OrientationVertical = 1,
@@ -848,7 +848,7 @@ public:
      \value DesktopLayoutCornerTopRight
      \value DesktopLayoutCornerBottomLeft
      \value DesktopLayoutCornerBottomRight
-    **/
+    */
     enum DesktopLayoutCorner {
         DesktopLayoutCornerTopLeft = 0,
         DesktopLayoutCornerTopRight = 1,
@@ -868,7 +868,7 @@ public:
      * \value PingProtocol _NET_WM_PING from EWMH
      * \value SyncRequestProtocol _NET_WM_SYNC_REQUEST from EWMH
      * \value ContextHelpProtocol _NET_WM_CONTEXT_HELP, NON STANDARD!
-     **/
+     */
     enum Protocol {
         NoProtocol = 0,
         TakeFocusProtocol = 1 << 0,
