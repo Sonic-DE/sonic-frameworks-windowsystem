@@ -24,11 +24,11 @@
   appropriate class for representing a point.
 
   @author Bradley T. Hughes <bhughes@trolltech.com>
-**/
+*/
 struct NETPoint {
     /*!
        Constructor to initialize this point to 0,0.
-    **/
+    */
     NETPoint()
         : x(0)
         , y(0)
@@ -48,7 +48,7 @@ struct NETPoint {
 
     /*
        Public data member.
-    **/
+    */
     int x, ///< x coordinate.
         y; ///< y coordinate
 };
@@ -89,7 +89,7 @@ struct NETSize {
     }
     /*
        Public data member.
-    **/
+    */
     int width; ///< Width.
     int height; ///< Height.
 };
