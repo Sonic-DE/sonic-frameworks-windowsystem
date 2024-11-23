@@ -27,13 +27,25 @@ class NETEventFilter;
  *
  * \since 5.101
  */
+/*!
+ * \class KX11Extras
+ * \inmodule KWindowSystem
+ * \brief A collection of functions to obtain information from and manipulate
+ * X11 windows. These are generally not applicable to other window systems.
+ *
+ * \since 5.101
+ */
 class KWINDOWSYSTEM_EXPORT KX11Extras : public QObject
 {
     Q_OBJECT
 
     /*!
+     * \qmlproperty bool KX11Extras::compositingActive
+     * \brief Whether desktop compositing is active.
+     */
+    /*!
      * \property KX11Extras::compositingActive
-     * \brief Whether desktop compositing is active
+     * \brief Whether desktop compositing is active.
      */
     Q_PROPERTY(bool compositingActive READ compositingActive NOTIFY compositingChanged)
 
@@ -42,47 +54,46 @@ public:
 
     /*!
      * Returns the list of all toplevel windows currently managed by the
-     * window manager in the order of creation. Please do not rely on
-     * indexes of this list: Whenever you enter Qt's event loop in your
+     * window manager in the order of creation.
+     *
+     * Please do not rely on indexes of this list:
+     * Whenever you enter Qt's event loop in your
      * application, it may happen that entries are removed or added.
      * Your module should perhaps work on a copy of this list and verify a
      * window with hasWId() before any operations.
      *
-     * Iteration over this list can be done easily with
+     * Iteration over this list can be done easily with:
      * \code
      *  QList<WId> windows = KWindowSystem::windows();
      *  for (auto it = windows.cbegin(), end = windows.cend(); it != end; ++it) {
      *     ... do something here,  (*it) is the current WId.
      *  }
      * \endcode
-     * Returns the list of all toplevel windows
      */
     static QList<WId> windows();
 
     /*!
-     * Test to see if \a id still managed at present.
-     * \a id the window id to test
-     * Returns true if the window id is still managed
-     **/
+     * Returns whether \a id is still managed at present.
+     */
     static bool hasWId(WId id);
 
     /*!
      * Returns the list of all toplevel windows currently managed by the
      * window manager in the current stacking order (from lower to
-     * higher). May be useful for pagers.
-     * Returns the list of all toplevel windows in stacking order
+     * higher).
+     *
+     * May be useful for pagers.
      */
     static QList<WId> stackingOrder();
 
     /*!
-     * Returns the currently active window, or 0 if no window is active.
-     * Returns the window id of the active window, or 0 if no window is
-     *  active
-     **/
+     * Returns the currently active window id, or 0 if no window is active.
+     */
     static WId activeWindow();
 
     /*!
-     * Requests that window \a win is activated.
+     * Requests that window \a win is activated, with the optional
+     * X server timestamp \a time of the user activity that caused this request.
      *
      * There are two ways how to activate a window, by calling
      * activateWindow() and forceActiveWindow(). Generally,
@@ -98,42 +109,32 @@ public:
      * related to window manipulation.
      * Except for rare cases, this request will be always honored,
      * and normal applications are forbidden to use it.
-     *
-     * In case of problems, consult the KWin README in the kdebase
-     * package (kdebase/kwin/README), or ask on the kwin@kde.org
-     * mailing list.
-     *
-     * \a win the id of the window to make active
-     * \a time X server timestamp of the user activity that
-     *    caused this request
      */
     static void activateWindow(WId win, long time = 0);
 
     /*!
-     * Sets window \a win to be the active window. Note that this
-     * should be called only in special cases, applications
+     * Sets window \a win to be the active window, with the optional
+     * X server timestamp \a time of the user activity that caused this request.
+     *
+     * Note that this should be called only in special cases, applications
      * shouldn't force themselves or other windows to be the active
      * window. Generally, this call should used only by pagers
      * and similar tools. See the explanation in description
      * of activateWindow().
-     *
-     * \a win the id of the window to make active
-     * \a time X server timestamp of the user activity that
-     *    caused this request
      */
     static void forceActiveWindow(WId win, long time = 0);
 
     /*!
-     * Sets window \a win to be the active window. Note that this
-     * should be called only in special cases, applications
+     * \qmlmethod void KX11Extras::forceActiveWindow(Window *window, long time = 0)
+     * Sets \a window to be the active window, with the optional
+     * X server timestamp \a time of the user activity that caused this request.
+     *
+     * Note that this should be called only in special cases, applications
      * shouldn't force themselves or other windows to be the active
      * window. Generally, this call should used only by pagers
      * and similar tools. See the explanation in the description
-     * of activateWindow().
+     * of KX11Extras::activateWindow().
      *
-     * \a win the window to make active
-     * \a time X server timestamp of the user activity that
-     *    caused this request
      * \since 6.0
      */
     Q_INVOKABLE static void forceActiveWindow(QWindow *window, long time = 0);
@@ -146,46 +147,34 @@ public:
 
     /*!
      * Returns the current virtual desktop.
-     * Returns the current virtual desktop
-     **/
+     */
     static int currentDesktop();
 
     /*!
      * Returns the number of virtual desktops.
-     * Returns the number of virtual desktops
-     **/
+     */
     static int numberOfDesktops();
 
     /*!
-     * Convenience function to set the current desktop to \a desktop.
+     * Convenience function to set the current desktop to \a desktop number.
+     *
      * See NETRootInfo.
-     * \a desktop the number of the new desktop
      */
     static void setCurrentDesktop(int desktop);
 
     /*!
-     * Sets window \a win to be present on all virtual desktops if @p
+     * Sets window id \a win to be present on all virtual desktops if \a b
      * is true. Otherwise the window lives only on one single desktop.
-     *
-     * \a win the id of the window
-     * \a b true to show the window on all desktops, false
-     *          otherwise
      */
     static void setOnAllDesktops(WId win, bool b);
 
     /*!
-     * Moves window \a win to desktop \a desktop.
-     *
-     * \a win the id of the window
-     * \a desktop the number of the new desktop
+     * Moves window id \a win to \a desktop.
      */
     static void setOnDesktop(WId win, int desktop);
 
     /*!
-     * Moves window \a win to activities \a activities.
-     *
-     * \a win the id of the window
-     * \a activities the list of activity UUIDs
+     * Moves window id \a win to the list of \a activities UUIDs.
      *
      * \sa KWindowInfo::activities
      */
@@ -199,124 +188,114 @@ public:
      *
      * If \a scale is true, the icon is smooth-scaled to have exactly
      * the requested size.
-     *
-     * \a win the id of the window
-     * \a width the desired width, or -1
-     * \a height the desired height, or -1
-     * \a scale if true the icon will be scaled to the desired size. Otherwise the
-     *        icon will not be modified.
-     * Returns the icon of the window
      */
     static QPixmap icon(WId win, int width = -1, int height = -1, bool scale = false);
 
     /*!
-     * Masks specifying from which sources to read an icon. They are tried from the best
-     * until an icon is found.
-     * @li NETWM from property from the window manager specification
-     * @li WMHints from WMHints property
-     * @li ClassHint load icon after getting name from the classhint
-     * @li XApp load the standard X icon (last fallback)
+     * Masks specifying from which sources to read an icon.
+     *
+     * They are tried from the best until an icon is found.
+     * \value NETWM Property from the window manager specification.
+     * \value WMHints From WMHints property.
+     * \value ClassHint Load icon after getting name from the classhint.
+     * \value XApp Load the standard X icon (last fallback).
      */
     enum IconSource {
-        NETWM = 1, //!< read from property from the window manager specification
-        WMHints = 2, //!< read from WMHints property
-        ClassHint = 4, //!< load icon after getting name from the classhint
-        XApp = 8, //!< load the standard X icon (last fallback)
+        NETWM = 1,
+        WMHints = 2,
+        ClassHint = 4,
+        XApp = 8,
     };
     /*!
-     * @overload
+     * \overload
      *
      * Overloaded variant that allows specifying from which sources the icon should be read.
      * You should usually prefer the simpler variant which tries all possibilities to get
      * an icon.
      *
-     * \a win the id of the window
-     * \a width the desired width, or -1
-     * \a height the desired height, or -1
-     * \a scale if true the icon will be scaled to the desired size. Otherwise the
-     *        icon will not be modified.
-     * \a flags OR-ed flags from the IconSource enum
+     * \a win The id of the window.
+     * \a width The desired width, or -1.
+     * \a height The desired height, or -1.
+     * \a scale If true the icon will be scaled to the desired size. Otherwise the
+     *          icon will not be modified.
+     * \a flags OR-ed flags from the IconSource enum.
      */
     static QPixmap icon(WId win, int width, int height, bool scale, int flags);
 
     /*!
-     * @overload
+     * \overload
      *
-     * Overloaded variant that allows passing in the NETWinInfo to use for reading the
+     * Overloaded variant that allows passing in the NETWinInfo \a info to use for reading the
      * information. This variant is only useful on the X11 platform, other platforms do not
      * use NETWinInfo and delegate to the variant without NETWinInfo. Though if compiled with
-     * X11 support the X11 variant is used on other platforms if info is not \c nullptr.
+     * X11 support the X11 variant is used on other platforms if \a info is not \c nullptr.
      * This can be used by applications using e.g. platform wayland but also connecting to an
      * XServer.
      *
-     * The NETWinInfo must be constructed with property NET::WMIcon in order to use the
-     * IconSource flag NETWM. NET::WM2IconPixmap for IconSource flag WMHints and
-     * NET::WM2WindowClass for IconSource flag ClassHint.
+     * The NETWinInfo must be constructed with properties:
      *
-     * \a win the id of the window
-     * \a width the desired width, or -1
-     * \a height the desired height, or -1
-     * \a scale if true the icon will be scaled to the desired size. Otherwise the
-     *        icon will not be modified.
-     * \a flags OR-ed flags from the IconSource enum
-     * \a into the NETWinInfo to use for reading properties.
-     **/
+     * \list
+     * \li NET::WMIcon to use the IconSource flag NETWM
+     * \li NET::WM2IconPixmap to use the IconSource flag WMHints
+     * \li NET::WM2WindowClass to use the IconSource flag ClassHint
+     * \endlist
+     *
+     * \a win The id of the window.
+     *
+     * \a width The desired width, or -1.
+     *
+     * \a height The desired height, or -1.
+     *
+     * \a scale If true the icon will be scaled to the desired size. Otherwise the
+     *          icon will not be modified.
+     *
+     * \a flags OR-ed flags from the IconSource enum.
+     */
     static QPixmap icon(WId win, int width, int height, bool scale, int flags, NETWinInfo *info);
 
     /*!
      * Minimizes the window with id \a win.
-     * On X11 this follows the protocol described in ICCCM section 4.1.4.
      *
-     * \a win The window to minimize
+     * On X11 this follows the protocol described in ICCCM section 4.1.4.
      * \sa unminimizeWindow()
      */
     static void minimizeWindow(WId win);
     /*!
      * Unminimizes the window with id \a win.
-     * On X11 this follows the protocol described in ICCCM section 4.1.4.
      *
-     * \a win The window to unminimize
+     * On X11 this follows the protocol described in ICCCM section 4.1.4.
      * \sa minimizeWindow()
-     **/
+     */
     static void unminimizeWindow(WId win);
 
     /*!
-     * Returns the workarea for the specified desktop, or the current
+     * Returns the workarea for the specified \a desktop, or the current
      * work area if no desktop has been specified.
-     * \a desktop the number of the desktop to check, -1 for the
-     *        current desktop
-     * Returns the size and position of the desktop
-     **/
+     *
+     * The current desktop corresponds to -1.
+     */
     static QRect workArea(int desktop = -1);
 
     /*!
-     * Returns the workarea for the specified desktop, or the current
-     * work area if no desktop has been specified. Excludes struts of
-     * clients in the exclude List.
+     * Returns the workarea for the specified \a desktop, or the current
+     * work area if no desktop has been specified.
      *
-     * \a excludes the list of clients whose struts will be excluded
-     * \a desktop the number of the desktop to check, -1 for the
-     *        current desktop
-     * Returns the size and position of the desktop
-     **/
+     * A list of struts belonging to clients can be specified with \a excludes.
+     */
     static QRect workArea(const QList<WId> &excludes, int desktop = -1);
 
     /*!
-     * Returns the name of the specified desktop.
-     * \a desktop the number of the desktop
-     * Returns the name of the desktop
-     **/
+     * Returns the name of the specified \a desktop number.
+     */
     static QString desktopName(int desktop);
 
     /*!
-     * Sets the name of the specified desktop.
-     * \a desktop the number of the desktop
-     * \a name the new name for the desktop
-     **/
+     * Sets the \a name of the specified \a desktop number.
+     */
     static void setDesktopName(int desktop, const QString &name);
 
     /*!
-     * Function that reads and returns the contents of the given text
+     * Reads and returns the contents of the given text
      * property (WM_NAME, WM_ICON_NAME,...).
      */
     static QString readNameProperty(WId window, unsigned long atom);
@@ -333,19 +312,31 @@ public:
      * E.g. to reserve 10x10 square in the topleft corner, use e.g.
      * setExtendedStrut( w, 10, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 ).
      *
-     * \a win the id of the window
-     * \a left_width width of the strut at the left edge
-     * \a left_start starting y coordinate of the strut at the left edge
-     * \a left_end ending y coordinate of the strut at the left edge
-     * \a right_width width of the strut at the right edge
-     * \a right_start starting y coordinate of the strut at the right edge
-     * \a right_end ending y coordinate of the strut at the right edge
-     * \a top_width width of the strut at the top edge
-     * \a top_start starting x coordinate of the strut at the top edge
-     * \a top_end ending x coordinate of the strut at the top edge
-     * \a bottom_width width of the strut at the bottom edge
-     * \a bottom_start starting x coordinate of the strut at the bottom edge
-     * \a bottom_end ending x coordinate of the strut at the bottom edge
+     * \a win The id of the window.
+     *
+     * \a left_width Width of the strut at the left edge.
+     *
+     * \a left_start Starting y coordinate of the strut at the left edge.
+     *
+     * \a left_end Ending y coordinate of the strut at the left edge.
+     *
+     * \a right_width Width of the strut at the right edge.
+     *
+     * \a right_start Starting y coordinate of the strut at the right edge.
+     *
+     * \a right_end Ending y coordinate of the strut at the right edge.
+     *
+     * \a top_width Width of the strut at the top edge.
+     *
+     * \a top_start Starting x coordinate of the strut at the top edge.
+     *
+     * \a top_end Ending x coordinate of the strut at the top edge.
+     *
+     * \a bottom_width Width of the strut at the bottom edge.
+     *
+     * \a bottom_start Starting x coordinate of the strut at the bottom edge.
+     *
+     * \a bottom_end Ending x coordinate of the strut at the bottom edge.
      */
     static void setExtendedStrut(WId win,
                                  qreal left_width,
@@ -364,21 +355,13 @@ public:
      * Convenience function for setExtendedStrut() that automatically makes struts
      * as wide/high as the screen width/height.
      * Sets the strut of window \a win to \a left, \a right, \a top, \a bottom.
-     *
-     * \a win the id of the window
-     * \a left the left strut
-     * \a right the right strut
-     * \a top the top strut
-     * \a bottom the bottom strut
+     * \sa setExtendedStrut
      */
     static void setStrut(WId win, qreal left, qreal right, qreal top, qreal bottom);
 
     /*!
      * Sets the type of window \a win to \a windowType.
-     *
-     * \a win the id of the window
-     * \a windowType the type of the window (see NET::WindowType)
-     *
+     * \sa NET::WindowType
      * \since 6.0
      */
     static void setType(WId win, NET::WindowType windowType);
@@ -386,15 +369,22 @@ public:
     /*!
      * Clears the state of window \a win from \a state.
      *
-     * Possible values are or'ed combinations of NET::Modal,
-     * NET::Sticky, NET::MaxVert, NET::MaxHoriz, NET::Shaded,
-     * NET::SkipTaskbar, NET::SkipPager, NET::Hidden,
-     * NET::FullScreen, NET::KeepAbove, NET::KeepBelow,
-     * NET::SkipSwitcher
+     * Possible values are OR'ed combinations of:
      *
-     * \a win the id of the window
-     * \a state the flags that will be cleared
-     *
+     * \list
+     * \li NET::Modal
+     * \li NET::Sticky
+     * \li NET::MaxVert
+     * \li NET::MaxHoriz
+     * \li NET::Shaded
+     * \li NET::SkipTaskbar
+     * \li NET::SkipPager
+     * \li NET::Hidden
+     * \li NET::FullScreen
+     * \li NET::KeepAbove
+     * \li NET::KeepBelow
+     * \li NET::SkipSwitcher
+     * \endlist
      * \since 6.0
      */
     static void clearState(WId win, NET::States state);
@@ -402,15 +392,21 @@ public:
     /*!
      * Sets the state of window \a win to \a state.
      *
-     * Possible values are or'ed combinations of NET::Modal,
-     * NET::Sticky, NET::MaxVert, NET::MaxHoriz, NET::Shaded,
-     * NET::SkipTaskbar, NET::SkipPager, NET::Hidden,
-     * NET::FullScreen, NET::KeepAbove, NET::KeepBelow,
-     * NET::SkipSwitcher
-     *
-     * \a win the id of the window
-     * \a state the new flags that will be set
-     *
+     * Possible values are OR'ed combinations of:
+     * \list
+     * \li NET::Modal
+     * \li NET::Sticky
+     * \li NET::MaxVert
+     * \li NET::MaxHoriz
+     * \li NET::Shaded
+     * \li NET::SkipTaskbar
+     * \li NET::SkipPager
+     * \li NET::Hidden
+     * \li NET::FullScreen
+     * \li NET::KeepAbove
+     * \li NET::KeepBelow
+     * \li NET::SkipSwitcher
+     * \endlist
      * \since 6.0
      */
     static void setState(WId win, NET::States state);
@@ -418,26 +414,22 @@ public:
 Q_SIGNALS:
 
     /*!
-     * Switched to another virtual desktop.
-     * \a desktop the number of the new desktop
+     * Switched to another virtual \a desktop.
      */
     void currentDesktopChanged(int desktop);
 
     /*!
-     * A window has been added.
-     * \a id the id of the window
+     * A window with the given \a id has been added.
      */
     void windowAdded(WId id);
 
     /*!
-     * A window has been removed.
-     * \a id the id of the window that has been removed
+     * A window with the given \a id has been removed.
      */
     void windowRemoved(WId id);
 
     /*!
-     * Hint that \<Window> is active (= has focus) now.
-     * \a id the id of the window that is active
+     * Hint that <Window> with the given \a id is active (= has focus) now.
      */
     void activeWindowChanged(WId id);
 
@@ -447,8 +439,7 @@ Q_SIGNALS:
     void desktopNamesChanged();
 
     /*!
-     * The number of desktops changed.
-     * \a num the new number of desktops
+     * The number \a num of desktops changed.
      */
     void numberOfDesktopsChanged(int num);
 
@@ -458,31 +449,29 @@ Q_SIGNALS:
     void workAreaChanged();
 
     /*!
-     * Something changed with the struts, may or may not have changed
-     * the work area. Usually just using the workAreaChanged() signal
-     * is sufficient.
+     * Something changed with the struts, may or may not have changed the work area.
+     *
+     * Usually just using the workAreaChanged() signal is sufficient.
      */
     void strutChanged();
 
     /*!
-     * Emitted when the stacking order of the window changed. The new order
-     * can be obtained with stackingOrder().
+     * Emitted when the stacking order of the window changed.
+     *
+     * The new order can be obtained with stackingOrder().
      */
     void stackingOrderChanged();
 
     /*!
-     * The window changed.
+     * The window with the given \a id changed.
      *
-     * Carries the NET::Properties and NET::Properties2 that were changed.
-     *
-     * \a id the id of the window
-     * \a properties the properties that were modified
-     * \a properties2 the properties2 that were modified
+     * Carries the NET::Properties \a properties and
+     * NET::Properties2 \a properties2 that were changed.
      */
     void windowChanged(WId id, NET::Properties properties, NET::Properties2 properties2);
 
     /*!
-     * Compositing was enabled or disabled.
+     * Compositing was \a enabled or disabled.
      *
      * Note that this signal may be emitted before any compositing plugins
      * have been initialized in the window manager.
