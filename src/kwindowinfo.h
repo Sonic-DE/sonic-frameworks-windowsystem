@@ -24,11 +24,11 @@ class KWindowInfoPrivate;
 /*!
  * \class KWindowInfo
  * \inmodule KWindowSystem
- * This class provides information about a given X11 window. It provides the information
- * for the current state when a KWindowInfo instance gets created.
- * The instance does not get updated when the
- * window changes. To get update about window changes connect to the
- * @link KX11Extras::windowChanged windowChanged@endlink signal of KX11Extras
+ * This class provides information about a given X11 window.
+ *
+ * It provides the information for the current state when a KWindowInfo instance gets created.
+ * The instance does not get updated when the window changes.
+ * To get update about window changes connect to \l KX11Extras::windowChanged
  * and create a new KWindowInfo instance to reflect the current state.
  *
  * KWindowInfo does not encapsulate all information about the window. One needs to
@@ -62,14 +62,14 @@ class KWINDOWSYSTEM_EXPORT KWindowInfo
 {
 public:
     /*!
-     * Reads all the info about the given window.
+     * Reads all the info about the given \a window.
      *
      * Only the information requested through the \a properties and \a properties2
      * parameters are fetched. Refer to the methods you are interested in to see
      * which flags to pass.
      *
-     * \a window The platform specific window identifier
      * \a properties Bitmask of NET::Property
+     *
      * \a properties2 Bitmask of NET::Property2
      */
     KWindowInfo(WId window, NET::Properties properties, NET::Properties2 properties2 = NET::Properties2());
@@ -79,7 +79,7 @@ public:
      *
      * In case the window does not exist \c false is returned.
      *
-     * \a withdrawn_is_valid if true, windows in the withdrawn state
+     * \a withdrawn_is_valid If true, windows in the withdrawn state
      *        (i.e. not managed) are also considered. This is usually not the case.
      */
     bool valid(bool withdrawn_is_valid = false) const;
@@ -364,7 +364,7 @@ public:
     /*!
      * Returns the list of activity UUIDs this window belongs to.
      *
-     * The Plasma workspace allows the user to separate her work into
+     * The Plasma workspace allows the user to separate its work into
      * different activities, by assigning windows, documents etc. to
      * the specific ones. An activity is an abstract concept whose meaning
      * can differ from one user to another. Typical examples of activities
@@ -383,8 +383,6 @@ public:
      * if (info.valid())
      *     info.desktop();
      * \endcode
-     *
-     * \note Activities are only supported on Plasma Workspace on X11
      *
      * \since 5.0
      */
