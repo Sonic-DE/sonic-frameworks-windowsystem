@@ -273,12 +273,12 @@ struct NETStrut {
    is defined by the top edge of the top monitor, the bottom edge of the bottom
    monitor, the left edge of the left monitor, and the right edge of the right
    monitor. See the _NET_WM_FULLSCREEN_MONITORS hint in the EWMH spec.
-**/
+*/
 struct NETFullscreenMonitors {
     /*!
        Constructor to initialize this struct to -1,0,0,0 (an initialized,
        albeit invalid, topology).
-    **/
+    */
     NETFullscreenMonitors()
         : top(-1)
         , bottom(0)
@@ -289,22 +289,22 @@ struct NETFullscreenMonitors {
 
     /*!
        Monitor index whose top border defines the top edge of the topology.
-    **/
+    */
     int top;
 
     /*!
        Monitor index whose bottom border defines the bottom edge of the topology.
-    **/
+    */
     int bottom;
 
     /*!
        Monitor index whose left border defines the left edge of the topology.
-    **/
+    */
     int left;
 
     /*!
        Monitor index whose right border defines the right edge of the topology.
-    **/
+    */
     int right;
 
     /*!
@@ -312,7 +312,7 @@ struct NETFullscreenMonitors {
        values. Note that we don't want to call this isValid() because we're not
        actually validating the monitor topology here, but merely that our initial
        values were overwritten at some point by real (non-negative) monitor indices.
-    **/
+    */
     bool isSet() const
     {
         return (top != -1);
