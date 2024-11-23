@@ -105,7 +105,7 @@ struct NETSize {
 
    NETRect is only used by the NET API. Usually QRect is the
    appropriate class for representing a rectangle.
-**/
+*/
 struct NETRect {
     NETRect()
     {
@@ -126,14 +126,14 @@ struct NETRect {
        Position of the rectangle.
 
        \sa NETPoint
-    **/
+    */
     NETPoint pos;
 
     /*!
        Size of the rectangle.
 
        \sa NETSize
-    **/
+    */
     NETSize size;
 };
 
