@@ -25,7 +25,7 @@ struct NETWinInfoPrivate;
 template<class Z>
 class NETRArray;
 
-/**
+/*!
    Common API for root window properties/protocols.
 
    The NETRootInfo class provides a common API for clients and window managers
@@ -40,7 +40,7 @@ class NETRArray;
 class KWINDOWSYSTEM_EXPORT NETRootInfo : public NET
 {
 public:
-    /**
+    /*!
         Indexes for the properties array.
     **/
     // update also NETRootInfoPrivate::properties[] size when extending this
@@ -53,7 +53,7 @@ public:
         PROPERTIES_SIZE,
     };
 
-    /**
+    /*!
        Window Managers should use this constructor to create a NETRootInfo object,
        which will be used to set/update information stored on the rootWindow.
        The application role is automatically set to WindowManager
@@ -95,7 +95,7 @@ public:
                 int screen = -1,
                 bool doActivate = true);
 
-    /**
+    /*!
        Clients should use this constructor to create a NETRootInfo object, which
        will be used to query information set on the root window. The application
        role is automatically set to Client when using this constructor.
@@ -121,47 +121,47 @@ public:
                 int screen = -1,
                 bool doActivate = true);
 
-    /**
+    /*!
        Creates a shared copy of the specified NETRootInfo object.
 
        @param rootinfo the NETRootInfo object to copy
     **/
     NETRootInfo(const NETRootInfo &rootinfo);
 
-    /**
+    /*!
        Destroys the NETRootInfo object.
     **/
     virtual ~NETRootInfo();
 
-    /**
+    /*!
        Returns the xcb connection used.
 
        @return the XCB connection
     **/
     xcb_connection_t *xcbConnection() const;
 
-    /**
+    /*!
        Returns the Window id of the rootWindow.
 
        @return the id of the root window
     **/
     xcb_window_t rootWindow() const;
 
-    /**
+    /*!
        Returns the Window id of the supportWindow.
 
        @return the id of the support window
     **/
     xcb_window_t supportWindow() const;
 
-    /**
+    /*!
        Returns the name of the Window Manager.
 
        @return the name of the window manager
     **/
     const char *wmName() const;
 
-    /**
+    /*!
       Sets the given property if on is true, and clears the property otherwise.
       In WindowManager mode this function updates _NET_SUPPORTED.
       In Client mode this function does nothing.
@@ -170,55 +170,55 @@ public:
      **/
     void setSupported(NET::Property property, bool on = true);
 
-    /**
+    /*!
       @overload
       @since 4.4
      **/
     void setSupported(NET::Property2 property, bool on = true);
 
-    /**
+    /*!
       @overload
       @since 4.4
      **/
     void setSupported(NET::WindowTypeMask property, bool on = true);
 
-    /**
+    /*!
       @overload
       @since 4.4
      **/
     void setSupported(NET::State property, bool on = true);
 
-    /**
+    /*!
       @overload
       @since 4.4
      **/
     void setSupported(NET::Action property, bool on = true);
 
-    /**
+    /*!
        Returns true if the given property is supported by the window
        manager. Note that for Client mode, NET::Supported needs
        to be passed in the properties argument for this to work.
     **/
     bool isSupported(NET::Property property) const;
-    /**
+    /*!
        @overload
     **/
     bool isSupported(NET::Property2 property) const;
-    /**
+    /*!
        @overload
     **/
     bool isSupported(NET::WindowTypeMask type) const;
-    /**
+    /*!
        @overload
     **/
     bool isSupported(NET::State state) const;
 
-    /**
+    /*!
        @overload
     **/
     bool isSupported(NET::Action action) const;
 
-    /**
+    /*!
        In the Window Manager mode, this is equivalent to the properties
        argument passed to the constructor. In the Client mode, if
        NET::Supported was passed in the properties argument, the returned
@@ -230,7 +230,7 @@ public:
        @see supportedActions()
     **/
     NET::Properties supportedProperties() const;
-    /**
+    /*!
      * In the Window Manager mode, this is equivalent to the properties2
      * argument passed to the constructor. In the Client mode, if
      * NET::Supported was passed in the properties argument, the returned
@@ -243,7 +243,7 @@ public:
      * @since 5.0
      **/
     NET::Properties2 supportedProperties2() const;
-    /**
+    /*!
      * In the Window Manager mode, this is equivalent to the states
      * argument passed to the constructor. In the Client mode, if
      * NET::Supported was passed in the properties argument, the returned
@@ -256,7 +256,7 @@ public:
      * @since 5.0
      **/
     NET::States supportedStates() const;
-    /**
+    /*!
      * In the Window Manager mode, this is equivalent to the windowTypes
      * argument passed to the constructor. In the Client mode, if
      * NET::Supported was passed in the properties argument, the returned
@@ -269,7 +269,7 @@ public:
      * @since 5.0
      **/
     NET::WindowTypes supportedWindowTypes() const;
-    /**
+    /*!
      * In the Window Manager mode, this is equivalent to the actions
      * argument passed to the constructor. In the Client mode, if
      * NET::Supported was passed in the properties argument, the returned
@@ -283,7 +283,7 @@ public:
      **/
     NET::Actions supportedActions() const;
 
-    /**
+    /*!
      * @returns the properties argument passed to the constructor.
      * @see passedProperties2()
      * @see passedStates()
@@ -291,7 +291,7 @@ public:
      * @see passedActions()
      **/
     NET::Properties passedProperties() const;
-    /**
+    /*!
      * @returns the properties2 argument passed to the constructor.
      * @see passedProperties()
      * @see passedStates()
@@ -300,7 +300,7 @@ public:
      * @since 5.0
      **/
     NET::Properties2 passedProperties2() const;
-    /**
+    /*!
      * @returns the states argument passed to the constructor.
      * @see passedProperties()
      * @see passedProperties2()
@@ -309,7 +309,7 @@ public:
      * @since 5.0
      **/
     NET::States passedStates() const;
-    /**
+    /*!
      * @returns the windowTypes argument passed to the constructor.
      * @see passedProperties()
      * @see passedProperties2()
@@ -318,7 +318,7 @@ public:
      * @since 5.0
      **/
     NET::WindowTypes passedWindowTypes() const;
-    /**
+    /*!
      * @returns the actions argument passed to the constructor.
      * @see passedProperties()
      * @see passedProperties2()
@@ -328,7 +328,7 @@ public:
      **/
     NET::Actions passedActions() const;
 
-    /**
+    /*!
        Returns an array of Window id's, which contain all managed windows.
 
        @return the array of Window id's
@@ -337,7 +337,7 @@ public:
     **/
     const xcb_window_t *clientList() const;
 
-    /**
+    /*!
        Returns the number of managed windows in clientList array.
 
        @return the number of managed windows in the clientList array
@@ -346,7 +346,7 @@ public:
     **/
     int clientListCount() const;
 
-    /**
+    /*!
        Returns an array of Window id's, which contain all managed windows in
        stacking order.
 
@@ -356,7 +356,7 @@ public:
     **/
     const xcb_window_t *clientListStacking() const;
 
-    /**
+    /*!
        Returns the number of managed windows in the clientListStacking array.
 
        @return the number of Window id's in the client list
@@ -365,7 +365,7 @@ public:
     **/
     int clientListStackingCount() const;
 
-    /**
+    /*!
        Returns the desktop geometry size.
 
        NOTE: KDE uses virtual desktops and does not directly support
@@ -376,7 +376,7 @@ public:
     **/
     NETSize desktopGeometry() const;
 
-    /**
+    /*!
        Returns the viewport of the specified desktop.
 
        NOTE: KDE uses virtual desktops and does not directly support
@@ -389,7 +389,7 @@ public:
     **/
     NETPoint desktopViewport(int desktop) const;
 
-    /**
+    /*!
        Returns the workArea for the specified desktop.
 
        @param desktop the number of the desktop
@@ -398,7 +398,7 @@ public:
     **/
     NETRect workArea(int desktop) const;
 
-    /**
+    /*!
        Returns the name for the specified desktop.
 
        @param desktop the number of the desktop
@@ -407,7 +407,7 @@ public:
     **/
     const char *desktopName(int desktop) const;
 
-    /**
+    /*!
        Returns an array of Window id's, which contain the virtual root windows.
 
        @return the array of Window id's
@@ -416,7 +416,7 @@ public:
     **/
     const xcb_window_t *virtualRoots() const;
 
-    /**
+    /*!
        Returns the number of window in the virtualRoots array.
 
        @return the number of Window id's in the virtual root array
@@ -425,23 +425,23 @@ public:
     **/
     int virtualRootsCount() const;
 
-    /**
+    /*!
        Returns the desktop layout orientation.
     **/
     NET::Orientation desktopLayoutOrientation() const;
 
-    /**
+    /*!
        Returns the desktop layout number of columns and rows. Note that
        either may be 0 (see _NET_DESKTOP_LAYOUT).
     **/
     QSize desktopLayoutColumnsRows() const;
 
-    /**
+    /*!
        Returns the desktop layout starting corner.
     **/
     NET::DesktopLayoutCorner desktopLayoutCorner() const;
 
-    /**
+    /*!
        Returns the number of desktops.
 
        NOTE: KDE uses virtual desktops and does not directly support
@@ -454,7 +454,7 @@ public:
     **/
     int numberOfDesktops(bool ignore_viewport = false) const;
 
-    /**
+    /*!
        Returns the current desktop.
 
        NOTE: KDE uses virtual desktops and does not directly support
@@ -467,14 +467,14 @@ public:
     **/
     int currentDesktop(bool ignore_viewport = false) const;
 
-    /**
+    /*!
        Returns the active (focused) window.
 
        @return the id of the active window
     **/
     xcb_window_t activeWindow() const;
 
-    /**
+    /*!
        Window Managers must call this after creating the NETRootInfo object, and
        before using any other method in the class.  This method sets initial data
        on the root window and does other post-construction duties.
@@ -484,7 +484,7 @@ public:
     **/
     void activate();
 
-    /**
+    /*!
        Sets the list of managed windows on the Root/Desktop window.
 
        @param windows The array of Window id's
@@ -493,7 +493,7 @@ public:
     **/
     void setClientList(const xcb_window_t *windows, unsigned int count);
 
-    /**
+    /*!
        Sets the list of managed windows in stacking order on the Root/Desktop
        window.
 
@@ -503,7 +503,7 @@ public:
     **/
     void setClientListStacking(const xcb_window_t *windows, unsigned int count);
 
-    /**
+    /*!
        Sets the current desktop to the specified desktop.
 
        NOTE: KDE uses virtual desktops and does not directly support
@@ -515,7 +515,7 @@ public:
     **/
     void setCurrentDesktop(int desktop, bool ignore_viewport = false);
 
-    /**
+    /*!
        Sets the desktop geometry to the specified geometry.
 
        NOTE: KDE uses virtual desktops and does not directly support
@@ -526,7 +526,7 @@ public:
     **/
     void setDesktopGeometry(const NETSize &geometry);
 
-    /**
+    /*!
        Sets the viewport for the current desktop to the specified point.
 
        NOTE: KDE uses virtual desktops and does not directly support
@@ -539,7 +539,7 @@ public:
     **/
     void setDesktopViewport(int desktop, const NETPoint &viewport);
 
-    /**
+    /*!
        Sets the number of desktops to the specified number.
 
        NOTE: KDE uses virtual desktops and does not directly support
@@ -550,7 +550,7 @@ public:
     **/
     void setNumberOfDesktops(int numberOfDesktops);
 
-    /**
+    /*!
        Sets the name of the specified desktop.
 
        NOTE: KDE uses virtual desktops and does not directly support
@@ -563,7 +563,7 @@ public:
     **/
     void setDesktopName(int desktop, const char *desktopName);
 
-    /**
+    /*!
        Requests that the specified window becomes the active (focused) one.
 
        @param window the id of the new active window
@@ -575,7 +575,7 @@ public:
     **/
     void setActiveWindow(xcb_window_t window, NET::RequestSource src, xcb_timestamp_t timestamp, xcb_window_t active_window);
 
-    /**
+    /*!
        Sets the active (focused) window the specified window. This should
        be used only in the window manager mode.
 
@@ -583,7 +583,7 @@ public:
     **/
     void setActiveWindow(xcb_window_t window);
 
-    /**
+    /*!
        Sets the workarea for the specified desktop
 
        @param desktop the number of the desktop
@@ -592,7 +592,7 @@ public:
     **/
     void setWorkArea(int desktop, const NETRect &workArea);
 
-    /**
+    /*!
        Sets the list of virtual root windows on the root window.
 
        @param windows The array of Window id's
@@ -601,28 +601,28 @@ public:
     **/
     void setVirtualRoots(const xcb_window_t *windows, unsigned int count);
 
-    /**
+    /*!
        Sets the desktop layout. This is set by the pager. When setting, the pager must
        own the _NET_DESKTOP_LAYOUT_Sn manager selection. See _NET_DESKTOP_LAYOUT for details.
     **/
     void setDesktopLayout(NET::Orientation orientation, int columns, int rows, NET::DesktopLayoutCorner corner);
 
-    /**
+    /*!
      * Sets the _NET_SHOWING_DESKTOP status (whether desktop is being shown).
      */
     void setShowingDesktop(bool showing);
-    /**
+    /*!
      * Returns the status of _NET_SHOWING_DESKTOP.
      */
     bool showingDesktop() const;
 
-    /**
+    /*!
        Assignment operator.  Ensures that the shared data reference counts are
        correct.
     **/
     const NETRootInfo &operator=(const NETRootInfo &rootinfo);
 
-    /**
+    /*!
        Clients (such as pagers/taskbars) that wish to close a window should call
        this function.  This will send a request to the Window Manager, which
        usually can usually decide how to react to such requests.
@@ -631,7 +631,7 @@ public:
     **/
     void closeWindowRequest(xcb_window_t window);
 
-    /**
+    /*!
        Clients (such as pagers/taskbars) that wish to start a WMMoveResize
        (where the window manager controls the resize/movement,
        i.e. _NET_WM_MOVERESIZE) should call this function.
@@ -653,7 +653,7 @@ public:
     void
     moveResizeRequest(xcb_window_t window, int x_root, int y_root, Direction direction, xcb_button_t button = XCB_BUTTON_INDEX_ANY, RequestSource source = RequestSource::FromUnknown);
 
-    /**
+    /*!
        Clients (such as pagers/taskbars) that wish to move/resize a window
        using WM2MoveResizeWindow (_NET_MOVERESIZE_WINDOW) should call this function.
        This will send a request to the Window Manager. See _NET_MOVERESIZE_WINDOW
@@ -668,7 +668,7 @@ public:
     **/
     void moveResizeWindowRequest(xcb_window_t window, int flags, int x, int y, int width, int height);
 
-    /**
+    /*!
        Clients that wish to show the window menu using WM2GTKShowWindowMenu
        (_GTK_SHOW_WINDOW_MENU) should call this function.
        This will send a request to the Window Manager. See _GTK_SHOW_WINDOW_MENU
@@ -681,18 +681,18 @@ public:
     **/
     void showWindowMenuRequest(xcb_window_t window, int device_id, int x_root, int y_root);
 
-    /**
+    /*!
        Sends the _NET_RESTACK_WINDOW request.
     **/
     void restackRequest(xcb_window_t window, RequestSource source, xcb_window_t above, int detail, xcb_timestamp_t timestamp);
 
-    /**
+    /*!
       Sends a ping with the given timestamp to the window, using
       the _NET_WM_PING protocol.
     */
     void sendPing(xcb_window_t window, xcb_timestamp_t timestamp);
 
-    /**
+    /*!
      * This function takes the passed xcb_generic_event_t and returns the updated properties in the passed in arguments.
      *
      * The new information will be read immediately by the class. It is possible to pass in a
@@ -706,7 +706,7 @@ public:
      **/
     void event(xcb_generic_event_t *event, NET::Properties *properties, NET::Properties2 *properties2 = nullptr);
 
-    /**
+    /*!
        This function takes the passed XEvent and returns an OR'ed list of
        NETRootInfo properties that have changed.  The new information will be
        read immediately by the class. This overloaded version returns
@@ -720,7 +720,7 @@ public:
     NET::Properties event(xcb_generic_event_t *event);
 
 protected:
-    /**
+    /*!
        A Client should subclass NETRootInfo and reimplement this function when
        it wants to know when a window has been added.
 
@@ -731,7 +731,7 @@ protected:
         Q_UNUSED(window);
     }
 
-    /**
+    /*!
        A Client should subclass NETRootInfo and reimplement this function when
        it wants to know when a window has been removed.
 
@@ -742,7 +742,7 @@ protected:
         Q_UNUSED(window);
     }
 
-    /**
+    /*!
        A Window Manager should subclass NETRootInfo and reimplement this function
        when it wants to know when a Client made a request to change the number
        of desktops.
@@ -754,7 +754,7 @@ protected:
         Q_UNUSED(numberOfDesktops);
     }
 
-    /**
+    /*!
        A Window Manager should subclass NETRootInfo and reimplement this function
        when it wants to know when a Client made a request to change the specified
        desktop geometry.
@@ -769,7 +769,7 @@ protected:
         Q_UNUSED(geom);
     }
 
-    /**
+    /*!
        A Window Manager should subclass NETRootInfo and reimplement this function
        when it wants to know when a Client made a request to change the specified
        desktop viewport.
@@ -784,7 +784,7 @@ protected:
         Q_UNUSED(viewport);
     }
 
-    /**
+    /*!
        A Window Manager should subclass NETRootInfo and reimplement this function
        when it wants to know when a Client made a request to change the current
        desktop.
@@ -796,7 +796,7 @@ protected:
         Q_UNUSED(desktop);
     }
 
-    /**
+    /*!
        A Window Manager should subclass NETRootInfo and reimplement this function
        when it wants to know when a Client made a request to close a window.
 
@@ -807,7 +807,7 @@ protected:
         Q_UNUSED(window);
     }
 
-    /**
+    /*!
        A Window Manager should subclass NETRootInfo and reimplement this function
        when it wants to know when a Client made a request to start a move/resize.
 
@@ -834,7 +834,7 @@ protected:
         Q_UNUSED(source);
     }
 
-    /**
+    /*!
        A Window Manager should subclass NETRootInfo and reimplement this function
        when it wants to receive replies to the _NET_WM_PING protocol.
        @param window the window from which the reply came
@@ -845,7 +845,7 @@ protected:
         Q_UNUSED(window);
         Q_UNUSED(timestamp);
     }
-    /**
+    /*!
        A Window Manager should subclass NETRootInfo and reimplement this function
        when it wants to know when a Client made a request to change the active
        (focused) window.
@@ -863,7 +863,7 @@ protected:
         Q_UNUSED(active_window);
     }
 
-    /**
+    /*!
        A Window Manager should subclass NETRootInfo and reimplement this function
        when it wants to know when a pager made a request to move/resize a window.
        See _NET_MOVERESIZE_WINDOW for details.
@@ -885,7 +885,7 @@ protected:
         Q_UNUSED(height);
     }
 
-    /**
+    /*!
        A Window Manager should subclass NETRootInfo and reimplement this function
        when it wants to know when a Client made a request to restack a window.
        See _NET_RESTACK_WINDOW for details.
@@ -905,7 +905,7 @@ protected:
         Q_UNUSED(timestamp);
     }
 
-    /**
+    /*!
        A Window Manager should subclass NETRootInfo and reimplement this function
        when it wants to know when a pager made a request to change showing the desktop.
        See _NET_SHOWING_DESKTOP for details.
@@ -917,7 +917,7 @@ protected:
         Q_UNUSED(showing);
     }
 
-    /**
+    /*!
        A Window Manager should subclass NETRootInfo and reimplement this function
        when it wants to know when a Client made a request to show a window menu.
 
@@ -941,7 +941,7 @@ private:
     void updateSupportedProperties(xcb_atom_t atom);
 
 protected:
-    /** Virtual hook, used to add new "virtual" functions while maintaining
+    /*! Virtual hook, used to add new "virtual" functions while maintaining
     binary compatibility. Unused in this class.
     */
     virtual void virtual_hook(int id, void *data);
@@ -950,7 +950,7 @@ private:
     NETRootInfoPrivate *p; // krazy:exclude=dpointer (implicitly shared)
 };
 
-/**
+/*!
    Common API for application window properties/protocols.
 
    The NETWinInfo class provides a common API for clients and window managers to
@@ -966,7 +966,7 @@ private:
 class KWINDOWSYSTEM_EXPORT NETWinInfo : public NET
 {
 public:
-    /**
+    /*!
         Indexes for the properties array.
     **/
     // update also NETWinInfoPrivate::properties[] size when extending this
@@ -975,7 +975,7 @@ public:
         PROTOCOLS2,
         PROPERTIES_SIZE,
     };
-    /**
+    /*!
        Create a NETWinInfo object, which will be used to set/read/change
        information stored on an application window.
 
@@ -999,32 +999,32 @@ public:
                NET::Properties2 properties2,
                Role role = Client);
 
-    /**
+    /*!
        Creates a shared copy of the specified NETWinInfo object.
 
        @param wininfo the NETWinInfo to copy
     **/
     NETWinInfo(const NETWinInfo &wininfo);
 
-    /**
+    /*!
        Destroys the NETWinInfo object.
     **/
     virtual ~NETWinInfo();
 
-    /**
+    /*!
        Assignment operator.  Ensures that the shared data reference counts are
        correct.
     **/
     const NETWinInfo &operator=(const NETWinInfo &wintinfo);
 
-    /**
+    /*!
        Returns the xcb connection used.
 
        @return the XCB connection
     **/
     xcb_connection_t *xcbConnection() const;
 
-    /**
+    /*!
        Returns true if the window has any window type set, even if the type
        itself is not known to this implementation. Presence of a window type
        as specified by the NETWM spec is considered as the window supporting
@@ -1033,26 +1033,26 @@ public:
     **/
     bool hasNETSupport() const;
 
-    /**
+    /*!
        @returns the properties argument passed to the constructor.
        @see passedProperties2()
     **/
     NET::Properties passedProperties() const;
-    /**
+    /*!
      * @returns the properties2 argument passed to the constructor.
      * @see passedProperties()
      * @since 5.0
      **/
     NET::Properties2 passedProperties2() const;
 
-    /**
+    /*!
        Returns the icon geometry.
 
        @return the geometry of the icon
     **/
     NETRect iconGeometry() const;
 
-    /**
+    /*!
        Returns the state of the window (see the NET base class documentation for a
        description of the various states).
 
@@ -1060,14 +1060,14 @@ public:
     **/
     NET::States state() const;
 
-    /**
+    /*!
        Returns the extended (partial) strut specified by this client.
        See _NET_WM_STRUT_PARTIAL in the spec.
     **/
     NETExtendedStrut extendedStrut() const;
 
     // Still used internally, e.g. by KWindowSystem::strutChanged() logic
-    /**
+    /*!
        @deprecated use strutPartial()
        Returns the strut specified by this client.
 
@@ -1075,7 +1075,7 @@ public:
     **/
     NETStrut strut() const;
 
-    /**
+    /*!
        Returns the window type for this client (see the NET base class
        documentation for a description of the various window types).
        Since clients may specify several windows types for a window
@@ -1090,28 +1090,28 @@ public:
     **/
     WindowType windowType(WindowTypes supported_types) const;
 
-    /**
+    /*!
       This function returns false if the window has not window type
       specified at all. Used by KWindowInfo::windowType() to return either
       NET::Normal or NET::Dialog as appropriate as a fallback.
     **/
     bool hasWindowType() const;
 
-    /**
+    /*!
        Returns the name of the window in UTF-8 format.
 
        @return the name of the window
     **/
     const char *name() const;
 
-    /**
+    /*!
        Returns the visible name as set by the window manager in UTF-8 format.
 
        @return the visible name of the window
     **/
     const char *visibleName() const;
 
-    /**
+    /*!
        Returns the iconic name of the window in UTF-8 format. Note that this has
        nothing to do with icons, but it's for "iconic"
        representations of the window (taskbars etc.), that should be shown
@@ -1122,7 +1122,7 @@ public:
     **/
     const char *iconName() const;
 
-    /**
+    /*!
        Returns the visible iconic name as set by the window manager in UTF-8 format.
        Note that this has nothing to do with icons, but it's for "iconic"
        representations of the window (taskbars etc.), that should be shown
@@ -1133,7 +1133,7 @@ public:
     **/
     const char *visibleIconName() const;
 
-    /**
+    /*!
        Returns the desktop where the window is residing.
 
        NOTE: KDE uses virtual desktops and does not directly support
@@ -1148,21 +1148,21 @@ public:
     **/
     int desktop(bool ignore_viewport = false) const;
 
-    /**
+    /*!
        Returns the process id for the client window.
 
        @return the process id of the window
     **/
     int pid() const;
 
-    /**
+    /*!
        Returns whether or not this client handles icons.
 
        @return true if this client handles icons, false otherwise
     **/
     bool handledIcons() const;
 
-    /**
+    /*!
        Returns the mapping state for the window (see the NET base class
        documentation for a description of mapping state).
 
@@ -1170,7 +1170,7 @@ public:
     **/
     MappingState mappingState() const;
 
-    /**
+    /*!
        Set icons for the application window.  If replace is True, then
        the specified icon is defined to be the only icon.  If replace is False,
        then the specified icon is added to a list of icons.
@@ -1181,14 +1181,14 @@ public:
     **/
     void setIcon(NETIcon icon, bool replace = true);
 
-    /**
+    /*!
        Set the icon geometry for the application window.
 
        @param geometry the new icon geometry
     **/
     void setIconGeometry(NETRect geometry);
 
-    /**
+    /*!
        Set the extended (partial) strut for the application window.
 
        @param extended_strut the new strut
@@ -1196,7 +1196,7 @@ public:
     void setExtendedStrut(const NETExtendedStrut &extended_strut);
 
     // Still used internally, e.g. by KWindowSystem::strutChanged() logic
-    /**
+    /*!
        @deprecated use setExtendedStrut()
        Set the strut for the application window.
 
@@ -1204,7 +1204,7 @@ public:
     **/
     void setStrut(NETStrut strut);
 
-    /**
+    /*!
        Set the state for the application window (see the NET base class documentation
        for a description of window state).
 
@@ -1214,7 +1214,7 @@ public:
     **/
     void setState(NET::States state, NET::States mask);
 
-    /**
+    /*!
        Sets the window type for this client (see the NET base class
        documentation for a description of the various window types).
 
@@ -1222,14 +1222,14 @@ public:
     **/
     void setWindowType(WindowType type);
 
-    /**
+    /*!
        Sets the name for the application window.
 
        @param name the new name of the window
     **/
     void setName(const char *name);
 
-    /**
+    /*!
        For Window Managers only:  set the visible name ( i.e. xterm, xterm <2>,
        xterm <3>, ... )
 
@@ -1237,14 +1237,14 @@ public:
     **/
     void setVisibleName(const char *visibleName);
 
-    /**
+    /*!
        Sets the iconic name for the application window.
 
        @param name the new iconic name
     **/
     void setIconName(const char *name);
 
-    /**
+    /*!
        For Window Managers only: set the visible iconic name ( i.e. xterm, xterm <2>,
        xterm <3>, ... )
 
@@ -1252,7 +1252,7 @@ public:
     **/
     void setVisibleIconName(const char *name);
 
-    /**
+    /*!
        Set which window the desktop is (should be) on.
 
        NOTE: KDE uses virtual desktops and does not directly support
@@ -1266,35 +1266,35 @@ public:
     **/
     void setDesktop(int desktop, bool ignore_viewport = false);
 
-    /**
+    /*!
        Set the application window's process id.
 
        @param pid the window's process id
     **/
     void setPid(int pid);
 
-    /**
+    /*!
        Set whether this application window handles icons.
 
        @param handled true if the window handles icons, false otherwise
     **/
     void setHandledIcons(bool handled);
 
-    /**
+    /*!
        Set the frame decoration strut, i.e. the width of the decoration borders.
 
        @param strut the new strut
     **/
     void setFrameExtents(NETStrut strut);
 
-    /**
+    /*!
        Returns the frame decoration strut, i.e. the width of the decoration borders.
 
        @since 4.3
     **/
     NETStrut frameExtents() const;
 
-    /**
+    /*!
        Sets the window frame overlap strut, i.e. how far the window frame extends
        behind the client area on each side.
 
@@ -1307,7 +1307,7 @@ public:
     **/
     void setFrameOverlap(NETStrut strut);
 
-    /**
+    /*!
        Returns the frame overlap strut, i.e. how far the window frame extends
        behind the client area on each side.
 
@@ -1315,21 +1315,21 @@ public:
     **/
     NETStrut frameOverlap() const;
 
-    /**
+    /*!
        Sets the extents of the drop-shadow drawn by the client.
 
        @since 5.65
     **/
     void setGtkFrameExtents(NETStrut strut);
 
-    /**
+    /*!
        Returns the extents of the drop-shadow drawn by a GTK client.
 
        @since 5.65
     **/
     NETStrut gtkFrameExtents() const;
 
-    /**
+    /*!
        Returns an icon.  If width and height are passed, the icon returned will be
        the closest it can find (the next biggest).  If width and height are omitted,
        then the largest icon in the list is returned.
@@ -1342,14 +1342,14 @@ public:
     **/
     NETIcon icon(int width = -1, int height = -1) const;
 
-    /**
+    /*!
       Returns a list of provided icon sizes. Each size is pair width,height, terminated
       with pair 0,0.
       @since 4.3
     **/
     const int *iconSizes() const;
 
-    /**
+    /*!
      * Sets user timestamp @p time on the window (property _NET_WM_USER_TIME).
      * The timestamp is expressed as XServer time. If a window
      * is shown with user timestamp older than the time of the last
@@ -1358,61 +1358,61 @@ public:
      */
     void setUserTime(xcb_timestamp_t time);
 
-    /**
+    /*!
      * Returns the time of last user action on the window, or -1 if not set.
      */
     xcb_timestamp_t userTime() const;
 
-    /**
+    /*!
      * Sets the startup notification id @p id on the window.
      */
     void setStartupId(const char *startup_id);
 
-    /**
+    /*!
      * Returns the startup notification id of the window.
      */
     const char *startupId() const;
 
-    /**
+    /*!
      * Sets opacity (0 = transparent, 0xffffffff = opaque ) on the window.
      */
     void setOpacity(unsigned long opacity);
-    /**
+    /*!
      * Sets opacity (0 = transparent, 1 = opaque) on the window.
      */
     void setOpacityF(qreal opacity);
 
-    /**
+    /*!
      * Returns the opacity of the window.
      */
     unsigned long opacity() const;
-    /**
+    /*!
      * Returns the opacity of the window.
      */
     qreal opacityF() const;
 
-    /**
+    /*!
      * Sets actions that the window manager allows for the window.
      */
     void setAllowedActions(NET::Actions actions);
 
-    /**
+    /*!
      * Returns actions that the window manager allows for the window.
      */
     NET::Actions allowedActions() const;
 
-    /**
+    /*!
      * Returns the WM_TRANSIENT_FOR property for the window, i.e. the mainwindow
      * for this window.
      */
     xcb_window_t transientFor() const;
 
-    /**
+    /*!
      * Returns the leader window for the group the window is in, if any.
      */
     xcb_window_t groupLeader() const;
 
-    /**
+    /*!
      * Returns whether the UrgencyHint is set in the WM_HINTS.flags.
      * See ICCCM 4.1.2.4.
      *
@@ -1420,7 +1420,7 @@ public:
      **/
     bool urgency() const;
 
-    /**
+    /*!
      * Returns whether the Input flag is set in WM_HINTS.
      * See ICCCM 4.1.2.4 and 4.1.7.
      *
@@ -1430,7 +1430,7 @@ public:
      **/
     bool input() const;
 
-    /**
+    /*!
      * Returns the initial mapping state as set in WM_HINTS.
      * See ICCCM 4.1.2.4 and 4.1.4.
      *
@@ -1441,7 +1441,7 @@ public:
      **/
     MappingState initialMappingState() const;
 
-    /**
+    /*!
      * Returns the icon pixmap as set in WM_HINTS.
      * See ICCCM 4.1.2.4.
      *
@@ -1457,7 +1457,7 @@ public:
      **/
     xcb_pixmap_t icccmIconPixmap() const;
 
-    /**
+    /*!
      * Returns the mask for the icon pixmap as set in WM_HINTS.
      * See ICCCM 4.1.2.4.
      *
@@ -1468,54 +1468,54 @@ public:
      **/
     xcb_pixmap_t icccmIconPixmapMask() const;
 
-    /**
+    /*!
      * Returns the class component of the window class for the window
      * (i.e. WM_CLASS property).
      */
     const char *windowClassClass() const;
 
-    /**
+    /*!
      * Returns the name component of the window class for the window
      * (i.e. WM_CLASS property).
      */
     const char *windowClassName() const;
 
-    /**
+    /*!
      * Returns the window role for the window (i.e. WM_WINDOW_ROLE property).
      */
     const char *windowRole() const;
 
-    /**
+    /*!
      * Returns the client machine for the window (i.e. WM_CLIENT_MACHINE property).
      */
     const char *clientMachine() const;
 
-    /**
+    /*!
      * returns a comma-separated list of the activities the window is associated with.
      * FIXME this might be better as a NETRArray ?
      * @since 4.6
      */
     const char *activities() const;
 
-    /**
+    /*!
      * Sets the comma-separated list of activities the window is associated with.
      * @since 5.1
      */
     void setActivities(const char *activities);
 
-    /**
+    /*!
      * Sets whether the client wishes to block compositing (for better performance)
      * @since 4.7
      */
     void setBlockingCompositing(bool active);
 
-    /**
+    /*!
      * Returns whether the client wishes to block compositing (for better performance)
      * @since 4.7
      */
     bool isBlockingCompositing() const;
 
-    /**
+    /*!
        Places the window frame geometry in frame, and the application window
        geometry in window.  Both geometries are relative to the root window.
 
@@ -1525,7 +1525,7 @@ public:
     **/
     void kdeGeometry(NETRect &frame, NETRect &window);
 
-    /**
+    /*!
        Sets the desired multiple-monitor topology (4 monitor indices indicating
        the top, bottom, left, and right edges of the window) when the fullscreen
        state is enabled. The indices are from the set returned by the Xinerama
@@ -1543,14 +1543,14 @@ public:
     **/
     void setFullscreenMonitors(NETFullscreenMonitors topology);
 
-    /**
+    /*!
        Returns the desired fullscreen monitor topology for this client, should
        it be in fullscreen state.
        See _NET_WM_FULLSCREEN_MONITORS in the spec.
     **/
     NETFullscreenMonitors fullscreenMonitors() const;
 
-    /**
+    /*!
      * This function takes the passed in xcb_generic_event_t and returns the updated properties
      * in the passed in arguments.
      *
@@ -1566,7 +1566,7 @@ public:
      **/
     void event(xcb_generic_event_t *event, NET::Properties *properties, NET::Properties2 *properties2 = nullptr);
 
-    /**
+    /*!
        This function takes the pass XEvent and returns an OR'ed list of NETWinInfo
        properties that have changed.  The new information will be read
        immediately by the class. This overloaded version returns
@@ -1579,26 +1579,26 @@ public:
     **/
     NET::Properties event(xcb_generic_event_t *event);
 
-    /**
+    /*!
      * @returns The window manager protocols this Client supports.
      * @since 5.3
      **/
     NET::Protocols protocols() const;
 
-    /**
+    /*!
      * @returns @c true if the Client supports the @p protocol.
      * @param protocol The window manager protocol to test for
      * @since 5.3
      **/
     bool supportsProtocol(NET::Protocol protocol) const;
 
-    /**
+    /*!
      * @returns The opaque region as specified by the Client.
      * @since 5.7
      **/
     std::vector<NETRect> opaqueRegion() const;
 
-    /**
+    /*!
      * Sets the @p name as the desktop file name.
      *
      * This is either the base name without full path and without file extension of the
@@ -1613,44 +1613,44 @@ public:
      **/
     void setDesktopFileName(const char *name);
 
-    /**
+    /*!
      * @returns The desktop file name of the window's application if present.
      * @since 5.28
      * @see setDesktopFileName
      **/
     const char *desktopFileName() const;
 
-    /**
+    /*!
      * @returns The GTK application id of the window if present.
      * @since 5.91
      **/
     const char *gtkApplicationId() const;
 
-    /**
+    /*!
      * Sets the @p name as the D-BUS service name for the application menu.
      * @since 5.69
      **/
     void setAppMenuServiceName(const char *name);
 
-    /**
+    /*!
      * Sets the @p name as the D-BUS object path for the application menu.
      * @since 5.69
      **/
     void setAppMenuObjectPath(const char *path);
 
-    /**
+    /*!
      * @returns The menu service name of the window's application if present.
      * @since 5.69
      **/
     const char *appMenuServiceName() const;
 
-    /**
+    /*!
      * @returns The menu object path of the window's application if present.
      * @since 5.69
      **/
     const char *appMenuObjectPath() const;
 
-    /**
+    /*!
        Sentinel value to indicate that the client wishes to be visible on
        all desktops.
 
@@ -1659,7 +1659,7 @@ public:
     static const int OnAllDesktops;
 
 protected:
-    /**
+    /*!
        A Window Manager should subclass NETWinInfo and reimplement this function when
        it wants to know when a Client made a request to change desktops (ie. move to
        another desktop).
@@ -1671,7 +1671,7 @@ protected:
         Q_UNUSED(desktop);
     }
 
-    /**
+    /*!
        A Window Manager should subclass NETWinInfo and reimplement this function when
        it wants to know when a Client made a request to change state (ie. to
        Shade / Unshade).
@@ -1686,7 +1686,7 @@ protected:
         Q_UNUSED(mask);
     }
 
-    /**
+    /*!
        A Window Manager should subclass NETWinInfo2 and reimplement this function
        when it wants to know when a Client made a request to change the
        fullscreen monitor topology for its fullscreen state.
@@ -1706,7 +1706,7 @@ private:
     NETIcon iconInternal(NETRArray<NETIcon> &icons, int icon_count, int width, int height) const;
 
 protected:
-    /** Virtual hook, used to add new "virtual" functions while maintaining
+    /*! Virtual hook, used to add new "virtual" functions while maintaining
     binary compatibility. Unused in this class.
     */
     virtual void virtual_hook(int id, void *data);

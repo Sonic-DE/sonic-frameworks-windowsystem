@@ -126,7 +126,7 @@ public:
     void got_remove_startup_info(const QString &msg_P);
     void new_startup_info_internal(const KStartupInfoId &id_P, Data &data_P, bool update_only_P);
     void removeAllStartupInfoInternal(const KStartupInfoId &id_P);
-    /**
+    /*!
      * Emits the gotRemoveStartup signal and erases the @p it from the startups map.
      * @returns Iterator to next item in the startups map.
      **/

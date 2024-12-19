@@ -15,7 +15,7 @@
 #include <QColor>
 #include <QRegion>
 
-/**
+/*!
  * Namespace for common standardized window effects
  */
 namespace KWindowEffects
@@ -33,14 +33,14 @@ enum SlideFromLocation {
     BottomEdge,
     LeftEdge,
 };
-/**
+/*!
  * @return if an atom property is available
  *
  * @param effect the effect we want to check
  */
 KWINDOWSYSTEM_EXPORT bool isEffectAvailable(Effect effect);
 
-/**
+/*!
  * Instructs the window manager to blur the background
  * in the specified region behind the given window.
  * The given region will overwrite any previous blur-behind region.
@@ -61,7 +61,7 @@ KWINDOWSYSTEM_EXPORT bool isEffectAvailable(Effect effect);
  */
 KWINDOWSYSTEM_EXPORT void enableBlurBehind(QWindow *window, bool enable = true, const QRegion &region = QRegion());
 
-/**
+/*!
  * Instructs the window manager to modify the color of the background
  * in the specified region behind the given window,
  * in order to improve the contrast and readability of any text
@@ -86,7 +86,7 @@ KWINDOWSYSTEM_EXPORT void enableBlurBehind(QWindow *window, bool enable = true, 
 KWINDOWSYSTEM_EXPORT void
 enableBackgroundContrast(QWindow *window, bool enable = true, qreal contrast = 1, qreal intensity = 1, qreal saturation = 1, const QRegion &region = QRegion());
 
-/**
+/*!
  * Mark a window as sliding from screen edge
  *
  * @param id of the window on which we want to apply the effect
