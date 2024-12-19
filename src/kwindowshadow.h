@@ -25,8 +25,14 @@ class KWindowShadowTilePrivate;
 class KWINDOWSYSTEM_EXPORT KWindowShadowTile
 {
 public:
+    /*!
+     *
+     */
     using Ptr = QSharedPointer<KWindowShadowTile>;
 
+    /*!
+     *
+     */
     KWindowShadowTile();
     ~KWindowShadowTile();
 

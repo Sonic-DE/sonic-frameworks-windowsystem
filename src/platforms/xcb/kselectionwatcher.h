@@ -17,7 +17,7 @@
  \class KSelectionWatcher
  \inmodule KWindowSystem
 
- \brief ICCCM manager selection watching
+ \brief ICCCM manager selection watching.
 
  This class implements watching manager selections, as described in the ICCCM
  section 2.8. It emits signal newOwner() when a new owner claim the selection,

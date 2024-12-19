@@ -17,7 +17,7 @@
 /*!
  * \class KWaylandExtras
  * \inmodule KWindowSystem
- * \brief A collection of functions to do Wayland things
+ * \brief A collection of functions to do Wayland things.
  * \since 6.0
  */
 class KWINDOWSYSTEM_EXPORT KWaylandExtras : public QObject

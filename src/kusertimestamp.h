@@ -10,11 +10,15 @@
 
 #include <kwindowsystem_export.h>
 
+/*!
+ * \namespace KUserTimestamp
+ * \inmodule KWindowSystem
+ */
 namespace KUserTimestamp
 {
 /*!
  * Returns the last user action timestamp or 0 if no user activity has taken place yet.
- * @see updateuserTimestamp
+ * \sa updateuserTimestamp
  */
 KWINDOWSYSTEM_EXPORT unsigned long userTimestamp();
 
