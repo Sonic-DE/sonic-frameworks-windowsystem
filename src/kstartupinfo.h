@@ -366,6 +366,7 @@ private:
 
 /*!
  * \class KStartupInfoId
+ * \inheaderfile KStartupInfo
  * \inmodule KWindowSystem
  * \brief Class representing an identification of application startup notification.
  *
@@ -443,6 +444,7 @@ private:
 
 /*!
  * \class KStartupInfoData
+ * \inheaderfile KStartupInfo
  * \inmodule KWindowSystem
  * \brief Class representing data about an application startup notification.
  *

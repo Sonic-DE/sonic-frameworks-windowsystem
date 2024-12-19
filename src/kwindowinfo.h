@@ -24,7 +24,7 @@ class KWindowInfoPrivate;
 /*!
  * \class KWindowInfo
  * \inmodule KWindowSystem
- * This class provides information about a given X11 window.
+ * \brief This class provides information about a given X11 window.
  *
  * It provides the information for the current state when a KWindowInfo instance gets created.
  * The instance does not get updated when the window changes.
@@ -600,13 +600,7 @@ public:
      */
     QByteArray applicationMenuObjectPath() const;
 
-    /*!
-     * Copy constructor.
-     */
     KWindowInfo(const KWindowInfo &);
-    /*!
-     * Assignment operator.
-     */
     KWindowInfo &operator=(const KWindowInfo &);
 
 private:

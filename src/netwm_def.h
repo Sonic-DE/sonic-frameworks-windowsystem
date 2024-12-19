@@ -15,6 +15,7 @@
 /*!
   \class NETPoint
   \inmodule KWindowSystem
+  \inheaderfile netwm_def.h
   \brief Simple point class for NET classes.
 
   This class is a convenience class defining a point x, y.  The existence of
@@ -739,7 +740,6 @@ public:
         \value WM2MoveResizeWindow
         \value WM2ExtendedStrut
         \value WM2KDETemporaryRules Non-standard.
-        \omitvalue WM2TemporaryRules For kstart
         \value WM2WindowClass  WM_CLASS
         \value WM2WindowRole   WM_WINDOW_ROLE
         \value WM2ClientMachine WM_CLIENT_MACHINE
@@ -816,7 +816,7 @@ public:
     /*!
        \enum NET::RequestSource
        Source of the request.
-       \omitvalue FromUnknown
+       \value FromUnknown
        Indicates that the source of the request is unknown.
        \value FromApplication
        Indicates that the request comes from a normal application.

@@ -10,4 +10,4 @@ sourcedirs = .
 
 outputformats = HTML
 
-depends += qtcore qtquick qtquickcontrols qtgui qtwidgets qtxml kcoreaddons kconfig
+depends += qtcore qtquick qtquickcontrols qtgui
