@@ -11,6 +11,7 @@
 
 #include "netwm_def.h"
 
+#include <mutex>
 #include <stdio.h>
 
 #include <QByteArray>
@@ -31,6 +32,7 @@ public:
     XErrorEvent error_event;
 };
 
+std::shared_mutex KXErrorHandler::s_lock;
 KXErrorHandler **KXErrorHandler::handlers = nullptr;
 int KXErrorHandler::pos = 0;
 int KXErrorHandler::size = 0;
@@ -55,6 +57,7 @@ KXErrorHandler::KXErrorHandler(int (*handler)(Display *, XErrorEvent *), Display
 
 KXErrorHandler::~KXErrorHandler()
 {
+    std::unique_lock lock(s_lock);
     XSetErrorHandler(old_handler);
     Q_ASSERT_X(this == handlers[pos - 1], "KXErrorHandler", "out of order");
     --pos;
@@ -63,6 +66,7 @@ KXErrorHandler::~KXErrorHandler()
 
 void KXErrorHandler::addHandler()
 {
+    std::unique_lock lock(s_lock);
     if (size == pos) {
         size += 16;
         handlers = static_cast<KXErrorHandler **>(realloc(handlers, size * sizeof(KXErrorHandler *)));
@@ -85,6 +89,7 @@ XErrorEvent KXErrorHandler::errorEvent() const
 
 int KXErrorHandler::handler_wrapper(Display *dpy, XErrorEvent *e)
 {
+    std::shared_lock lock(s_lock);
     --pos;
     int ret = handlers[pos]->handle(dpy, e);
     ++pos;
