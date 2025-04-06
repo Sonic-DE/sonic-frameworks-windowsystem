@@ -8,6 +8,7 @@
 #include "logging.h"
 #include "surfacehelper.h"
 #include "waylandxdgactivationv1_p.h"
+#include "waylandxdgdialogv1_p.h"
 #include "waylandxdgforeignv2_p.h"
 
 #include <KWaylandExtras>
@@ -284,6 +285,17 @@ void WindowSystem::doSetMainWindow(QWindow *window, const QString &handle)
     connect(imported, &QObject::destroyed, waylandWindow, [waylandWindow] {
         waylandWindow->setProperty(c_kdeXdgForeignImportedProperty, QVariant());
     });
+
+    if (window->modality() != Qt::NonModal) {
+        auto &xdgDialog = WaylandXdgDialogWmV1::self();
+        if (xdgDialog.isActive()) {
+            if (auto *xdgToplevel = xdgToplevelForWindow(window)) {
+                auto *dialog = xdgDialog.getDialog(xdgToplevel);
+                dialog->set_modal();
+                dialog->setParent(waylandWindow);
+            }
+        }
+    }
 }
 
 #include "moc_windowsystem.cpp"
