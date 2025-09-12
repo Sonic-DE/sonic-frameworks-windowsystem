@@ -21,11 +21,18 @@ private Q_SLOTS:
 
 private:
     std::unique_ptr<QProcess> m_westonProcess;
+    QTemporaryDir m_xdgRuntimeDir;
 };
 
 void TestKWindowsystemPlatformWayland::initTestCase()
 {
+    // we need weston
     const QString westonExec = QStandardPaths::findExecutable(QStringLiteral("weston"));
+    QVERIFY(!westonExec.isEmpty());
+
+    // we need a valid
+    QVERIFY(!m_xdgRuntimeDir.path().isEmpty());
+    qputenv("XDG_RUNTIME_DIR", m_xdgRuntimeDir.path().toLocal8Bit());
 
     // start Weston
     m_westonProcess.reset(new QProcess);
@@ -40,7 +47,7 @@ void TestKWindowsystemPlatformWayland::initTestCase()
     // wait for the socket to appear
     QTest::qWait(500);
 
-    QDir runtimeDir(qgetenv("XDG_RUNTIME_DIR"));
+    QDir runtimeDir(m_xdgRuntimeDir.path());
     if (runtimeDir.exists(QStringLiteral("kwindowsystem-platform-wayland-0"))) {
         // already there
         return;
