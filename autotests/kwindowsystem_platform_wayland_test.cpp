@@ -32,7 +32,7 @@ void TestKWindowsystemPlatformWayland::initTestCase()
         QSKIP("Weston is not installed");
     }
 
-    // we need a valid
+    // we need a valid XDG_RUNTIME_DIR, separate it from the one the user might have
     QVERIFY(m_xdgRuntimeDir.isValid());
     qputenv("XDG_RUNTIME_DIR", m_xdgRuntimeDir.path().toLocal8Bit());
 
@@ -40,13 +40,15 @@ void TestKWindowsystemPlatformWayland::initTestCase()
     m_westonProcess.reset(new QProcess);
     m_westonProcess->setProgram(westonExec);
     m_westonProcess->setProcessChannelMode(QProcess::ForwardedChannels);
-    m_westonProcess->setArguments(
-        QStringList({QStringLiteral("--socket=kwindowsystem-platform-wayland-0"), QStringLiteral("--backend=headless"), QStringLiteral("--no-config")}));
+    m_westonProcess->setArguments(QStringList({QStringLiteral("--socket=kwindowsystem-platform-wayland-0"),
+                                               QStringLiteral("--backend=headless"),
+                                               QStringLiteral("--shell=kiosk"),
+                                               QStringLiteral("--no-config")}));
     m_westonProcess->start();
     QVERIFY(m_westonProcess->waitForStarted());
 
     // wait for the socket to appear
-    QDir runtimeDir(m_xdgRuntimeDir.path());
+    const QDir runtimeDir(m_xdgRuntimeDir.path());
     QTRY_VERIFY_WITH_TIMEOUT(runtimeDir.exists(QStringLiteral("kwindowsystem-platform-wayland-0")), 5000);
 }
 
