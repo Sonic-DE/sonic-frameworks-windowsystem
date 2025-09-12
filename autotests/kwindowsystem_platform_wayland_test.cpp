@@ -40,8 +40,10 @@ void TestKWindowsystemPlatformWayland::initTestCase()
     m_westonProcess.reset(new QProcess);
     m_westonProcess->setProgram(westonExec);
     m_westonProcess->setProcessChannelMode(QProcess::ForwardedChannels);
-    m_westonProcess->setArguments(
-        QStringList({QStringLiteral("--socket=kwindowsystem-platform-wayland-0"), QStringLiteral("--backend=headless"), QStringLiteral("--no-config")}));
+    m_westonProcess->setArguments(QStringList({QStringLiteral("--socket=kwindowsystem-platform-wayland-0"),
+                                               QStringLiteral("--backend=headless"),
+                                               QStringLiteral("--shell=kiosk"),
+                                               QStringLiteral("--no-config")}));
     m_westonProcess->start();
     QVERIFY(m_westonProcess->waitForStarted());
 
