@@ -63,4 +63,48 @@ void KWaylandExtras::unexportWindow(QWindow *window)
     }
 }
 
+class XdgActivationTokenRequest : public QObject
+{
+    Q_OBJECT
+
+public:
+    explicit XdgActivationTokenRequest(QWindow *window, uint32_t serial, const QString &appId)
+        : m_serial(serial)
+    {
+        m_promise.start();
+
+        connect(KWaylandExtras::self(), &KWaylandExtras::xdgActivationTokenArrived, this, [this](int serial, const QString &token) {
+            if (m_serial == uint32_t(serial)) {
+                if (!m_promise.isCanceled()) {
+                    m_promise.addResult(token);
+                }
+                m_promise.finish();
+                delete this;
+            }
+        });
+        KWaylandExtras::requestXdgActivationToken(window, m_serial, appId);
+    }
+
+    QFuture<QString> future() const
+    {
+        return m_promise.future();
+    }
+
+private:
+    QPromise<QString> m_promise;
+    uint32_t m_serial;
+};
+
+QFuture<QString> KWaylandExtras::xdgActivationToken(QWindow *window, uint32_t serial, const QString &appId)
+{
+    auto request = new XdgActivationTokenRequest(window, serial, appId);
+    return request->future();
+}
+
+QFuture<QString> KWaylandExtras::xdgActivationToken(QWindow *window, const QString &appId)
+{
+    return xdgActivationToken(window, lastInputSerial(window), appId);
+}
+
+#include "kwaylandextras.moc"
 #include "moc_kwaylandextras.cpp"

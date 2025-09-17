@@ -9,6 +9,7 @@
 #ifndef KWAYLANDEXTRAS_H
 #define KWAYLANDEXTRAS_H
 
+#include <QFuture>
 #include <QObject>
 #include <QWindow>
 
@@ -60,6 +61,22 @@ public:
      * \since 6.0
      */
     Q_INVOKABLE static void unexportWindow(QWindow *window);
+
+    /*!
+     * Requests an xdg_activation_v1 token for a specific window \a window with the given \a appId.
+     * The \a serial indicates an event that triggered the request.
+     *
+     * \since 6.19
+     */
+    static QFuture<QString> xdgActivationToken(QWindow *window, uint32_t serial, const QString &appId);
+
+    /*!
+     * Requests an xdg_activation_v1 token for a specific window \a window with the given \a appId.
+     * The last received input serial will be used to request the token.
+     *
+     * \since 6.19
+     */
+    static QFuture<QString> xdgActivationToken(QWindow *window, const QString &appId);
 
 Q_SIGNALS:
     /*!
