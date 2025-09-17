@@ -31,14 +31,18 @@ public:
      */
     static KWaylandExtras *self();
 
+#if KWINDOWSYSTEM_ENABLE_DEPRECATED_SINCE(6, 19)
     /*!
      * Requests an xdg_activation_v1 token for a specific window \a win with the given \a app_id.
      *
      * \a serial Serial of the event that triggered the request.
      *
      * \sa lastInputSerial
+     * \deprecated [6.19] Use xdgActivationToken() instead.
      */
+    KWINDOWSYSTEM_DEPRECATED_VERSION(6, 19, "Use xdgActivationToken()")
     Q_INVOKABLE static void requestXdgActivationToken(QWindow *win, uint32_t serial, const QString &app_id);
+#endif
 
     /*!
      * Offers the seat's current serial for the given \a window.

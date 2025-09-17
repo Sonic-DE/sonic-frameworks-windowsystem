@@ -26,6 +26,7 @@ KWaylandExtras *KWaylandExtras::self()
     return &instance;
 }
 
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(6, 19)
 void KWaylandExtras::requestXdgActivationToken(QWindow *window, uint32_t serial, const QString &app_id)
 {
     auto dv2 = dynamic_cast<KWindowSystemPrivateV2 *>(KWindowSystem::d_func());
@@ -39,6 +40,7 @@ void KWaylandExtras::requestXdgActivationToken(QWindow *window, uint32_t serial,
     }
     dv2->requestToken(window, serial, app_id);
 }
+#endif
 
 quint32 KWaylandExtras::lastInputSerial(QWindow *window)
 {
@@ -63,12 +65,12 @@ void KWaylandExtras::unexportWindow(QWindow *window)
     }
 }
 
-class XdgActivationTokenRequest : public QObject
+class KXdgActivationTokenRequest : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit XdgActivationTokenRequest(QWindow *window, uint32_t serial, const QString &appId)
+    explicit KXdgActivationTokenRequest(QWindow *window, uint32_t serial, const QString &appId)
         : m_serial(serial)
     {
         m_promise.start();
@@ -82,7 +84,14 @@ public:
                 delete this;
             }
         });
-        KWaylandExtras::requestXdgActivationToken(window, m_serial, appId);
+
+        if (auto platform = dynamic_cast<KWindowSystemPrivateV2 *>(KWindowSystem::d_func())) {
+            platform->requestToken(window, serial, appId);
+        } else {
+            QTimer::singleShot(0, this, [serial] {
+                Q_EMIT KWaylandExtras::self()->xdgActivationTokenArrived(serial, {});
+            });
+        }
     }
 
     QFuture<QString> future() const
@@ -97,7 +106,7 @@ private:
 
 QFuture<QString> KWaylandExtras::xdgActivationToken(QWindow *window, uint32_t serial, const QString &appId)
 {
-    auto request = new XdgActivationTokenRequest(window, serial, appId);
+    auto request = new KXdgActivationTokenRequest(window, serial, appId);
     return request->future();
 }
 
