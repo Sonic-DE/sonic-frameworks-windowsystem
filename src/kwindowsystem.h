@@ -209,6 +209,7 @@ private:
     friend class KWindowSystemStaticContainer;
     friend class KX11Extras;
     friend class KWaylandExtras;
+    friend class KXdgActivationTokenRequest;
 
     KWindowSystem()
     {
