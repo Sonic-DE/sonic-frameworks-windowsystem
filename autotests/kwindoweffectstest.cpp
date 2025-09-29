@@ -246,6 +246,7 @@ void KWindowEffectsTest::testEffectAvailable()
     QVERIFY(claimedSpy.isValid());
     compositorSelection.claim(true);
     QVERIFY(claimedSpy.wait());
+    QVERIFY(compositingChangedSpy.wait());
     QCOMPARE(compositingChangedSpy.count(), 1);
     QCOMPARE(compositingChangedSpy.first().first().toBool(), true);
     QVERIFY(KX11Extras::compositingActive());
