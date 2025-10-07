@@ -70,7 +70,21 @@ QFuture<QString> KWaylandExtras::xdgActivationToken(QWindow *window, uint32_t se
     if (auto dv3 = dynamic_cast<KWindowSystemPrivateV3 *>(KWindowSystem::d_func())) {
         return dv3->xdgActivationToken(window, serial, appId);
     } else {
-        return QFuture<QString>();
+        requestXdgActivationToken(window, serial, appId);
+        QPromise<QString> promise;
+        auto future = promise.future();
+
+        connect(
+            self(),
+            &KWaylandExtras::xdgActivationTokenArrived,
+            self(),
+            [p = std::move(promise)](int /*serial*/, const QString &token) mutable {
+                p.addResult(token);
+                p.finish();
+            },
+            Qt::SingleShotConnection);
+
+        return future;
     }
 }
 
