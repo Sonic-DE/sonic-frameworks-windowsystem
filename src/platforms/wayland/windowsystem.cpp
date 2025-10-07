@@ -307,12 +307,18 @@ QFuture<QString> WindowSystem::xdgActivationToken(QWindow *window, uint32_t seri
 {
     WaylandXdgActivationV1 *activation = WaylandXdgActivationV1::self();
     if (!activation->isActive()) {
-        return QFuture<QString>();
+        QPromise<QString> p;
+        p.addResult(QString());
+        p.finish();
+        return p.future();
     }
 
     auto waylandApp = qGuiApp->nativeInterface<QNativeInterface::QWaylandApplication>();
     if (!waylandApp) {
-        return QFuture<QString>();
+        QPromise<QString> p;
+        p.addResult(QString());
+        p.finish();
+        return p.future();
     }
 
     if (window) {
