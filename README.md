@@ -1,4 +1,4 @@
-# KWindowSystem
+# sonic-windowsystem
 
 Access to the windowing system
 
@@ -6,7 +6,7 @@ Access to the windowing system
 
 Convenience access to certain properties and features of the windowing system.
 
-KWindowSystem provides information about the windowing system and allows interaction with
+sonic-windowsystem provides information about the windowing system and allows interaction with
 the windowing system. It provides an high level API which is windowing system independent and
 has platform specific implementations. This API is inspired by X11 and thus not all functionality
 is available on all windowing systems.
