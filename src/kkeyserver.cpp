@@ -1333,18 +1333,20 @@ uint getModsRequired(uint sym)
 
     uchar code = XKeysymToKeycode(QX11Info::display(), sym);
     if (code) {
+        xcb_key_symbols_t *symbols = xcb_key_symbols_alloc(QX11Info::connection());
         // need to check index 0 before the others, so that a null-mod
         //  can take precedence over the others, in case the modified
         //  key produces the same symbol.
-        if (sym == XKeycodeToKeysym(QX11Info::display(), code, 0)) {
+        if (sym == xcb_key_symbols_get_keysym(symbols, code, 0)) {
             ;
-        } else if (sym == XKeycodeToKeysym(QX11Info::display(), code, 1)) {
+        } else if (sym == xcb_key_symbols_get_keysym(symbols, code, 1)) {
             mod = Qt::SHIFT;
-        } else if (sym == XKeycodeToKeysym(QX11Info::display(), code, 2)) {
+        } else if (sym == xcb_key_symbols_get_keysym(symbols, code, 2)) {
             mod = MODE_SWITCH;
-        } else if (sym == XKeycodeToKeysym(QX11Info::display(), code, 3)) {
+        } else if (sym == xcb_key_symbols_get_keysym(symbols, code, 3)) {
             mod = Qt::SHIFT | MODE_SWITCH;
         }
+        xcb_key_symbols_free(symbols);
     }
     return mod;
 }
@@ -1584,7 +1586,9 @@ bool xEventToQt(XEvent *e, int *keyQt)
     // If numlock is active and a keypad key is pressed, XOR the SHIFT state.
     //  e.g., KP_4 => Shift+KP_Left, and Shift+KP_4 => KP_Left.
     if (e->xkey.state & modXNumLock()) {
-        uint sym = XKeycodeToKeysym(QX11Info::display(), keyCodeX, 0);
+        xcb_key_symbols_t *symbols = xcb_key_symbols_alloc(QX11Info::connection());
+        uint sym = xcb_key_symbols_get_keysym(symbols, keyCodeX, 0);
+        xcb_key_symbols_free(symbols);
         // TODO: what's the xor operator in c++?
         // If this is a keypad key,
         if (sym >= XK_KP_Space && sym <= XK_KP_9) {
