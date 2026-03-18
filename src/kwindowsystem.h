@@ -112,8 +112,6 @@ public:
      *
      * This function should be used before a dialog is shown for a window
      * that belongs to another application.
-     *
-     * On Wayland, use the QString overload to provide an XDG Foreign token.
      */
     static void setMainWindow(QWindow *subwindow, WId mainwindow);
 
@@ -139,9 +137,6 @@ public:
      *
      * For X11, this updates the id for the Startup Notification protocol,
      * taking the id from QX11Info::nextStartupId(), if not empty.
-     * For Wayland, this updates the token for the XDG Activation protocol,
-     * taking the token from the "XDG_ACTIVATION_TOKEN" environment variable
-     * and then unsetting it, if not empty.
      *
      * \a window the main window (needed by X11 platform)
      *
@@ -164,7 +159,6 @@ public:
     enum class Platform {
         Unknown,
         X11,
-        Wayland,
     };
     Q_ENUM(Platform)
     /*!
@@ -208,7 +202,6 @@ Q_SIGNALS:
 private:
     friend class KWindowSystemStaticContainer;
     friend class KX11Extras;
-    friend class KWaylandExtras;
 
     KWindowSystem()
     {

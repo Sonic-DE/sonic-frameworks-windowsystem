@@ -29,86 +29,61 @@ KWaylandExtras *KWaylandExtras::self()
 #if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(6, 19)
 void KWaylandExtras::requestXdgActivationToken(QWindow *window, uint32_t serial, const QString &app_id)
 {
-    auto dv2 = dynamic_cast<KWindowSystemPrivateV2 *>(KWindowSystem::d_func());
-    if (!dv2) {
-        // Ensure that xdgActivationTokenArrived is always emitted asynchronously
-        QTimer::singleShot(0, [serial] {
-            Q_EMIT KWaylandExtras::self()->xdgActivationTokenArrived(serial, {});
-        });
-
-        return;
-    }
-    dv2->requestToken(window, serial, app_id);
+    // Stub: no-op because Wayland is not available
+    Q_UNUSED(window);
+    Q_UNUSED(serial);
+    Q_UNUSED(app_id);
 }
 #endif
 
 quint32 KWaylandExtras::lastInputSerial(QWindow *window)
 {
-    auto dv2 = dynamic_cast<KWindowSystemPrivateV2 *>(KWindowSystem::d_func());
-    if (!dv2) {
-        return 0;
-    }
-    return dv2->lastInputSerial(window);
+    // Stub: return 0 because Wayland is not available
+    Q_UNUSED(window);
+    return 0;
 }
 
 void KWaylandExtras::exportWindow(QWindow *window)
 {
-    if (auto dv2 = dynamic_cast<KWindowSystemPrivateV2 *>(KWindowSystem::d_func())) {
-        dv2->exportWindow(window);
-    }
+    // Stub: no-op because Wayland is not available
+    Q_UNUSED(window);
 }
 
 void KWaylandExtras::unexportWindow(QWindow *window)
 {
-    if (auto dv2 = dynamic_cast<KWindowSystemPrivateV2 *>(KWindowSystem::d_func())) {
-        dv2->unexportWindow(window);
-    }
+    // Stub: no-op because Wayland is not available
+    Q_UNUSED(window);
 }
 
 QFuture<QString> KWaylandExtras::xdgActivationToken(QWindow *window, uint32_t serial, const QString &appId)
 {
-    if (auto dv3 = dynamic_cast<KWindowSystemPrivateV3 *>(KWindowSystem::d_func())) {
-        return dv3->xdgActivationToken(window, serial, appId);
-    } else {
-#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(6, 19)
-        requestXdgActivationToken(window, serial, appId);
-        QPromise<QString> promise;
-        auto future = promise.future();
-
-        connect(
-            self(),
-            &KWaylandExtras::xdgActivationTokenArrived,
-            self(),
-            [p = std::move(promise)](int /*serial*/, const QString &token) mutable {
-                p.addResult(token);
-                p.finish();
-            },
-            Qt::SingleShotConnection);
-
-        return future;
-#else
-        return QtFuture::makeReadyValueFuture(QString());
-#endif
-    }
+    // Stub: return empty future because Wayland is not available
+    Q_UNUSED(window);
+    Q_UNUSED(serial);
+    Q_UNUSED(appId);
+    return QtFuture::makeReadyValueFuture(QString());
 }
 
 QFuture<QString> KWaylandExtras::xdgActivationToken(QWindow *window, const QString &appId)
 {
-    return xdgActivationToken(window, lastInputSerial(window), appId);
+    // Stub: return empty future because Wayland is not available
+    Q_UNUSED(window);
+    Q_UNUSED(appId);
+    return QtFuture::makeReadyValueFuture(QString());
 }
 
 void KWaylandExtras::setXdgToplevelTag(QWindow *window, const QString &tag)
 {
-    if (auto dv4 = dynamic_cast<KWindowSystemPrivateV4 *>(KWindowSystem::d_func())) {
-        dv4->setXdgToplevelTag(window, tag);
-    }
+    // Stub: no-op because Wayland is not available
+    Q_UNUSED(window);
+    Q_UNUSED(tag);
 }
 
 void KWaylandExtras::setXdgToplevelDescription(QWindow *window, const QString &description)
 {
-    if (auto dv4 = dynamic_cast<KWindowSystemPrivateV4 *>(KWindowSystem::d_func())) {
-        dv4->setXdgToplevelDescription(window, description);
-    }
+    // Stub: no-op because Wayland is not available
+    Q_UNUSED(window);
+    Q_UNUSED(description);
 }
 
 #include "moc_kwaylandextras.cpp"
