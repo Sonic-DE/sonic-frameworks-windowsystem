@@ -3,6 +3,11 @@ cmake_minimum_required(VERSION 3.27)
 set(KF_VERSION "6.24.0") # handled by release scripts
 project(KWindowSystem VERSION ${KF_VERSION})
 
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # ECM setup
 include(FeatureSummary)
 find_package(ECM 6.24.0  NO_MODULE)
@@ -15,6 +20,14 @@ set(CMAKE_AUTOUIC ON)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDEGitCommitHooks)
+
+# Include KDEClangFormat and filter out .ccls-cache directory
+include(KDEClangFormat)
+file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES *.cpp *.h)
+list(FILTER ALL_CLANG_FORMAT_SOURCE_FILES EXCLUDE REGEX ".*\\.ccls-cache/.*")
+kde_clang_format(${ALL_CLANG_FORMAT_SOURCE_FILES})
+kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
+
 include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 
 include(ECMGenerateExportHeader)
