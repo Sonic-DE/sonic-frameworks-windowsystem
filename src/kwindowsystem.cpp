@@ -98,19 +98,13 @@ void KWindowSystem::setMainWindow(QWindow *subWindow, WId mainWindowId)
 void KWindowSystem::setMainWindow(QWindow *subWindow, const QString &mainWindowId)
 {
     Q_D(KWindowSystem);
-    if (isPlatformWayland()) {
-        if (auto dv2 = dynamic_cast<KWindowSystemPrivateV2 *>(d)) {
-            dv2->setMainWindow(subWindow, mainWindowId);
-        }
+    bool ok = false;
+    // base 0 means "C style" parsing with 0x for base 16, 0b for base 2, etc.
+    WId wid = mainWindowId.toULongLong(&ok, 0);
+    if (ok) {
+        setMainWindow(subWindow, wid);
     } else {
-        bool ok = false;
-        // base 0 means "C style" parsing with 0x for base 16, 0b for base 2, etc.
-        WId wid = mainWindowId.toULongLong(&ok, 0);
-        if (ok) {
-            setMainWindow(subWindow, wid);
-        } else {
-            qCWarning(LOG_KWINDOWSYSTEM) << "Failed to convert" << mainWindowId << "to WId";
-        }
+        qCWarning(LOG_KWINDOWSYSTEM) << "Failed to convert" << mainWindowId << "to WId";
     }
 }
 
@@ -136,13 +130,8 @@ static inline KWindowSystem::Platform initPlatform()
             platformName = flatpakPlatform;
         }
     }
-#if KWINDOWSYSTEM_HAVE_X11
     if (platformName == QLatin1String("xcb")) {
         return KWindowSystem::Platform::X11;
-    }
-#endif
-    if (platformName.startsWith(QLatin1String("wayland"), Qt::CaseInsensitive)) {
-        return KWindowSystem::Platform::Wayland;
     }
     return KWindowSystem::Platform::Unknown;
 }
@@ -158,25 +147,16 @@ bool KWindowSystem::isPlatformX11()
     return platform() == Platform::X11;
 }
 
-bool KWindowSystem::isPlatformWayland()
-{
-    return platform() == Platform::Wayland;
-}
-
 void KWindowSystem::updateStartupId(QWindow *window)
 {
     // clang-format off
     // TODO: move to a new KWindowSystemPrivate interface
-#if KWINDOWSYSTEM_HAVE_X11
     if (isPlatformX11()) {
         const QByteArray startupId = QX11Info::nextStartupId();
         if (!startupId.isEmpty()) {
             KStartupInfo::setNewStartupId(window, startupId);
         }
     }
-#else
-    Q_UNUSED(window);
-#endif
     // clang-format on
 }
 

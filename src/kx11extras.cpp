@@ -844,7 +844,6 @@ QPixmap KX11Extras::icon(WId win, int width, int height, bool scale, int flags)
 
 QPixmap KX11Extras::icon(WId win, int width, int height, bool scale, int flags, NETWinInfo *info)
 {
-    // No CHECK_X11 here, kwin_wayland calls this to get the icon for XWayland windows
     width *= qGuiApp->devicePixelRatio();
     height *= qGuiApp->devicePixelRatio();
 

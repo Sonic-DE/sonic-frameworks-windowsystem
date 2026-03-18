@@ -18,9 +18,5 @@ Item {
         QQC2.Label {
             text: "Is X11: " + KWindowSystem.isPlatformX11
         }
-
-        QQC2.Label {
-            text: "Is Wayland: " + KWindowSystem.isPlatformWayland
-        }
     }
 }

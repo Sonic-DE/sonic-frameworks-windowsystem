@@ -23,7 +23,8 @@ class NETEventFilter;
  * \qmltype KX11Extras
  * \inqmlmodule org.kde.kwindowsystem
  * \nativetype KX11Extras
- * \brief A collection of functions to obtain information from and manipulate X11 windows.
+ * \brief A collection of functions to obtain information from and manipulate
+ * X11 windows.
  *
  * These are generally not applicable to other window systems.
  *
@@ -32,7 +33,8 @@ class NETEventFilter;
 /*!
  * \class KX11Extras
  * \inmodule KWindowSystem
- * \brief A collection of functions to obtain information from and manipulate X11 windows.
+ * \brief A collection of functions to obtain information from and manipulate
+ * X11 windows.
  *
  * These are generally not applicable to other window systems.
  *
@@ -129,9 +131,9 @@ public:
     static void forceActiveWindow(WId win, long time = 0);
 
     /*!
-     * \qmlmethod void KX11Extras::forceActiveWindow(Window *window, long time = 0)
-     * Sets \a window to be the active window, with the optional
-     * X server timestamp \a time of the user activity that caused this request.
+     * \qmlmethod void KX11Extras::forceActiveWindow(Window *window, long time =
+     * 0) Sets \a window to be the active window, with the optional X server
+     * timestamp \a time of the user activity that caused this request.
      *
      * Note that this should be called only in special cases, applications
      * shouldn't force themselves or other windows to be the active
@@ -214,9 +216,9 @@ public:
     /*!
      * \overload
      *
-     * Overloaded variant that allows specifying from which sources the icon should be read.
-     * You should usually prefer the simpler variant which tries all possibilities to get
-     * an icon.
+     * Overloaded variant that allows specifying from which sources the icon
+     * should be read. You should usually prefer the simpler variant which tries
+     * all possibilities to get an icon.
      *
      * \a win The id of the window.
      * \a width The desired width, or -1.
@@ -230,12 +232,12 @@ public:
     /*!
      * \overload
      *
-     * Overloaded variant that allows passing in the NETWinInfo \a info to use for reading the
-     * information. This variant is only useful on the X11 platform, other platforms do not
-     * use NETWinInfo and delegate to the variant without NETWinInfo. Though if compiled with
-     * X11 support the X11 variant is used on other platforms if \a info is not \c nullptr.
-     * This can be used by applications using e.g. platform wayland but also connecting to an
-     * XServer.
+     * Overloaded variant that allows passing in the NETWinInfo \a info to use for
+     * reading the information. This variant is only useful on the X11 platform,
+     * other platforms do not use NETWinInfo and delegate to the variant without
+     * NETWinInfo. Though if compiled with X11 support the X11 variant is used on
+     * other platforms if \a info is not \c nullptr. This can be used by
+     * applications connecting to an XServer.
      *
      * The NETWinInfo must be constructed with properties:
      *
@@ -313,8 +315,8 @@ public:
     /*!
      * Sets the strut of window \a win to \a left_width
      * ranging from \a left_start to \a left_end on the left edge,
-     * and simiarly for the other edges. For not reserving a strut, pass 0 as the width.
-     * E.g. to reserve 10x10 square in the topleft corner, use e.g.
+     * and simiarly for the other edges. For not reserving a strut, pass 0 as the
+     * width. E.g. to reserve 10x10 square in the topleft corner, use e.g.
      * setExtendedStrut( w, 10, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 ).
      *
      * \a win The id of the window.
@@ -454,7 +456,8 @@ Q_SIGNALS:
     void workAreaChanged();
 
     /*!
-     * Something changed with the struts, may or may not have changed the work area.
+     * Something changed with the struts, may or may not have changed the work
+     * area.
      *
      * Usually just using the workAreaChanged() signal is sufficient.
      */

@@ -33,13 +33,6 @@ class KWINDOWSYSTEM_EXPORT KWindowSystem : public QObject
 {
     Q_OBJECT
     /*!
-     * \qmlproperty bool KWindowSystem::isPlatformWayland
-     */
-    /*!
-     * \property KWindowSystem::isPlatformWayland
-     */
-    Q_PROPERTY(bool isPlatformWayland READ isPlatformWayland CONSTANT)
-    /*!
      * \qmlproperty bool KWindowSystem::isPlatformX11
      */
     /*!
@@ -112,8 +105,6 @@ public:
      *
      * This function should be used before a dialog is shown for a window
      * that belongs to another application.
-     *
-     * On Wayland, use the QString overload to provide an XDG Foreign token.
      */
     static void setMainWindow(QWindow *subwindow, WId mainwindow);
 
@@ -139,9 +130,6 @@ public:
      *
      * For X11, this updates the id for the Startup Notification protocol,
      * taking the id from QX11Info::nextStartupId(), if not empty.
-     * For Wayland, this updates the token for the XDG Activation protocol,
-     * taking the token from the "XDG_ACTIVATION_TOKEN" environment variable
-     * and then unsetting it, if not empty.
      *
      * \a window the main window (needed by X11 platform)
      *
@@ -156,15 +144,12 @@ public:
      *        A platform unknown to the application is used
      * \value X11
      *        The X11 window system.
-     * \value Wayland
-     *        The Wayland window system.
      * \sa platform()
      * \since 5.25
      **/
     enum class Platform {
         Unknown,
         X11,
-        Wayland,
     };
     Q_ENUM(Platform)
     /*!
@@ -179,18 +164,9 @@ public:
     /*!
      * Returns whether the Platform is X11.
      * \sa platform
-     * \sa isPlatformWayland
      * \since 5.25
      **/
     static bool isPlatformX11();
-
-    /*!
-     * Returns whether the Platform is Wayland.
-     * \sa platform
-     * \sa isPlatformX11
-     * \since 5.25
-     **/
-    static bool isPlatformWayland();
 
     /*!
      * Sets the \a token that will be used when activateWindow is called next
@@ -208,7 +184,6 @@ Q_SIGNALS:
 private:
     friend class KWindowSystemStaticContainer;
     friend class KX11Extras;
-    friend class KWaylandExtras;
 
     KWindowSystem()
     {

@@ -1,6 +1,3 @@
 if(KWINDOWSYSTEM_X11)
     add_subdirectory(xcb)
 endif()
-if(KWINDOWSYSTEM_WAYLAND)
-    add_subdirectory(wayland)
-endif()

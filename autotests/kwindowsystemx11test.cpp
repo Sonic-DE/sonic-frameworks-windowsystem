@@ -342,7 +342,6 @@ void KWindowSystemX11Test::testPlatformX11()
 {
     QCOMPARE(KWindowSystem::platform(), KWindowSystem::Platform::X11);
     QCOMPARE(KWindowSystem::isPlatformX11(), true);
-    QCOMPARE(KWindowSystem::isPlatformWayland(), false);
 }
 
 QTEST_MAIN(KWindowSystemX11Test)

@@ -10,8 +10,6 @@ set(ECM_TEST_NAME_PREFIX "kwindowsystem-")
 
 find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Test Widgets)
 
-add_subdirectory(helper)
-
 macro(KWINDOWSYSTEM_UNIT_TESTS)
    foreach(_testname ${ARGN})
       set(libs KF6::WindowSystem Qt6::Test Qt6::Widgets Qt6::GuiPrivate)
@@ -50,16 +48,10 @@ if(KWINDOWSYSTEM_X11)
         netwininfotestwm
         compositingenabled_test
     )
-    
+
     kwindowsystem_executable_tests(
         fixx11h_test
         fixx11h_test2
         dontcrashmapviewport
     )
 endif()
-
-ecm_add_test(kwindowsystem_platform_wayland_test.cpp
-    LINK_LIBRARIES KF6::WindowSystem Qt6::Test
-    TEST_NAME kwindowsystemplatformwaylandtest
-    GUI
-)
