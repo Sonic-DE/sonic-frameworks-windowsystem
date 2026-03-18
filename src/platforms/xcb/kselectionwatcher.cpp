@@ -7,7 +7,6 @@
 #include "kselectionwatcher.h"
 
 #include "kwindowsystem.h"
-#include <config-kwindowsystem.h>
 
 #include <QAbstractNativeEventFilter>
 #include <QCoreApplication>
@@ -84,10 +83,7 @@ private:
 
 KSelectionWatcher::Private *KSelectionWatcher::Private::create(KSelectionWatcher *watcher, xcb_atom_t selection_P, int screen_P)
 {
-    if (KWindowSystem::isPlatformX11()) {
-        return create(watcher, selection_P, QX11Info::connection(), QX11Info::appRootWindow(screen_P));
-    }
-    return nullptr;
+    return create(watcher, selection_P, QX11Info::connection(), QX11Info::appRootWindow(screen_P));
 }
 
 KSelectionWatcher::Private *KSelectionWatcher::Private::create(KSelectionWatcher *watcher, xcb_atom_t selection_P, xcb_connection_t *c, xcb_window_t root)
@@ -97,10 +93,7 @@ KSelectionWatcher::Private *KSelectionWatcher::Private::create(KSelectionWatcher
 
 KSelectionWatcher::Private *KSelectionWatcher::Private::create(KSelectionWatcher *watcher, const char *selection_P, int screen_P)
 {
-    if (KWindowSystem::isPlatformX11()) {
-        return create(watcher, selection_P, QX11Info::connection(), QX11Info::appRootWindow(screen_P));
-    }
-    return nullptr;
+    return create(watcher, selection_P, QX11Info::connection(), QX11Info::appRootWindow(screen_P));
 }
 
 KSelectionWatcher::Private *KSelectionWatcher::Private::create(KSelectionWatcher *watcher, const char *selection_P, xcb_connection_t *c, xcb_window_t root)

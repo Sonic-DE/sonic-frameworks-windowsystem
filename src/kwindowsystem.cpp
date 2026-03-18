@@ -8,11 +8,7 @@
 #include "kwindowsystem_dummy_p.h"
 #include "pluginwrapper_p.h"
 
-#include <config-kwindowsystem.h>
-
-#if KWINDOWSYSTEM_HAVE_X11
 #include "kstartupinfo.h"
-#endif
 
 #include <QGuiApplication>
 #include <QMetaMethod>
@@ -20,9 +16,7 @@
 #include <QPluginLoader>
 #include <QTimer>
 #include <QWindow>
-#if KWINDOWSYSTEM_HAVE_X11
 #include <private/qtx11extras_p.h>
-#endif
 
 // QPoint and QSize all have handy / operators which are useful for scaling, positions and sizes for high DPI support
 // QRect does not, so we create one for internal purposes within this class
@@ -142,20 +136,13 @@ KWindowSystem::Platform KWindowSystem::platform()
     return s_platform;
 }
 
-bool KWindowSystem::isPlatformX11()
-{
-    return platform() == Platform::X11;
-}
-
 void KWindowSystem::updateStartupId(QWindow *window)
 {
     // clang-format off
     // TODO: move to a new KWindowSystemPrivate interface
-    if (isPlatformX11()) {
-        const QByteArray startupId = QX11Info::nextStartupId();
-        if (!startupId.isEmpty()) {
-            KStartupInfo::setNewStartupId(window, startupId);
-        }
+    const QByteArray startupId = QX11Info::nextStartupId();
+    if (!startupId.isEmpty()) {
+        KStartupInfo::setNewStartupId(window, startupId);
     }
     // clang-format on
 }

@@ -33,14 +33,6 @@ class KWINDOWSYSTEM_EXPORT KWindowSystem : public QObject
 {
     Q_OBJECT
     /*!
-     * \qmlproperty bool KWindowSystem::isPlatformX11
-     */
-    /*!
-     * \property KWindowSystem::isPlatformX11
-     */
-    Q_PROPERTY(bool isPlatformX11 READ isPlatformX11 CONSTANT)
-
-    /*!
      * \qmlproperty bool KWindowSystem::showingDesktop
      *
      * \brief Whether "show desktop" is currently active.
@@ -160,13 +152,6 @@ public:
      * \since 5.25
      **/
     static Platform platform();
-
-    /*!
-     * Returns whether the Platform is X11.
-     * \sa platform
-     * \since 5.25
-     **/
-    static bool isPlatformX11();
 
     /*!
      * Sets the \a token that will be used when activateWindow is called next

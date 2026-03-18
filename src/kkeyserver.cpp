@@ -1094,12 +1094,6 @@ bool initializeMods()
     g_super_mask = 0;
     g_hyper_mask = 0;
 
-    if (!QX11Info::isPlatformX11()) {
-        qCWarning(LOG_KKEYSERVER_X11) << "X11 implementation of KKeyServer accessed from non-X11 platform! This is an application bug.";
-        g_bInitializedMods = true;
-        return false;
-    }
-
     checkDisplay();
     xcb_key_symbols_t *symbols = xcb_key_symbols_alloc(QX11Info::connection());
     XModifierKeymap *xmk = XGetModifierMapping(QX11Info::display());
@@ -1310,10 +1304,6 @@ bool keyboardHasMetaKey()
 
 uint getModsRequired(uint sym)
 {
-    if (!QX11Info::isPlatformX11()) {
-        qCWarning(LOG_KKEYSERVER_X11) << "X11 implementation of KKeyServer accessed from non-X11 platform! This is an application bug.";
-        return 0;
-    }
     uint mod = 0;
 
     // FIXME: This might not be true on all keyboard layouts!
@@ -1354,10 +1344,6 @@ uint getModsRequired(uint sym)
 #if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(6, 0)
 bool keyQtToCodeX(int keyQt, int *keyCode)
 {
-    if (!QX11Info::isPlatformX11()) {
-        qCWarning(LOG_KKEYSERVER_X11) << "X11 implementation of KKeyServer accessed from non-X11 platform! This is an application bug.";
-        return false;
-    }
     int sym;
     uint mod;
     keyQtToSymX(keyQt, &sym);
@@ -1380,10 +1366,6 @@ bool keyQtToCodeX(int keyQt, int *keyCode)
 QList<int> keyQtToCodeXs(int keyQt)
 {
     QList<int> keyCodes;
-    if (!QX11Info::isPlatformX11()) {
-        qCWarning(LOG_KKEYSERVER_X11) << "X11 implementation of KKeyServer accessed from non-X11 platform! This is an application bug.";
-        return keyCodes;
-    }
     uint mod;
     const QList<int> syms(keyQtToSymXs(keyQt));
     keyQtToModX(keyQt, &mod);
@@ -1547,10 +1529,6 @@ bool modXToQt(uint modX, int *modQt)
 
 bool codeXToSym(uchar codeX, uint modX, uint *sym)
 {
-    if (!QX11Info::isPlatformX11()) {
-        qCWarning(LOG_KKEYSERVER_X11) << "X11 implementation of KKeyServer accessed from non-X11 platform! This is an application bug.";
-        return false;
-    }
     KeySym keySym;
     XKeyPressedEvent event;
 

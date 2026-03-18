@@ -6,7 +6,6 @@
 
 #ifndef KXERRORHANDLER_H
 #define KXERRORHANDLER_H
-#include <config-kwindowsystem.h>
 
 #include <mutex>
 

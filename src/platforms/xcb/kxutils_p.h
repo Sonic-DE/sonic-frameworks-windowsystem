@@ -9,9 +9,6 @@
 #define KXUTILS_H
 
 #include <QPixmap>
-#include <config-kwindowsystem.h>
-
-#if KWINDOWSYSTEM_HAVE_X11
 
 #include <kwindowsystem_export.h>
 
@@ -46,7 +43,5 @@ int timestampCompare(unsigned long time1, unsigned long time2);
 int timestampDiff(unsigned long time1, unsigned long time2);
 
 } // namespace
-
-#endif // KWINDOWSYSTEM_HAVE_X11
 
 #endif

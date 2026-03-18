@@ -10,8 +10,6 @@
 #include "kx11extras.h"
 #include "netwm.h"
 
-#include <config-kwindowsystem.h>
-
 #include "private/qtx11extras_p.h"
 #include <QDebug>
 #include <QRect>
@@ -58,10 +56,6 @@ KWindowInfo::KWindowInfo(WId window, NET::Properties properties, NET::Properties
     d->window = window;
     d->properties = properties;
     d->properties2 = properties2;
-
-    if (!KWindowSystem::isPlatformX11()) {
-        return;
-    }
 
     KXErrorHandler handler;
     if (properties & NET::WMVisibleIconName) {
@@ -137,10 +131,6 @@ KWindowInfo &KWindowInfo::operator=(const KWindowInfo &other)
 
 bool KWindowInfo::valid(bool withdrawn_is_valid) const
 {
-    if (!KWindowSystem::isPlatformX11()) {
-        return false;
-    }
-
     if (!d->m_valid) {
         return false;
     }
@@ -155,15 +145,8 @@ WId KWindowInfo::win() const
     return d->window;
 }
 
-#define CHECK_X11                                                                                                                                              \
-    if (!KWindowSystem::isPlatformX11()) {                                                                                                                     \
-        qCWarning(LOG_KWINDOWSYSTEM) << "KWindowInfo is only functional when running on X11";                                                                  \
-        return {};                                                                                                                                             \
-    }
-
 NET::States KWindowInfo::state() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties() & NET::WMState)) {
         qWarning() << "Pass NET::WMState to KWindowInfo";
@@ -174,13 +157,11 @@ NET::States KWindowInfo::state() const
 
 bool KWindowInfo::hasState(NET::States s) const
 {
-    CHECK_X11
     return (state() & s) == s;
 }
 
 bool KWindowInfo::icccmCompliantMappingState() const
 {
-    CHECK_X11
     static enum {
         noidea,
         yes,
@@ -196,7 +177,6 @@ bool KWindowInfo::icccmCompliantMappingState() const
 // see NETWM spec section 7.6
 bool KWindowInfo::isMinimized() const
 {
-    CHECK_X11
     if (mappingState() != NET::Iconic) {
         return false;
     }
@@ -211,7 +191,6 @@ bool KWindowInfo::isMinimized() const
 
 NET::MappingState KWindowInfo::mappingState() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties() & NET::XAWMState)) {
         qWarning() << "Pass NET::XAWMState to KWindowInfo";
@@ -222,7 +201,6 @@ NET::MappingState KWindowInfo::mappingState() const
 
 NETExtendedStrut KWindowInfo::extendedStrut() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties2() & NET::WM2ExtendedStrut)) {
         qWarning() << "Pass NET::WM2ExtendedStrut to KWindowInfo";
@@ -259,7 +237,6 @@ NETExtendedStrut KWindowInfo::extendedStrut() const
 
 NET::WindowType KWindowInfo::windowType(NET::WindowTypes supported_types) const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties() & NET::WMWindowType)) {
         qWarning() << "Pass NET::WMWindowType to KWindowInfo";
@@ -281,7 +258,6 @@ NET::WindowType KWindowInfo::windowType(NET::WindowTypes supported_types) const
 
 QString KWindowInfo::visibleName() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties() & NET::WMVisibleName)) {
         qWarning() << "Pass NET::WMVisibleName to KWindowInfo";
@@ -292,7 +268,6 @@ QString KWindowInfo::visibleName() const
 
 QString KWindowInfo::visibleNameWithState() const
 {
-    CHECK_X11
     QString s = visibleName();
     if (isMinimized()) {
         s.prepend(QLatin1Char('('));
@@ -303,7 +278,6 @@ QString KWindowInfo::visibleNameWithState() const
 
 QString KWindowInfo::name() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties() & NET::WMName)) {
         qWarning() << "Pass NET::WMName to KWindowInfo";
@@ -314,7 +288,6 @@ QString KWindowInfo::name() const
 
 QString KWindowInfo::visibleIconName() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties() & NET::WMVisibleIconName)) {
         qWarning() << "Pass NET::WMVisibleIconName to KWindowInfo";
@@ -334,7 +307,6 @@ QString KWindowInfo::visibleIconName() const
 
 QString KWindowInfo::visibleIconNameWithState() const
 {
-    CHECK_X11
     QString s = visibleIconName();
     if (isMinimized()) {
         s.prepend(QLatin1Char('('));
@@ -345,7 +317,6 @@ QString KWindowInfo::visibleIconNameWithState() const
 
 QString KWindowInfo::iconName() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties() & NET::WMIconName)) {
         qWarning() << "Pass NET::WMIconName to KWindowInfo";
@@ -362,13 +333,11 @@ QString KWindowInfo::iconName() const
 
 bool KWindowInfo::isOnCurrentDesktop() const
 {
-    CHECK_X11
     return isOnDesktop(KX11Extras::currentDesktop());
 }
 
 bool KWindowInfo::isOnDesktop(int desktop) const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties() & NET::WMDesktop)) {
         qWarning() << "Pass NET::WMDesktop to KWindowInfo";
@@ -385,7 +354,6 @@ bool KWindowInfo::isOnDesktop(int desktop) const
 
 bool KWindowInfo::onAllDesktops() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties() & NET::WMDesktop)) {
         qWarning() << "Pass NET::WMDesktop to KWindowInfo";
@@ -403,7 +371,6 @@ bool KWindowInfo::onAllDesktops() const
 
 int KWindowInfo::desktop() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties() & NET::WMDesktop)) {
         qWarning() << "Pass NET::WMDesktop to KWindowInfo";
@@ -420,7 +387,6 @@ int KWindowInfo::desktop() const
 
 QStringList KWindowInfo::activities() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties2() & NET::WM2Activities)) {
         qWarning() << "Pass NET::WM2Activities to KWindowInfo";
@@ -434,7 +400,6 @@ QStringList KWindowInfo::activities() const
 
 QRect KWindowInfo::geometry() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties() & NET::WMGeometry)) {
         qWarning() << "Pass NET::WMGeometry to KWindowInfo";
@@ -445,7 +410,6 @@ QRect KWindowInfo::geometry() const
 
 QRect KWindowInfo::frameGeometry() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties() & NET::WMFrameExtents)) {
         qWarning() << "Pass NET::WMFrameExtents to KWindowInfo";
@@ -456,7 +420,6 @@ QRect KWindowInfo::frameGeometry() const
 
 WId KWindowInfo::transientFor() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties2() & NET::WM2TransientFor)) {
         qWarning() << "Pass NET::WM2TransientFor to KWindowInfo";
@@ -467,7 +430,6 @@ WId KWindowInfo::transientFor() const
 
 WId KWindowInfo::groupLeader() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties2() & NET::WM2GroupLeader)) {
         qWarning() << "Pass NET::WM2GroupLeader to KWindowInfo";
@@ -478,7 +440,6 @@ WId KWindowInfo::groupLeader() const
 
 QByteArray KWindowInfo::windowClassClass() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties2() & NET::WM2WindowClass)) {
         qWarning() << "Pass NET::WM2WindowClass to KWindowInfo";
@@ -489,7 +450,6 @@ QByteArray KWindowInfo::windowClassClass() const
 
 QByteArray KWindowInfo::windowClassName() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties2() & NET::WM2WindowClass)) {
         qWarning() << "Pass NET::WM2WindowClass to KWindowInfo";
@@ -500,7 +460,6 @@ QByteArray KWindowInfo::windowClassName() const
 
 QByteArray KWindowInfo::windowRole() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties2() & NET::WM2WindowRole)) {
         qWarning() << "Pass NET::WM2WindowRole to KWindowInfo";
@@ -511,7 +470,6 @@ QByteArray KWindowInfo::windowRole() const
 
 QByteArray KWindowInfo::clientMachine() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties2() & NET::WM2ClientMachine)) {
         qWarning() << "Pass NET::WM2ClientMachine to KWindowInfo";
@@ -522,7 +480,6 @@ QByteArray KWindowInfo::clientMachine() const
 
 bool KWindowInfo::allowedActionsSupported() const
 {
-    CHECK_X11
     static enum {
         noidea,
         yes,
@@ -537,7 +494,6 @@ bool KWindowInfo::allowedActionsSupported() const
 
 bool KWindowInfo::actionSupported(NET::Action action) const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties2() & NET::WM2AllowedActions)) {
         qWarning() << "Pass NET::WM2AllowedActions to KWindowInfo";
@@ -552,7 +508,6 @@ bool KWindowInfo::actionSupported(NET::Action action) const
 
 QByteArray KWindowInfo::desktopFileName() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties2() & NET::WM2DesktopFileName)) {
         qWarning() << "Pass NET::WM2DesktopFileName to KWindowInfo";
@@ -563,7 +518,6 @@ QByteArray KWindowInfo::desktopFileName() const
 
 QByteArray KWindowInfo::gtkApplicationId() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties2() & NET::WM2DesktopFileName)) {
         qWarning() << "Pass NET::WM2DesktopFileName to KWindowInfo";
@@ -574,7 +528,6 @@ QByteArray KWindowInfo::gtkApplicationId() const
 
 QByteArray KWindowInfo::applicationMenuServiceName() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties2() & NET::WM2AppMenuServiceName)) {
         qWarning() << "Pass NET::WM2AppMenuServiceName to KWindowInfo";
@@ -585,7 +538,6 @@ QByteArray KWindowInfo::applicationMenuServiceName() const
 
 QByteArray KWindowInfo::applicationMenuObjectPath() const
 {
-    CHECK_X11
 #if !defined(KDE_NO_WARNING_OUTPUT)
     if (!(d->m_info->passedProperties2() & NET::WM2AppMenuObjectPath)) {
         qWarning() << "Pass NET::WM2AppMenuObjectPath to KWindowInfo";
@@ -596,7 +548,6 @@ QByteArray KWindowInfo::applicationMenuObjectPath() const
 
 int KWindowInfo::pid() const
 {
-    CHECK_X11
     // If pid is found using the XRes extension use that instead.
     // It is more reliable than the app reporting it's own PID as apps
     // within an app namespace are unable to do so correctly

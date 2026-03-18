@@ -490,18 +490,6 @@ static void create_atoms()
     }
 }
 
-#define CHECK_X11                                                                                                                                              \
-    if (!KWindowSystem::isPlatformX11()) {                                                                                                                     \
-        qCWarning(LOG_KWINDOWSYSTEM) << Q_FUNC_INFO << "may only be used on X11";                                                                              \
-        return {};                                                                                                                                             \
-    }
-
-#define CHECK_X11_VOID                                                                                                                                         \
-    if (!KWindowSystem::isPlatformX11()) {                                                                                                                     \
-        qCWarning(LOG_KWINDOWSYSTEM) << Q_FUNC_INFO << "may only be used on X11";                                                                              \
-        return;                                                                                                                                                \
-    }
-
 // WARNING
 // you have to call s_d_func() again after calling this function if you want a valid pointer!
 void KX11Extras::init(FilterInfo what)
@@ -544,27 +532,23 @@ KX11Extras *KX11Extras::self()
 
 QList<WId> KX11Extras::windows()
 {
-    CHECK_X11
     KX11Extras::self()->init(INFO_BASIC);
     return KX11Extras::self()->s_d_func()->windows;
 }
 
 bool KX11Extras::hasWId(WId w)
 {
-    CHECK_X11
     return windows().contains(w);
 }
 
 QList<WId> KX11Extras::stackingOrder()
 {
-    CHECK_X11
     KX11Extras::self()->init(INFO_BASIC);
     return KX11Extras::self()->s_d_func()->stackingOrder;
 }
 
 WId KX11Extras::activeWindow()
 {
-    CHECK_X11
     NETEventFilter *const s_d = KX11Extras::self()->s_d_func();
     if (s_d) {
         return s_d->activeWindow();
@@ -575,7 +559,6 @@ WId KX11Extras::activeWindow()
 
 void KX11Extras::activateWindow(WId win, long time)
 {
-    CHECK_X11_VOID
     NETRootInfo info(QX11Info::connection(), NET::Properties(), NET::Properties2(), QX11Info::appScreen());
     if (time == 0) {
         time = QX11Info::appUserTime();
@@ -585,7 +568,6 @@ void KX11Extras::activateWindow(WId win, long time)
 
 void KX11Extras::forceActiveWindow(WId win, long time)
 {
-    CHECK_X11_VOID
     NETRootInfo info(QX11Info::connection(), NET::Properties(), NET::Properties2(), QX11Info::appScreen());
     if (time == 0) {
         time = QX11Info::appTime();
@@ -595,13 +577,11 @@ void KX11Extras::forceActiveWindow(WId win, long time)
 
 void KX11Extras::forceActiveWindow(QWindow *win, long time)
 {
-    CHECK_X11_VOID
     forceActiveWindow(win->winId(), time);
 }
 
 bool KX11Extras::compositingActive()
 {
-    CHECK_X11
     KX11Extras::self()->init(INFO_BASIC);
     if (KX11Extras::self()->s_d_func()->haveXfixes) {
         return KX11Extras::self()->s_d_func()->compositingEnabled;
@@ -613,7 +593,6 @@ bool KX11Extras::compositingActive()
 
 int KX11Extras::currentDesktop()
 {
-    CHECK_X11
     if (!QX11Info::connection()) {
         return 1;
     }
@@ -635,7 +614,6 @@ int KX11Extras::currentDesktop()
 
 int KX11Extras::numberOfDesktops()
 {
-    CHECK_X11
     if (!QX11Info::connection()) {
         return 1;
     }
@@ -657,7 +635,6 @@ int KX11Extras::numberOfDesktops()
 
 void KX11Extras::setCurrentDesktop(int desktop)
 {
-    CHECK_X11_VOID
     if (mapViewport()) {
         KX11Extras::self()->init(INFO_BASIC);
         NETEventFilter *const s_d = KX11Extras::self()->s_d_func();
@@ -675,7 +652,6 @@ void KX11Extras::setCurrentDesktop(int desktop)
 
 void KX11Extras::setOnAllDesktops(WId win, bool b)
 {
-    CHECK_X11_VOID
     if (mapViewport()) {
         if (b) {
             setState(win, NET::Sticky);
@@ -695,7 +671,6 @@ void KX11Extras::setOnAllDesktops(WId win, bool b)
 
 void KX11Extras::setOnDesktop(WId win, int desktop)
 {
-    CHECK_X11_VOID
     if (mapViewport()) {
         if (desktop == NET::OnAllDesktops) {
             return setOnAllDesktops(win, true);
@@ -741,14 +716,12 @@ void KX11Extras::setOnDesktop(WId win, int desktop)
 
 void KX11Extras::setOnActivities(WId win, const QStringList &activities)
 {
-    CHECK_X11_VOID
     NETWinInfo info(QX11Info::connection(), win, QX11Info::appRootWindow(), NET::Properties(), NET::WM2Activities);
     info.setActivities(activities.join(QLatin1Char(',')).toLatin1().constData());
 }
 
 QPixmap KX11Extras::icon(WId win, int width, int height, bool scale)
 {
-    CHECK_X11
     return icon(win, width, height, scale, NETWM | WMHints | ClassHint | XApp);
 }
 
@@ -837,7 +810,6 @@ QPixmap iconFromNetWinInfo(int width, int height, bool scale, int flags, NETWinI
 
 QPixmap KX11Extras::icon(WId win, int width, int height, bool scale, int flags)
 {
-    CHECK_X11
     NETWinInfo info(QX11Info::connection(), win, QX11Info::appRootWindow(), NET::WMIcon, NET::WM2WindowClass | NET::WM2IconPixmap);
     return iconFromNetWinInfo(width, height, scale, flags, &info);
 }
@@ -850,7 +822,6 @@ QPixmap KX11Extras::icon(WId win, int width, int height, bool scale, int flags, 
     if (info) {
         return iconFromNetWinInfo(width, height, scale, flags, info);
     }
-    CHECK_X11
 
     NETWinInfo newInfo(QX11Info::connection(), win, QX11Info::appRootWindow(), NET::WMIcon, NET::WM2WindowClass | NET::WM2IconPixmap);
 
@@ -866,7 +837,6 @@ enum {
 
 void KX11Extras::minimizeWindow(WId win)
 {
-    CHECK_X11_VOID
     create_atoms();
     // as described in ICCCM 4.1.4
     KXcbEvent<xcb_client_message_event_t> ev;
@@ -888,13 +858,11 @@ void KX11Extras::minimizeWindow(WId win)
 
 void KX11Extras::unminimizeWindow(WId win)
 {
-    CHECK_X11_VOID
     xcb_map_window(QX11Info::connection(), win);
 }
 
 QRect KX11Extras::workArea(int desktop)
 {
-    CHECK_X11
     KX11Extras::self()->init(INFO_BASIC);
     int desk = (desktop > 0 && desktop <= (int)KX11Extras::self()->s_d_func()->numberOfDesktops()) ? desktop : currentDesktop();
     if (desk <= 0) {
@@ -911,7 +879,6 @@ QRect KX11Extras::workArea(int desktop)
 
 QRect KX11Extras::workArea(const QList<WId> &exclude, int desktop)
 {
-    CHECK_X11
     KX11Extras::self()->init(INFO_WINDOWS); // invalidates s_d_func's return value
     NETEventFilter *const s_d = KX11Extras::self()->s_d_func();
 
@@ -979,7 +946,6 @@ QRect KX11Extras::workArea(const QList<WId> &exclude, int desktop)
 
 QString KX11Extras::desktopName(int desktop)
 {
-    CHECK_X11
     KX11Extras::self()->init(INFO_BASIC);
     NETEventFilter *const s_d = KX11Extras::self()->s_d_func();
 
@@ -995,7 +961,6 @@ QString KX11Extras::desktopName(int desktop)
 
 void KX11Extras::setDesktopName(int desktop, const QString &name)
 {
-    CHECK_X11_VOID
     NETEventFilter *const s_d = KX11Extras::self()->s_d_func();
 
     if (desktop <= 0 || desktop > (int)numberOfDesktops()) {
@@ -1013,7 +978,6 @@ void KX11Extras::setDesktopName(int desktop, const QString &name)
 
 QString KX11Extras::readNameProperty(WId win, unsigned long atom)
 {
-    CHECK_X11
     XTextProperty tp;
     char **text = nullptr;
     int count;
@@ -1038,7 +1002,6 @@ QString KX11Extras::readNameProperty(WId win, unsigned long atom)
 
 bool KX11Extras::mapViewport()
 {
-    CHECK_X11
     NETEventFilter *const s_d = KX11Extras::self()->s_d_func();
     if (s_d) {
         return s_d->mapViewport();
@@ -1063,7 +1026,6 @@ bool KX11Extras::mapViewport()
 
 int KX11Extras::viewportWindowToDesktop(const QRect &rect)
 {
-    CHECK_X11
     const QRect r = rect / qApp->devicePixelRatio();
 
     KX11Extras::self()->init(INFO_BASIC);
@@ -1094,7 +1056,6 @@ void KX11Extras::setExtendedStrut(WId win,
                                   qreal bottom_start,
                                   qreal bottom_end)
 {
-    CHECK_X11_VOID
     const qreal dpr = qApp->devicePixelRatio();
 
     NETWinInfo info(QX11Info::connection(), win, QX11Info::appRootWindow(), NET::Properties(), NET::Properties2());
@@ -1122,7 +1083,6 @@ void KX11Extras::setExtendedStrut(WId win,
 
 void KX11Extras::setStrut(WId win, qreal left, qreal right, qreal top, qreal bottom)
 {
-    CHECK_X11_VOID
     const qreal dpr = qApp->devicePixelRatio();
 
     int w = displayWidth();
@@ -1145,7 +1105,6 @@ void KX11Extras::setStrut(WId win, qreal left, qreal right, qreal top, qreal bot
 // optimalization - create private only when needed and only for what is needed
 void KX11Extras::connectNotify(const QMetaMethod &signal)
 {
-    CHECK_X11_VOID
     FilterInfo what = INFO_BASIC;
     if (signal == QMetaMethod::fromSignal(&KX11Extras::workAreaChanged)) {
         what = INFO_WINDOWS;
@@ -1165,28 +1124,24 @@ void KX11Extras::connectNotify(const QMetaMethod &signal)
 
 void KX11Extras::setType(WId win, NET::WindowType windowType)
 {
-    CHECK_X11_VOID
     NETWinInfo info(QX11Info::connection(), win, QX11Info::appRootWindow(), NET::Properties(), NET::Properties2());
     info.setWindowType(windowType);
 }
 
 void KX11Extras::setState(WId win, NET::States state)
 {
-    CHECK_X11_VOID
     NETWinInfo info(QX11Info::connection(), win, QX11Info::appRootWindow(), NET::WMState, NET::Properties2());
     info.setState(state, state);
 }
 
 void KX11Extras::clearState(WId win, NET::States state)
 {
-    CHECK_X11_VOID
     NETWinInfo info(QX11Info::connection(), win, QX11Info::appRootWindow(), NET::WMState, NET::Properties2());
     info.setState(NET::States(), state);
 }
 
 int KX11Extras::viewportToDesktop(const QPoint &p)
 {
-    CHECK_X11
     KX11Extras::self()->init(INFO_BASIC);
     NETEventFilter *const s_d = KX11Extras::self()->s_d_func();
     NETSize s = s_d->desktopGeometry();
@@ -1200,7 +1155,6 @@ int KX11Extras::viewportToDesktop(const QPoint &p)
 
 QPoint KX11Extras::constrainViewportRelativePosition(const QPoint &pos)
 {
-    CHECK_X11
     init(INFO_BASIC);
     NETEventFilter *const s_d = s_d_func();
     NETSize s = s_d->desktopGeometry();
@@ -1218,7 +1172,6 @@ QPoint KX11Extras::constrainViewportRelativePosition(const QPoint &pos)
 
 QPoint KX11Extras::desktopToViewport(int desktop, bool absolute)
 {
-    CHECK_X11
     init(INFO_BASIC);
     NETEventFilter *const s_d = s_d_func();
     NETSize s = s_d->desktopGeometry();

@@ -5,7 +5,6 @@
 */
 
 #include "kxerrorhandler_p.h"
-#include <config-kwindowsystem.h>
 
 #include <fixx11h.h>
 

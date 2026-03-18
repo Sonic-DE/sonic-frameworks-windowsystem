@@ -165,7 +165,7 @@ public:
     void createConnections()
     {
         // d == nullptr means "disabled"
-        if (!QX11Info::isPlatformX11() || !QX11Info::display()) {
+        if (!QX11Info::display()) {
             return;
         }
 
@@ -524,7 +524,7 @@ void KStartupInfo::appStarted(const QByteArray &startup_id)
     if (id.isNull()) {
         return;
     }
-    if (QX11Info::isPlatformX11() && !qEnvironmentVariableIsEmpty("DISPLAY")) { // don't rely on QX11Info::display()
+    if (!qEnvironmentVariableIsEmpty("DISPLAY")) { // don't rely on QX11Info::display()
         KStartupInfo::sendFinish(id);
     }
 }
@@ -538,17 +538,15 @@ void KStartupInfo::setStartupId(const QByteArray &startup_id)
         s_startup_id = "0";
     } else {
         s_startup_id = startup_id;
-        if (QX11Info::isPlatformX11()) {
-            KStartupInfoId id;
-            id.initId(startup_id);
-            long timestamp = id.timestamp();
-            if (timestamp != 0) {
-                if (QX11Info::appUserTime() == 0 || NET::timestampCompare(timestamp, QX11Info::appUserTime()) > 0) { // time > appUserTime
-                    QX11Info::setAppUserTime(timestamp);
-                }
-                if (QX11Info::appTime() == 0 || NET::timestampCompare(timestamp, QX11Info::appTime()) > 0) { // time > appTime
-                    QX11Info::setAppTime(timestamp);
-                }
+        KStartupInfoId id;
+        id.initId(startup_id);
+        long timestamp = id.timestamp();
+        if (timestamp != 0) {
+            if (QX11Info::appUserTime() == 0 || NET::timestampCompare(timestamp, QX11Info::appUserTime()) > 0) { // time > appUserTime
+                QX11Info::setAppUserTime(timestamp);
+            }
+            if (QX11Info::appTime() == 0 || NET::timestampCompare(timestamp, QX11Info::appTime()) > 0) { // time > appTime
+                QX11Info::setAppTime(timestamp);
             }
         }
     }
@@ -559,7 +557,7 @@ void KStartupInfo::setNewStartupId(QWindow *window, const QByteArray &startup_id
     Q_ASSERT(window);
     setStartupId(startup_id);
     bool activate = true;
-    if (window != nullptr && QX11Info::isPlatformX11()) {
+    if (window != nullptr) {
         if (!startup_id.isEmpty() && startup_id != "0") {
             NETRootInfo i(QX11Info::connection(), NET::Supported);
             if (i.isSupported(NET::WM2StartupId)) {
@@ -618,10 +616,6 @@ KStartupInfo::startup_t KStartupInfo::Private::check_startup_internal(WId w_P, K
             return NoMatch;
         }
         return find_id(id, id_O, data_O) ? Match : NoMatch;
-    }
-    if (!QX11Info::isPlatformX11()) {
-        qCDebug(LOG_KWINDOWSYSTEM) << "check_startup:cantdetect";
-        return CantDetect;
     }
     NETWinInfo info(QX11Info::connection(),
                     w_P,
@@ -721,9 +715,6 @@ bool KStartupInfo::Private::find_wclass(const QByteArray &_res_name, const QByte
 
 QByteArray KStartupInfo::windowStartupId(WId w_P)
 {
-    if (!QX11Info::isPlatformX11()) {
-        return QByteArray();
-    }
     NETWinInfo info(QX11Info::connection(), w_P, QX11Info::appRootWindow(), NET::Properties(), NET::WM2StartupId | NET::WM2GroupLeader);
     QByteArray ret = info.startupId();
     if (ret.isEmpty() && info.groupLeader() != XCB_WINDOW_NONE) {
@@ -736,9 +727,6 @@ QByteArray KStartupInfo::windowStartupId(WId w_P)
 
 void KStartupInfo::Private::setWindowStartupId(WId w_P, const QByteArray &id_P)
 {
-    if (!QX11Info::isPlatformX11()) {
-        return;
-    }
     if (id_P.isNull()) {
         return;
     }
@@ -812,10 +800,7 @@ void KStartupInfo::Private::clean_all_noncompliant()
 
 QByteArray KStartupInfo::createNewStartupId()
 {
-    quint32 timestamp = 0;
-    if (QX11Info::isPlatformX11()) {
-        timestamp = QX11Info::getTimestamp();
-    }
+    quint32 timestamp = QX11Info::getTimestamp();
     return KStartupInfo::createNewStartupIdForTimestamp(timestamp);
 }
 

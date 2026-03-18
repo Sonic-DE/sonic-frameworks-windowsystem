@@ -9,9 +9,7 @@
 #define netwm_h
 
 #include <QSize>
-#include <config-kwindowsystem.h>
 #include <kwindowsystem_export.h>
-#if KWINDOWSYSTEM_HAVE_X11
 #include <vector>
 #include <xcb/xcb.h>
 
@@ -1731,5 +1729,4 @@ private:
 
 // #define KWIN_FOCUS
 
-#endif
 #endif // netwm_h

@@ -10,8 +10,6 @@
 #include <QObject>
 #include <kwindowsystem_export.h>
 
-#include <config-kwindowsystem.h> // KWINDOWSYSTEM_HAVE_X11
-#if KWINDOWSYSTEM_HAVE_X11
 #include <xcb/xcb.h>
 typedef struct _XDisplay Display;
 
@@ -98,5 +96,4 @@ private:
     KXMessagesPrivate *const d;
 };
 
-#endif
 #endif
