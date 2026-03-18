@@ -10,8 +10,6 @@
 #include "kxcbevent_p.h"
 #include "kxutils_p.h"
 
-#if KWINDOWSYSTEM_HAVE_X11
-
 #include <QAbstractNativeEventFilter>
 #include <QCoreApplication>
 #include <QDebug>
@@ -171,10 +169,7 @@ send_message_internal(xcb_window_t w, const QString &msg, xcb_connection_t *c, x
 
 KXMessages::KXMessages(const char *accept_broadcast_P, QObject *parent_P)
     : QObject(parent_P)
-    , d(new KXMessagesPrivate(this,
-                              accept_broadcast_P,
-                              QX11Info::isPlatformX11() ? QX11Info::connection() : nullptr,
-                              QX11Info::isPlatformX11() ? QX11Info::appRootWindow() : 0))
+    , d(new KXMessagesPrivate(this, accept_broadcast_P, QX11Info::connection(), QX11Info::appRootWindow()))
 {
 }
 
@@ -261,7 +256,5 @@ send_message_internal(xcb_window_t w, const QString &msg_P, xcb_connection_t *c,
 
     xcb_flush(c);
 }
-
-#endif
 
 #include "moc_kxmessages.cpp"

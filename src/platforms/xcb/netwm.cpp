@@ -14,8 +14,6 @@
 #include "kxcbevent_p.h"
 #include "netwm_p.h"
 
-#if KWINDOWSYSTEM_HAVE_X11 // FIXME
-
 #include <QGuiApplication>
 #include <QHash>
 
@@ -4942,5 +4940,3 @@ int NET::timestampDiff(unsigned long time1, unsigned long time2)
 {
     return KXUtils::timestampDiff(time1, time2);
 }
-
-#endif

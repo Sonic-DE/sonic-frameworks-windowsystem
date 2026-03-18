@@ -1,5 +1,3 @@
-configure_file(config-kwindowsystem.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-kwindowsystem.h )
-
 add_library(KF6WindowSystem)
 add_library(KF6::WindowSystem ALIAS KF6WindowSystem)
 
@@ -128,8 +126,6 @@ ecm_generate_headers(KWindowSystem_HEADERS
 install(TARGETS KF6WindowSystem EXPORT KF6WindowSystemTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES
-  # FIXME: It seems odd to install this.
-  ${CMAKE_CURRENT_BINARY_DIR}/config-kwindowsystem.h
   ${CMAKE_CURRENT_BINARY_DIR}/kwindowsystem_export.h
   ${KWindowSystem_HEADERS}
   netwm_def.h

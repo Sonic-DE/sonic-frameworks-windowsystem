@@ -8,7 +8,6 @@
 
 #include "kwindowsystem.h"
 #include "kxcbevent_p.h"
-#include <config-kwindowsystem.h>
 
 #include <QAbstractNativeEventFilter>
 #include <QBasicTimer>
@@ -108,11 +107,7 @@ private:
 
 KSelectionOwner::Private *KSelectionOwner::Private::create(KSelectionOwner *owner, xcb_atom_t selection_P, int screen_P)
 {
-    if (KWindowSystem::isPlatformX11()) {
-        return create(owner, selection_P, QX11Info::connection(), QX11Info::appRootWindow(screen_P));
-    }
-    qWarning() << "Trying to use KSelectionOwner on a non-X11 platform! This is an application bug.";
-    return nullptr;
+    return create(owner, selection_P, QX11Info::connection(), QX11Info::appRootWindow(screen_P));
 }
 
 KSelectionOwner::Private *KSelectionOwner::Private::create(KSelectionOwner *owner, xcb_atom_t selection_P, xcb_connection_t *c, xcb_window_t root)
@@ -122,11 +117,7 @@ KSelectionOwner::Private *KSelectionOwner::Private::create(KSelectionOwner *owne
 
 KSelectionOwner::Private *KSelectionOwner::Private::create(KSelectionOwner *owner, const char *selection_P, int screen_P)
 {
-    if (KWindowSystem::isPlatformX11()) {
-        return create(owner, selection_P, QX11Info::connection(), QX11Info::appRootWindow(screen_P));
-    }
-    qWarning() << "Trying to use KSelectionOwner on a non-X11 platform! This is an application bug.";
-    return nullptr;
+    return create(owner, selection_P, QX11Info::connection(), QX11Info::appRootWindow(screen_P));
 }
 
 KSelectionOwner::Private *KSelectionOwner::Private::create(KSelectionOwner *owner, const char *selection_P, xcb_connection_t *c, xcb_window_t root)

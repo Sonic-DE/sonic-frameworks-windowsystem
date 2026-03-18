@@ -11,10 +11,7 @@
 
 #include <KWindowSystem>
 
-#include <config-kwindowsystem.h>
-#if KWINDOWSYSTEM_HAVE_X11
 #include <KX11Extras>
-#endif
 
 struct KWindowSystemForeign {
     Q_GADGET
@@ -30,7 +27,6 @@ public:
     }
 };
 
-#if KWINDOWSYSTEM_HAVE_X11
 struct KX11ExtrasForeign {
     Q_GADGET
     QML_NAMED_ELEMENT(KX11Extras)
@@ -44,6 +40,5 @@ public:
         return KX11Extras::self();
     }
 };
-#endif
 
 #endif

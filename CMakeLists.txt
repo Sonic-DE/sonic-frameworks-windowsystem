@@ -75,8 +75,6 @@ if (KWINDOWSYSTEM_X11)
     find_package(XCB COMPONENTS REQUIRED XCB KEYSYMS RES ICCCM)
 endif()
 
-set(KWINDOWSYSTEM_HAVE_X11 ${KWINDOWSYSTEM_X11})
-
 # Subdirectories
 ecm_install_po_files_as_qm(poqm)
 

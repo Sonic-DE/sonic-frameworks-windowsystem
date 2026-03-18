@@ -11,7 +11,6 @@
 #include <QVarLengthArray>
 
 #include "kx11extras.h"
-#include <config-kwindowsystem.h>
 
 #include <QMatrix4x4>
 #include <QWindow>
