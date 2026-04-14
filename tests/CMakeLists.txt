@@ -18,11 +18,9 @@ kwindowsystem_executable_tests(
   backgroundcontrasttest
 )
 
-if(KWINDOWSYSTEM_X11)
-    kwindowsystem_executable_tests(
+kwindowsystem_executable_tests(
       icontest
       createpixmapfromhandletest
       setmainwindowtest
-    )
-    target_link_libraries(icontest Qt6::GuiPrivate)
-endif()
+)
+target_link_libraries(icontest Qt6::GuiPrivate)

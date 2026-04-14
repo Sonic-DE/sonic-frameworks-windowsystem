@@ -64,16 +64,8 @@ if (KWINDOWSYSTEM_QML)
     find_package(Qt6Qml ${REQUIRED_QT_VERSION} CONFIG REQUIRED)
 endif()
 
-option(KWINDOWSYSTEM_X11 "Build X11 support" ON)
-
-if (WIN32 OR APPLE OR ANDROID OR HAIKU)
-    set(KWINDOWSYSTEM_X11 OFF)
-endif()
-
-if (KWINDOWSYSTEM_X11)
-    find_package(X11 REQUIRED)
-    find_package(XCB COMPONENTS REQUIRED XCB KEYSYMS RES ICCCM)
-endif()
+find_package(X11 REQUIRED)
+find_package(XCB COMPONENTS REQUIRED XCB KEYSYMS RES ICCCM)
 
 # Subdirectories
 ecm_install_po_files_as_qm(poqm)
