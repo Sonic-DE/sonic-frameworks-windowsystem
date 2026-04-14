@@ -13,11 +13,7 @@ find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Test Widgets)
 macro(KWINDOWSYSTEM_UNIT_TESTS)
    foreach(_testname ${ARGN})
       set(libs KF6::WindowSystem Qt6::Test Qt6::Widgets Qt6::GuiPrivate)
-
-      if (KWINDOWSYSTEM_X11)
-         list(APPEND libs XCB::XCB XCB::KEYSYMS XCB::ICCCM)
-      endif()
-
+      list(APPEND libs XCB::XCB XCB::KEYSYMS XCB::ICCCM)
       ecm_add_test(${_testname}.cpp LINK_LIBRARIES ${libs} GUI)
    endforeach(_testname)
 endmacro(KWINDOWSYSTEM_UNIT_TESTS)
@@ -29,16 +25,15 @@ macro(KWINDOWSYSTEM_EXECUTABLE_TESTS)
    endforeach()
 endmacro()
 
-if(KWINDOWSYSTEM_X11)
-    include_directories(${CMAKE_SOURCE_DIR}/src/platforms/xcb)
-    kwindowsystem_unit_tests(
+include_directories(${CMAKE_SOURCE_DIR}/src/platforms/xcb)
+kwindowsystem_unit_tests(
         kmanagerselectiontest
         kstartupinfo_unittest
         kxmessages_unittest
         kkeyserver_x11_unittest
-    )
+)
 
-    kwindowsystem_unit_tests(
+kwindowsystem_unit_tests(
         kwindoweffectstest
         kwindowinfox11test
         kwindowsystemx11test
@@ -47,11 +42,10 @@ if(KWINDOWSYSTEM_X11)
         netwininfotestclient
         netwininfotestwm
         compositingenabled_test
-    )
+)
 
-    kwindowsystem_executable_tests(
+kwindowsystem_executable_tests(
         fixx11h_test
         fixx11h_test2
         dontcrashmapviewport
-    )
-endif()
+)

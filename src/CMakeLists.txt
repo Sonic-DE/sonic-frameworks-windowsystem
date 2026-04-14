@@ -31,13 +31,12 @@ ecm_qt_declare_logging_category(KF6WindowSystem
     EXPORT KWINDOWSYSTEM
 )
 
-if (KWINDOWSYSTEM_X11)
-   target_include_directories(KF6WindowSystem
+target_include_directories(KF6WindowSystem
         PRIVATE
             ${CMAKE_CURRENT_SOURCE_DIR}/platforms/xcb
-   )
+)
 
-   target_link_libraries(KF6WindowSystem
+target_link_libraries(KF6WindowSystem
         PUBLIC
             # public because they are used in kkeyserver_x11.h
             X11::X11
@@ -47,16 +46,16 @@ if (KWINDOWSYSTEM_X11)
             X11::Xfixes
             XCB::KEYSYMS
             Qt6::GuiPrivate # qtx11extras_p.h
-   )
+)
 
-   ecm_qt_declare_logging_category(KF6WindowSystem
+ecm_qt_declare_logging_category(KF6WindowSystem
         HEADER kwindowsystem_xcb_debug.h
         IDENTIFIER LOG_KKEYSERVER_X11
         CATEGORY_NAME kf.windowsystem.keyserver.x11
         DEFAULT_SEVERITY Warning
-    )
+)
 
-   target_sources(KF6WindowSystem PRIVATE
+target_sources(KF6WindowSystem PRIVATE
         platforms/xcb/kselectionowner.cpp
         platforms/xcb/kselectionwatcher.cpp
         platforms/xcb/kxmessages.cpp
@@ -68,13 +67,12 @@ if (KWINDOWSYSTEM_X11)
         kusertimestamp.cpp
         kxerrorhandler.cpp
         kwindowinfo.cpp
-   )
+)
 
-   # we install kkeyserver_x11.h which needs the X11 headers available
-   # if we don't add the include path here code that includes kkeyserver.h will fail
-   # to compile unless X11 is installed in /usr/include
-   target_include_directories(KF6WindowSystem PUBLIC ${XCB_XCB_INCLUDE_DIR})
-endif ()
+# we install kkeyserver_x11.h which needs the X11 headers available
+# if we don't add the include path here code that includes kkeyserver.h will fail
+# to compile unless X11 is installed in /usr/include
+target_include_directories(KF6WindowSystem PUBLIC ${XCB_XCB_INCLUDE_DIR})
 
 target_sources(KF6WindowSystem PRIVATE kwaylandextras.cpp)
 
@@ -103,8 +101,7 @@ ecm_generate_headers(KWindowSystem_HEADERS
   REQUIRED_HEADERS KWindowSystem_HEADERS
 )
 
-if (KWINDOWSYSTEM_X11)
-    ecm_generate_headers(KWindowSystem_HEADERS
+ecm_generate_headers(KWindowSystem_HEADERS
     HEADER_NAMES
     KX11Extras
     KStartupInfo
@@ -113,8 +110,7 @@ if (KWINDOWSYSTEM_X11)
     KWindowInfo
 
     REQUIRED_HEADERS KWindowSystem_HEADERS
-    )
-endif()
+)
 
 ecm_generate_headers(KWindowSystem_HEADERS
     HEADER_NAMES
