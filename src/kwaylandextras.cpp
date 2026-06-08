@@ -38,10 +38,11 @@ quint32 KWaylandExtras::lastInputSerial(QWindow *window) {
   return 0;
 }
 
-#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(6, 27)
-void KWaylandExtras::exportWindow(QWindow *window) {
-  // Stub: no-op because Wayland is not available
-  Q_UNUSED(window);
+#if KWINDOWSYSTEM_BUILD_DEPRECATED_SINCE(6, 28)
+void KWaylandExtras::exportWindow(QWindow *window)
+{
+    // Stub: no-op because Wayland is not available
+    Q_UNUSED(window);
 }
 
 void KWaylandExtras::unexportWindow(QWindow *window) {
@@ -50,15 +51,16 @@ void KWaylandExtras::unexportWindow(QWindow *window) {
 }
 #endif
 
-QFuture<QString> KWaylandExtras::exportToplevel(QWindow *window) {
-  // Stub: no-op because Wayland is not available
-  Q_UNUSED(window);
-  return QtFuture::makeReadyValueFuture(QString());
+QFuture<QString> KWaylandExtras::exportToplevel(QWindow *window)
+{
+    // Stub: no-op because Wayland is not available
+    Q_UNUSED(window);
 }
 
-void KWaylandExtras::unexportToplevel(QWindow *window) {
-  // Stub: no-op because Wayland is not available
-  Q_UNUSED(window);
+void KWaylandExtras::unexportToplevel(QWindow *window)
+{
+    // Stub: no-op because Wayland is not available
+    Q_UNUSED(window);
 }
 
 QFuture<QString> KWaylandExtras::xdgActivationToken(QWindow *window,
@@ -93,3 +95,4 @@ void KWaylandExtras::setXdgToplevelDescription(QWindow *window,
 }
 
 #include "moc_kwaylandextras.cpp"
+
