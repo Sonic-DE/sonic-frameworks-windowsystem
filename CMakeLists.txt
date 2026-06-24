@@ -10,7 +10,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # ECM setup
 include(FeatureSummary)
-find_package(ECM 6.27.0  NO_MODULE)
+find_package(ECM 6.28.0  NO_MODULE)
 set_package_properties(ECM PROPERTIES TYPE REQUIRED DESCRIPTION "Extra CMake Modules." URL "https://commits.kde.org/extra-cmake-modules")
 feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
@@ -110,3 +110,5 @@ include(ECMFeatureSummary)
 ecm_feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
 kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
+
+
