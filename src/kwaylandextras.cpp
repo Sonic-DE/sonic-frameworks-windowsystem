@@ -53,8 +53,9 @@ void KWaylandExtras::unexportWindow(QWindow *window) {
 
 QFuture<QString> KWaylandExtras::exportToplevel(QWindow *window)
 {
-    // Stub: no-op because Wayland is not available
+    // Stub: return an empty identifier because Wayland is not available
     Q_UNUSED(window);
+    return QtFuture::makeReadyValueFuture(QString());
 }
 
 void KWaylandExtras::unexportToplevel(QWindow *window)
@@ -95,4 +96,3 @@ void KWaylandExtras::setXdgToplevelDescription(QWindow *window,
 }
 
 #include "moc_kwaylandextras.cpp"
-
