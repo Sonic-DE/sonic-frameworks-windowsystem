@@ -18,6 +18,7 @@
 
 #include <xcb/xcb_icccm.h>
 
+#include <algorithm>
 #include <unistd.h>
 
 Q_DECLARE_METATYPE(WId)
@@ -77,36 +78,18 @@ void KWindowInfoX11Test::initTestCase()
 
 bool KWindowInfoX11Test::waitForWindow(QSignalSpy &spy, WId winId, NET::Properties property, NET::Properties2 property2) const
 {
-    // we need to wait, window manager has to react and update the property.
-    bool foundOurWindow = false;
-    for (int i = 0; i < 10; ++i) {
-        spy.wait(50);
-        if (spy.isEmpty()) {
-            continue;
-        }
-        for (auto it = spy.constBegin(); it != spy.constEnd(); ++it) {
-            if (it->first().value<WId>() != winId) {
-                continue;
-            }
-            if (property != NET::Properties()) {
-                if (it->at(1).value<NET::Properties>() != property) {
-                    continue;
-                }
-            }
-            if (property2 != NET::Properties2()) {
-                if (it->at(2).value<NET::Properties2>() != property2) {
-                    continue;
-                }
-            }
-            foundOurWindow = true;
-            break;
-        }
-        if (foundOurWindow) {
-            break;
-        }
-        spy.clear();
-    }
-    return foundOurWindow;
+    xcb_flush(QX11Info::connection());
+    // Other windows and properties may change while the window manager processes a request.
+    const bool found = QTest::qWaitFor([&] {
+        return std::any_of(spy.cbegin(), spy.cend(), [&](const QList<QVariant> &change) {
+            return change.at(0).value<WId>() == winId &&
+                   (change.at(1).value<NET::Properties>() & property) == property &&
+                   (change.at(2).value<NET::Properties2>() & property2) == property2;
+        });
+    });
+    // Do not let a notification from this request satisfy the next wait.
+    spy.clear();
+    return found;
 }
 
 bool KWindowInfoX11Test::verifyMinimized(WId window) const
@@ -206,22 +189,28 @@ void KWindowInfoX11Test::testState()
 
     KWindowInfo info(window->winId(), NET::WMState);
     QVERIFY(info.valid());
-    // all states except demands attention
-    for (int i = 0; i < 12; ++i) {
-        QVERIFY(!info.hasState(NET::States(1 << i)));
-    }
+    // Focus and attention are controlled by the window manager, independently of our request.
+    const NET::States ignoredStates = NET::Focused | NET::DemandsAttention;
+    QCOMPARE(info.state() & ~ignoredStates, NET::States());
 
     QSignalSpy spy(KX11Extras::self(), &KX11Extras::windowChanged);
     QVERIFY(spy.isValid());
     // now we have a clean window and can do fun stuff
     KX11Extras::setState(window->winId(), state);
 
+    // A focus change can also emit WMState before the requested state has been applied.
+    QTRY_COMPARE(KWindowInfo(window->winId(), NET::WMState).state() & ~ignoredStates, state);
     QVERIFY(waitForWindow(spy, window->winId(), NET::WMState));
 
     KWindowInfo info3(window->winId(), NET::WMState);
     QVERIFY(info3.valid());
-    QCOMPARE(int(info3.state()), int(state));
+    QCOMPARE(info3.state() & ~ignoredStates, state);
     QVERIFY(info3.hasState(state));
+
+    KX11Extras::clearState(window->winId(), state);
+    QTRY_COMPARE(KWindowInfo(window->winId(), NET::WMState).state() & ~ignoredStates,
+                 NET::States());
+    QVERIFY(waitForWindow(spy, window->winId(), NET::WMState));
 }
 
 // This struct is defined here to avoid a dependency on xcb-icccm
@@ -664,11 +653,7 @@ void KWindowInfoX11Test::testDesktopFileName()
     netInfo.setDesktopFileName("org.kde.foo");
     xcb_flush(QX11Info::connection());
 
-    // it's just a property change so we can easily refresh
-    QX11Info::getTimestamp();
-    QTRY_COMPARE(spy.count(), 1);
-    QCOMPARE(spy.first().at(0).value<WId>(), window->winId());
-    QCOMPARE(spy.first().at(2).value<NET::Properties2>(), NET::Properties2(NET::WM2DesktopFileName));
+    QVERIFY(waitForWindow(spy, window->winId(), NET::Properties(), NET::WM2DesktopFileName));
 
     KWindowInfo info2(window->winId(), NET::Properties(), NET::WM2DesktopFileName);
     QVERIFY(info2.valid());
