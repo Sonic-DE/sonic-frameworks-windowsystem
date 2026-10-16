@@ -6,6 +6,7 @@
 #include <KWindowSystem>
 #include <QSignalSpy>
 #include <QTest>
+#include <private/qtx11extras_p.h>
 
 #include "kselectionowner.h"
 #include "kx11extras.h"
@@ -19,25 +20,39 @@ private Q_SLOTS:
 
 void CompositingEnabledTest::testRecreatingNetEventFilter()
 {
-    // this test simulates the condition that the compositor gets enabled while the NetEventFilter gets recreated
-    QVERIFY(!KX11Extras::compositingActive());
+    // Never take the compositor selection away from a running desktop session.
+    if (KX11Extras::compositingActive()) {
+        QSKIP("This test requires an X11 screen without a running compositor");
+    }
 
-    // fake the compositor
+    // Simulate enabling compositing while the NetEventFilter gets recreated.
     QSignalSpy compositingChangedSpy(KX11Extras::self(), &KX11Extras::compositingChanged);
     QVERIFY(compositingChangedSpy.isValid());
-    KSelectionOwner compositorSelection("_NET_WM_CM_S0");
+    const QByteArray selectionName =
+        QByteArrayLiteral("_NET_WM_CM_S") + QByteArray::number(QX11Info::appScreen());
+    KSelectionOwner compositorSelection(selectionName.constData());
     QSignalSpy claimedSpy(&compositorSelection, &KSelectionOwner::claimedOwnership);
     QVERIFY(claimedSpy.isValid());
-    compositorSelection.claim(true);
-    connect(&compositorSelection, &KSelectionOwner::claimedOwnership, [] {
+    bool filterRecreated = false;
+    connect(&compositorSelection, &KSelectionOwner::claimedOwnership, this, [&] {
         // let's connect to a signal which will cause a re-creation of NetEventFilter
         QSignalSpy workAreaChangedSpy(KX11Extras::self(), &KX11Extras::workAreaChanged);
         QVERIFY(workAreaChangedSpy.isValid());
+        filterRecreated = true;
     });
+    compositorSelection.claim(false);
 
-    QVERIFY(claimedSpy.wait());
+    QTRY_COMPARE(claimedSpy.count(), 1);
+    QVERIFY(filterRecreated);
     QTRY_VERIFY(KX11Extras::compositingActive());
     QCOMPARE(compositingChangedSpy.count(), 1);
+    QCOMPARE(compositingChangedSpy.first().at(0).toBool(), true);
+
+    compositorSelection.release();
+    xcb_flush(QX11Info::connection());
+    QTRY_VERIFY(!KX11Extras::compositingActive());
+    QTRY_COMPARE(compositingChangedSpy.count(), 2);
+    QCOMPARE(compositingChangedSpy.last().at(0).toBool(), false);
 }
 
 QTEST_MAIN(CompositingEnabledTest)
