@@ -10,6 +10,16 @@ set(ECM_TEST_NAME_PREFIX "kwindowsystem-")
 
 find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Test Widgets)
 
+add_executable(kx11extras_nonx11test kx11extras_nonx11test.cpp)
+target_link_libraries(kx11extras_nonx11test PRIVATE KF6::WindowSystem Qt6::Test Qt6::Gui)
+foreach(mode offscreen minimal cached-x11 core)
+    add_test(NAME kwindowsystem-kx11extras-${mode} COMMAND kx11extras_nonx11test)
+    set_tests_properties(kwindowsystem-kx11extras-${mode} PROPERTIES
+        ENVIRONMENT "QT_QPA_PLATFORM=offscreen;KX11EXTRAS_TEST_MODE=${mode}")
+endforeach()
+set_tests_properties(kwindowsystem-kx11extras-minimal PROPERTIES
+    ENVIRONMENT "QT_QPA_PLATFORM=minimal;KX11EXTRAS_TEST_MODE=minimal")
+
 macro(KWINDOWSYSTEM_UNIT_TESTS)
    foreach(_testname ${ARGN})
       set(libs KF6::WindowSystem Qt6::Test Qt6::Widgets Qt6::GuiPrivate)
